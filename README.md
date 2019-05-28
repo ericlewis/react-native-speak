@@ -1,6 +1,6 @@
 # react-native-speech
 
-A wonderful TTS (text-to-speech) library for [React Native](https://github.com/facebook/react-native) utilizing [Google TTS](https://cloud.google.com/text-to-speech/).
+A wonderful TTS (text-to-speech) library for [React Native](https://github.com/facebook/react-native).
 
 ## TOC
 
