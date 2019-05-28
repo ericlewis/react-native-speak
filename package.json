@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@types/node": "^12.0.2",
     "@types/react-native": "^0.57.60",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
@@ -62,5 +63,8 @@
   },
   "prettier": {
     "singleQuote": true
+  },
+  "dependencies": {
+    "aws-sdk": "^2.464.0"
   }
 }
