@@ -37,9 +37,9 @@
 
     "lib": ["es2017"],
     "types": [],
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "types"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**"],
+  "include": ["**/*.ts", "index.ts"],
+  "exclude": ["node_modules/**", "build"],
   "compileOnSave": false
 }
