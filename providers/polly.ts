@@ -24,7 +24,7 @@ export class PollyProvider extends Provider {
       this.polly.synthesizeSpeech(
         {
           Text: utterance,
-          OutputFormat: 'pcm',
+          OutputFormat: 'mp3',
           VoiceId: 'Kimberly'
         },
         (err, data) => {
