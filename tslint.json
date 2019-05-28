@@ -13,7 +13,7 @@
     "typedef": [true, "call-signature"],
 
     // Immutability rules
-    "readonly-keyword": true,
+    "readonly-keyword": false, // disabled, because it really likes to fire
     "readonly-array": true,
     "no-let": true,
     "no-object-mutation": true,
