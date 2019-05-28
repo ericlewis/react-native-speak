@@ -24,16 +24,10 @@ export class PollyProvider extends Provider {
     options: SpeechOptions
   ) => {
     return new Promise((resolve, reject) => {
-      // the rate is a float between 0.0 and 1.0
-      // we truncate the value after multiply bc
-      // we do not want the float in a percentage
-      const speakingRate = options.speakingRate
-        ? (options.speakingRate * 100).toFixed(0)
-        : 100;
-
+      const Text = this.getSSML(utterance, options);
       this.polly.synthesizeSpeech(
         {
-          Text: `<speak><prosody rate="${speakingRate}%">${utterance}</prosody></speak>`,
+          Text,
           OutputFormat: 'mp3',
           VoiceId: options.voiceId || ''
         },

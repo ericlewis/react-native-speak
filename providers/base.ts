@@ -62,11 +62,38 @@ export abstract class Provider implements ProviderInterface {
     options: SpeechOptions
   ): Promise<any>;
 
+  /**
+   * Plays a base64 encoded string on the native platform
+   * @param content base64 encoded string
+   * @param options
+   */
   public playAudioContent(content: string, _: SpeechOptions): void {
     return this.native.playAudioContent(content);
   }
 
+  /**
+   * Convenience method for request URL
+   * @param endpoint
+   */
   protected getBaseURL(endpoint: string): string {
     return `${(this.constructor as typeof Provider).baseURL}${endpoint}`;
+  }
+
+  /**
+   * Generate's an SSML wrapped utterance string based on the options provided
+   * SSML is fairly standardized (w3c) so we shouldn't have too much trouble
+   * with basic wrapping for adjustments.
+   * @param utterance
+   * @param options
+   */
+  protected getSSML(utterance: string, options: SpeechOptions): string {
+    // the rate is a float between 0.0 and 1.0
+    // we truncate the value after multiply bc
+    // we do not want the float in a percentage
+    const speakingRate = options.speakingRate
+      ? (options.speakingRate * 100).toFixed(0)
+      : 100;
+
+    return `<speak><prosody rate="${speakingRate}%">${utterance}</prosody></speak>`;
   }
 }

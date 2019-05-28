@@ -26,11 +26,13 @@ export class GoogleProvider extends Provider {
       throw new Error('No access token provided');
     }
 
+    const text = this.getSSML(utterance, options);
+
     const raw = await fetch(this.getBaseURL('text:synthesize'), {
       method: 'POST',
       body: JSON.stringify({
         input: {
-          text: utterance
+          text
         },
         voice: {
           name: options.voiceId,
