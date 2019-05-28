@@ -2,16 +2,12 @@ import { NativeModules } from 'react-native';
 
 interface NativeSpeechModule {
   // JS
-  getVoices: (key: string) => Promise<any>;
-  getAudio: (key: string, utterance: string) => Promise<string>;
+  getVoices: (key: string) => Promise<any[]>;
+  getAudioContent: (key: string, utterance: string) => Promise<string>;
+  speak: (key: string, utterance: string) => Promise<any>;
 
   // Native
   playAudioContent: (base64AudioContent: string) => void;
-  speak: (
-    key: string,
-    utterance: string,
-    useNativeFetch?: boolean
-  ) => Promise<any>;
 }
 
 const Speech: NativeSpeechModule = NativeModules.RNSpeech;
@@ -48,7 +44,7 @@ Speech.getVoices = async (key: string) => {
   return res.json();
 };
 
-Speech.getAudio = async (key: string, utterance: string) => {
+Speech.getAudioContent = async (key: string, utterance: string) => {
   const raw = await fetch(url('text:synthesize'), {
     method: 'POST',
     body: JSON.stringify({
@@ -63,18 +59,9 @@ Speech.getAudio = async (key: string, utterance: string) => {
   return result.audioContent;
 };
 
-const speakOrig = Speech.speak;
-Speech.speak = async function(
-  key: string,
-  utterance: string,
-  useNativeFetch = false
-) {
-  if (useNativeFetch) {
-    speakOrig(key, utterance);
-  } else {
-    const audioContent = await Speech.getAudio(key, utterance);
-    Speech.playAudioContent(audioContent);
-  }
+Speech.speak = async function(key: string, utterance: string) {
+  const audioContent = await Speech.getAudioContent(key, utterance);
+  return Speech.playAudioContent(audioContent);
 };
 
 export default Speech;
