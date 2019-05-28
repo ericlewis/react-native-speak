@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "outDir": "build/main",
-    "rootDir": "src",
+    "rootDir": "",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
@@ -35,7 +35,7 @@
     // "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     // "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
 
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017"],
     "types": [],
     "typeRoots": ["node_modules/@types", "types"]
   },
