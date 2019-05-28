@@ -6,8 +6,8 @@
 //  Copyright © 2019 TruckMap. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@interface RNSpeech : NSObject
+@interface RNSpeech : NSObject <RCTBridgeModule>
 
 @end

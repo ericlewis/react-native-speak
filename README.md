@@ -152,7 +152,11 @@ import Speech from 'react-native-speech';
 
 ---
 
-### speak(text: string)
+### speak()
+
+```
+speak(text: string)
+```
 
 Speaks a phrase.
 
