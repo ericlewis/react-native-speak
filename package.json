@@ -43,12 +43,14 @@
     "react-native": ">=0.57"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
     "@types/react-native": "^0.57.60",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
     "npm-run-all": "^4.1.5",
     "opn-cli": "^5.0.0",
     "prettier": "^1.17.1",
+    "react": "^16.8.6",
     "react-native": "^0.59.8",
     "standard-version": "^6.0.1",
     "trash-cli": "^2.0.0",
