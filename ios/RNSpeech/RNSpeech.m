@@ -11,6 +11,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTLog.h>
 
+@interface RNSpeech () <AVAudioPlayerDelegate>
+@end
+
 @implementation RNSpeech {
   AVAudioPlayer *player_;
   NSString *token_;
@@ -81,7 +84,7 @@ RCT_EXPORT_METHOD(setup:(NSString *)token)
 
 RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
 {
-  NSData *audio = [[NSData alloc] initWithBase64EncodedData:base64AudioContent
+  NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
   NSError *error;
   AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -96,14 +99,15 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
   [self->player_ play];
 }
 
-RCT_EXPORT_METHOD(speak:(NSString *)text
+RCT_EXPORT_METHOD(speak:(NSString *)key
+                  utterance:(NSString *)utterance
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
   NSMutableURLRequest *request = [self createBaseMutableURLRequest:@"v1beta1/text:synthesize"];
   [request setHTTPMethod:@"POST"];
   
-  NSData *body = [self createRequestBodyWithText:text];
+  NSData *body = [self createRequestBodyWithText:utterance];
   if (body != nil) {
     [request setHTTPBody:body];
   } else {
