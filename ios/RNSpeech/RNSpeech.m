@@ -16,6 +16,8 @@
   NSString *token_;
 }
 
+RCT_EXPORT_MODULE();
+
 + (NSDictionary *)constantsToExport {
   // TODO: implement
   return @{};
