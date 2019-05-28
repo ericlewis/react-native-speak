@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "outDir": "build/main",
-    "rootDir": "",
+    "rootDir": "src",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
@@ -35,11 +35,18 @@
     // "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     // "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
 
-    "lib": ["es2017"],
+    "lib": ["es2015", "es2016", "esnext"],
     "types": ["node"],
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types", "types"],
+    "jsx": "react-native"
   },
-  "include": ["**/*.ts", "index.ts"],
-  "exclude": ["node_modules/**", "build"],
+  "include": ["src/**/*.ts", "example/**/*.ts", "example/**/*.tsx"],
+  "exclude": [
+    "node_modules/**",
+    "build",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ],
   "compileOnSave": false
 }

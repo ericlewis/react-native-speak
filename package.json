@@ -26,6 +26,7 @@
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
     "all": "run-s reset test cov:check doc:html",
+    "start": "react-native start",
     "prepare-release": "run-s all version doc:publish"
   },
   "scripts-info": {
@@ -37,6 +38,7 @@
     "doc:json": "Generate API documentation in typedoc JSON format",
     "version": "Bump package.json version, update CHANGELOG.md, tag release",
     "reset": "Delete all untracked files and reset the repo to the last commit",
+    "start": "Runs the packager for example",
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "peerDependencies": {
@@ -44,15 +46,18 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
     "@types/node": "^12.0.3",
     "@types/react-native": "^0.57.60",
+    "@types/react-test-renderer": "^16.8.1",
+    "metro-react-native-babel-preset": "^0.54.1",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
     "npm-run-all": "^4.1.5",
     "opn-cli": "^5.0.0",
     "prettier": "^1.17.1",
-    "react": "^16.8.6",
-    "react-native": "^0.59.8",
+    "react": "16.8.3",
+    "react-native": "0.59.8",
     "standard-version": "^6.0.1",
     "trash-cli": "^2.0.0",
     "tslint": "^5.16.0",
@@ -67,5 +72,8 @@
   "dependencies": {
     "aws-sdk": "^2.464.0",
     "striptags": "^3.1.1"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
