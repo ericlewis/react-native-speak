@@ -46,6 +46,7 @@ Speech.getVoices = async (key: string) => {
 
 Speech.getAudio = async (key: string, utterance: string) => {
   const raw = await fetch(url('text:synthesize'), {
+    method: 'POST',
     body: JSON.stringify({
       input: {
         text: utterance
