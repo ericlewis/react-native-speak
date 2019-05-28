@@ -7,7 +7,11 @@ interface NativeSpeechModule {
 
   // Native
   playAudioContent: (base64AudioContent: string) => void;
-  speak: (utterance: string) => Promise<any>;
+  speak: (
+    key: string,
+    utterance: string,
+    useNativeFetch?: boolean
+  ) => Promise<any>;
 }
 
 const Speech: NativeSpeechModule = NativeModules.RNSpeech;
@@ -57,6 +61,20 @@ Speech.getAudio = async (key: string, utterance: string) => {
   });
   const result: { audioContent: string } = await raw.json();
   return result.audioContent;
+};
+
+const speakOrig = Speech.speak;
+Speech.speak = async function(
+  key: string,
+  utterance: string,
+  useNativeFetch = false
+) {
+  if (useNativeFetch) {
+    speakOrig(key, utterance);
+  } else {
+    const audioContent = await Speech.getAudio(key, utterance);
+    Speech.playAudioContent(audioContent);
+  }
 };
 
 export default Speech;
