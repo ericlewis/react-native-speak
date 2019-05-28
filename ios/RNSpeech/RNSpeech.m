@@ -77,6 +77,23 @@ RCT_EXPORT_METHOD(setup:(NSString *)token)
   return bodyData;
 }
 
+RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
+{
+  NSData *audio = [[NSData alloc] initWithBase64EncodedData:base64AudioContent
+                                                    options:kNilOptions];
+  NSError *error;
+  AVAudioSession *session = [AVAudioSession sharedInstance];
+  [self resetAudioSession];
+  [session setActive:YES error:&error];
+  if (error != nil) {
+    RCTLogError(@"Playback error");
+    return;
+  }
+  self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
+  self->player_.delegate = self;
+  [self->player_ play];
+}
+
 RCT_EXPORT_METHOD(speak:(NSString *)text
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
@@ -107,19 +124,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)text
                                                                if (error != nil) {
                                                                  reject(@"response_error", @"An error occured while parsing the response body", error);
                                                                } else {
-                                                                 NSData *audio = [[NSData alloc] initWithBase64EncodedData:res[@"audioContent"]
-                                                                                                                   options:kNilOptions];
-                                                                 NSError *error;
-                                                                 AVAudioSession *session = [AVAudioSession sharedInstance];
-                                                                 [self resetAudioSession];
-                                                                 [session setActive:YES error:&error];
-                                                                 if (error != nil) {
-                                                                   // do something
-                                                                   return;
-                                                                 }
-                                                                 self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
-                                                                 self->player_.delegate = self;
-                                                                 [self->player_ play];
+                                                                 [self playAudioContent:res[@"audioContent"]];
                                                                  resolve(res);
                                                                }
                                                              }
