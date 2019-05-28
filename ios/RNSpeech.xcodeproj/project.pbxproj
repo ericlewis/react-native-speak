@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		6807A4F12298E3B20079771D /* RNSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 6807A4F02298E3B20079771D /* RNSpeech.m */; };
-		6807A4F22298E3B20079771D /* RNSpeech.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6807A4EF2298E3B20079771D /* RNSpeech.h */; };
+		6807A4F22298E3B20079771D /* RNSpeech.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 6807A4EF2298E3B20079771D /* RNSpeech.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		6807A4EA2298E3B20079771D /* CopyFiles */ = {
+		6807A4EA2298E3B20079771D /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				6807A4F22298E3B20079771D /* RNSpeech.h in CopyFiles */,
+				6807A4F22298E3B20079771D /* RNSpeech.h in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -75,7 +76,7 @@
 			buildPhases = (
 				6807A4E82298E3B20079771D /* Sources */,
 				6807A4E92298E3B20079771D /* Frameworks */,
-				6807A4EA2298E3B20079771D /* CopyFiles */,
+				6807A4EA2298E3B20079771D /* Copy Files */,
 			);
 			buildRules = (
 			);

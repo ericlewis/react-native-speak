@@ -1,0 +1,4 @@
+rootProject.name = 'example'
+
+include ':react-native-netinfo'
+project(':react-native-netinfo').projectDir = new File(rootProject.projectDir, '../../android')

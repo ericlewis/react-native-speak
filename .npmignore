@@ -7,7 +7,13 @@ tslint.json
 .github
 .prettierignore
 .vscode
+.buckconfig
+.editorconfig
+metro.config.js
+babel.config.js
 build/docs
+build/*/example
+example
 **/*.spec.*
 coverage
 .nyc_output

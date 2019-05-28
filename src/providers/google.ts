@@ -35,7 +35,7 @@ export class GoogleProvider extends Provider {
           ssml
         },
         voice: {
-          name: options.voiceId,
+          ...(options.voiceId ? { name: options.voiceId } : {}),
           languageCode: 'en-US'
         },
         audioConfig: {
