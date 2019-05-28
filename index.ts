@@ -10,7 +10,7 @@ interface NativeSpeechModule {
   speak: (utterance: string) => Promise<any>;
 }
 
-const Speech: NativeSpeechModule = NativeModules.tts;
+const Speech: NativeSpeechModule = NativeModules.RNSpeech;
 
 const baseURL = 'https://texttospeech.googleapis.com/v1beta1/';
 
