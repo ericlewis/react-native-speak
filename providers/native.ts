@@ -1,4 +1,4 @@
-import { Provider } from './base';
+import { Provider, SpeechOptions } from './base';
 
 /**
  * Native speech synth provider
@@ -9,7 +9,7 @@ export class NativeProvider extends Provider {
     return this.native.getVoices();
   };
 
-  public playAudioContent = (utterance: string) => {
-    return this.native.speak(utterance);
+  public playAudioContent = (utterance: string, options: SpeechOptions) => {
+    return this.native.speak(utterance, options);
   };
 }

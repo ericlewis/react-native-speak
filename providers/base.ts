@@ -17,7 +17,7 @@ export interface NativeSpeechModule {
   /**
    * Use the native synth to communicate
    */
-  speak: (utterance: string) => void;
+  speak: (utterance: string, options: SpeechOptions) => void;
 
   /**
    * Get the native voices.
@@ -25,12 +25,25 @@ export interface NativeSpeechModule {
   getVoices: () => Promise<Voice[]>;
 }
 
-export interface SpeechOptions {}
+export interface SpeechOptions {
+  // UUID for the Voice we want to use
+  voiceId?: string;
+
+  // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
+  speakingRate?: number;
+
+  // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
+  pitch?: number;
+
+  // Should we fallback to the native synth if anything goes wrong
+  // default is `true`
+  fallbackToNativeSynth?: boolean;
+}
 
 export interface ProviderInterface {
   getVoices: () => Promise<any>;
   getAudioContent?: (utterance: string, options: SpeechOptions) => Promise<any>;
-  playAudioContent: (content: string) => void;
+  playAudioContent: (content: string, options: SpeechOptions) => void;
 }
 
 export abstract class Provider implements ProviderInterface {
@@ -49,7 +62,7 @@ export abstract class Provider implements ProviderInterface {
     options: SpeechOptions
   ): Promise<any>;
 
-  public playAudioContent(content: string): void {
+  public playAudioContent(content: string, _: SpeechOptions): void {
     return this.native.playAudioContent(content);
   }
 

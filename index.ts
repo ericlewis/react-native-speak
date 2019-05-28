@@ -1,4 +1,5 @@
-import { NativeProvider, Provider, Voice } from './providers';
+import striptags from 'striptags';
+import { NativeProvider, Provider, SpeechOptions, Voice } from './providers';
 
 /**
  * The interface for the JS class, typically will be used by frontend
@@ -12,7 +13,7 @@ interface SpeechModule {
   /**
    * Convenience method for fetching & playing a given utterance
    */
-  speak: (key: string, utterance: string) => Promise<any>;
+  speak: (utterance: string, options: SpeechOptions) => Promise<any>;
 }
 
 class Speech implements SpeechModule {
@@ -43,23 +44,48 @@ class Speech implements SpeechModule {
     return this.currentProvider.getVoices();
   };
 
-  public speak = async (utterance: string, options = {}) => {
+  public speak = async (utterance: string, options: SpeechOptions = {}) => {
     try {
       const provider = this.currentProvider;
+
+      // we automatically strip all tags, this prevents us from grabbing any SSML
+      const cleanedUtterance = striptags(utterance);
 
       // see if we need to get some audio content first
       // if we don't that means we should just try to play the utterance
       if (provider.getAudioContent) {
-        const content = await provider.getAudioContent(utterance, options);
-        return provider.playAudioContent(content);
+        const content = await provider.getAudioContent(
+          cleanedUtterance,
+          options
+        );
+        return provider.playAudioContent(content, options);
       } else {
-        return provider.playAudioContent(utterance);
+        return provider.playAudioContent(cleanedUtterance, options);
       }
     } catch (error) {
-      // fallback to the native provider
+      // fallback to the native provider if anything goes wrong
+      if (
+        options.fallbackToNativeSynth &&
+        (options.fallbackToNativeSynth === undefined ||
+          options.fallbackToNativeSynth === true)
+      ) {
+        this.speakFallback(utterance, options);
+      } else {
+        // bubble the error up instead
+        throw error;
+      }
+    }
+  };
+
+  private speakFallback = (utterance: string, options: SpeechOptions) => {
+    try {
+      // the last provider is always the native synth
       return this.providers[this.providers.length - 1].playAudioContent(
-        utterance
+        utterance,
+        options
       );
+    } catch (error) {
+      // we are in serious trouble if we got here.
     }
   };
 }

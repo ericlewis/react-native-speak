@@ -1,10 +1,10 @@
-import { Provider } from './base';
+import { Provider, SpeechOptions } from './base';
 
 export class GoogleProvider extends Provider {
   protected static baseURL = 'https://texttospeech.googleapis.com/v1beta1/';
 
   public getVoices = async (): Promise<any> => {
-    // TODO: use invariant
+    // TODO: use invariant or asserts
     if (this.accessToken === null) {
       throw new Error('No access token provided');
     }
@@ -17,8 +17,11 @@ export class GoogleProvider extends Provider {
     return res.json();
   };
 
-  public getAudioContent = async (utterance: string) => {
-    // TODO: use invariant
+  public getAudioContent = async (
+    utterance: string,
+    options: SpeechOptions
+  ) => {
+    // TODO: use invariant or asserts
     if (this.accessToken === null) {
       throw new Error('No access token provided');
     }
@@ -30,7 +33,7 @@ export class GoogleProvider extends Provider {
           text: utterance
         },
         voice: {
-          name: 'en-AU-Standard-C',
+          name: options.voiceId,
           languageCode: 'en-US'
         },
         audioConfig: {
