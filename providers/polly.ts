@@ -29,7 +29,8 @@ export class PollyProvider extends Provider {
         {
           Text,
           OutputFormat: 'mp3',
-          VoiceId: options.voiceId || ''
+          TextType: 'ssml',
+          VoiceId: options.voiceId || 'Amy' // random default picked
         },
         (err, data) => {
           if (err) {
