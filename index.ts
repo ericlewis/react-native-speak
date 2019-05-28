@@ -48,7 +48,8 @@ class Speech implements SpeechModule {
     try {
       const provider = this.currentProvider;
 
-      // we automatically strip all tags, this prevents us from grabbing any SSML
+      // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
+      // TODO: this would result in use ignoring the options passed, this should be *documented*
       const cleanedUtterance = striptags(utterance);
 
       // see if we need to get some audio content first
