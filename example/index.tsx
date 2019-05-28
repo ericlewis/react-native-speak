@@ -11,6 +11,8 @@ import {
   TextInput,
   View
 } from 'react-native';
+
+// in your own application this would be: `import Speech from 'react-native-speech';`
 import Speech from '../';
 
 interface Props {}
