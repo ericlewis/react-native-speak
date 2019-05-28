@@ -1,4 +1,5 @@
-import { NativeModules } from 'react-native';
+import striptags from 'striptags';
+import { NativeProvider, Provider, SpeechOptions, Voice } from './providers';
 
 /**
  * The interface for the JS class, typically will be used by frontend
@@ -7,86 +8,88 @@ interface SpeechModule {
   /**
    * Returns a list of voices from the Google API
    */
-  getVoices: (key: string) => Promise<any[]>;
+  getVoices: (key: string) => Promise<Voice[]>;
 
   /**
    * Convenience method for fetching & playing a given utterance
    */
-  speak: (key: string, utterance: string) => Promise<any>;
-}
-
-/**
- * The interface for interacting with the native side of things
- */
-interface NativeSpeechModule {
-  /**
-   * Play LINEAR16 audio encoded in base64
-   */
-  playAudioContent: (base64AudioContent: string) => void;
+  speak: (utterance: string, options: SpeechOptions) => Promise<any>;
 }
 
 class Speech implements SpeechModule {
-  private static baseURL = 'https://texttospeech.googleapis.com/v1beta1/';
-  public providers: any[];
-  private native: NativeSpeechModule = NativeModules.RNSpeech;
+  public providers: Provider[];
+  public currentProvider: Provider;
 
-  constructor(providers: any[]) {
-    this.native = NativeModules.RNSpeech;
-    this.providers = providers;
+  constructor(providers?: Provider[]) {
+    if (providers && providers.length > 0) {
+      // if we are given a list of providers, we will tack the native provider to the end
+      this.providers = [...providers, new NativeProvider(null)];
+    } else {
+      // By default, we always provide the native synth
+      this.providers = [new NativeProvider(null)];
+    }
+
+    // Whatever the first provider is, is the one we choose to use.
+    this.currentProvider = this.providers[0];
   }
 
-  public getVoices = async (key: string) => {
-    const res = await fetch(this.createBaseURL('voices?languageCode=en-US'), {
-      headers: this.headers(key)
-    });
-    return res.json();
+  public setCurrentProvider = (newProvider: Provider) => {
+    if (this.currentProvider !== newProvider) {
+      // TODO: hault any current audio first
+      this.currentProvider = newProvider;
+    }
   };
 
-  public speak = async (key: string, utterance: string) => {
-    const audioContent = await this.getAudioContent(key, utterance);
-    return this.native.playAudioContent(audioContent);
+  public getVoices = async () => {
+    return this.currentProvider.getVoices();
   };
 
-  /**
-   * Returns a base64 encoded string of LINEAR16 audio data for a given utterance
-   */
-  protected getAudioContent = async (key: string, utterance: string) => {
-    const raw = await fetch(this.createBaseURL('text:synthesize'), {
-      method: 'POST',
-      body: JSON.stringify({
-        input: {
-          text: utterance
-        },
-        ...this.defaultAudioSettings()
-      }),
-      headers: this.headers(key)
-    });
-    const result: { audioContent: string } = await raw.json();
-    return result.audioContent;
-  };
+  public speak = async (utterance: string, options: SpeechOptions = {}) => {
+    try {
+      const provider = this.currentProvider;
 
-  protected headers(key: string, other = {}): any {
-    return {
-      'X-Goog-Api-Key': key,
-      ...other
-    };
-  }
+      // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
+      // TODO: this would result in use ignoring the options passed, this should be *documented*
+      const cleanedUtterance = striptags(utterance);
 
-  protected createBaseURL(endpoint: string): string {
-    return `${Speech.baseURL}${endpoint}`;
-  }
-
-  private defaultAudioSettings() {
-    return {
-      voice: {
-        name: 'en-AU-Standard-C',
-        languageCode: 'en-US'
-      },
-      audioConfig: {
-        audioEncoding: 'LINEAR16'
+      // see if we need to get some audio content first
+      // if we don't that means we should just try to play the utterance
+      if (provider.getAudioContent) {
+        const content = await provider.getAudioContent(
+          cleanedUtterance,
+          options
+        );
+        return provider.playAudioContent(content, options);
+      } else {
+        return provider.playAudioContent(cleanedUtterance, options);
       }
-    };
-  }
+    } catch (error) {
+      // fallback to the native provider if anything goes wrong
+      if (
+        options.fallbackToNativeSynth &&
+        (options.fallbackToNativeSynth === undefined ||
+          options.fallbackToNativeSynth === true)
+      ) {
+        this.speakFallback(utterance, options);
+      } else {
+        // bubble the error up instead
+        throw error;
+      }
+    }
+  };
+
+  private speakFallback = (utterance: string, options: SpeechOptions) => {
+    try {
+      // the last provider is always the native synth
+      return this.providers[this.providers.length - 1].playAudioContent(
+        utterance,
+        options
+      );
+    } catch (error) {
+      // we are in serious trouble if we got here.
+    }
+  };
 }
 
+export * from './providers';
 export default Speech;

@@ -11,17 +11,27 @@
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTLog.h>
 
-@interface RNSpeech () <AVAudioPlayerDelegate>
+@interface RNSpeech () <AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate>
 @end
 
 @implementation RNSpeech {
   AVAudioPlayer *player_;
+  AVSpeechSynthesizer *synth_;
   NSString *token_;
 }
 
 RCT_EXPORT_MODULE();
 
-+ (NSDictionary *)constantsToExport {
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
+
+- (NSDictionary *)constantsToExport {
+  return [self getConstants];
+}
+
+- (NSDictionary *)getConstants {
   // TODO: implement
   return @{};
 }
@@ -41,12 +51,36 @@ RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
   resolve(mutableSources);
 }
 
-RCT_EXPORT_METHOD(setup:(NSString *)token)
+// Native synth engine
+RCT_EXPORT_METHOD(speak:(NSString *)utterance
+                  options:(NSDictionary *)options)
 {
-  token_ = token;
-  // TODO:
-  // should we also setup default audio settings here?
-  // we should at least cache them instead of constantly hitting NSUserDefaults
+  [self setupSynth];
+  
+  // TODO: dry me
+  NSError *error;
+  AVAudioSession *session = [AVAudioSession sharedInstance];
+  [self resetAudioSession];
+  [session setActive:YES error:&error];
+  if (error != nil) {
+    RCTLogError(@"Playback error");
+    return;
+  }
+  
+  [synth_ speakUtterance:[[AVSpeechUtterance alloc] initWithString:utterance]];
+}
+
+RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject)
+{
+  NSArray<AVSpeechSynthesisVoice *>* voices = [AVSpeechSynthesisVoice speechVoices];
+  NSMutableArray *convertedVoices = [[NSMutableArray alloc] initWithCapacity:voices.count];
+  for (AVSpeechSynthesisVoice *voice in voices) {
+    [convertedVoices addObject:@{@"id": voice.identifier, @"name": voice.name}];
+  }
+  
+  // this doesn't reject, but we gotta include it anyway
+  resolve(convertedVoices);
 }
 
 RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
@@ -66,7 +100,25 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
   [self->player_ play];
 }
 
+- (void)setupSynth
+{
+  if (synth_ == nil) {
+    synth_ = [AVSpeechSynthesizer new];
+    synth_.delegate = self;
+  }
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
+{
+  [self stopAudioSession];
+}
+
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+  [self stopAudioSession];
+}
+
+- (void)stopAudioSession
 {
   // TODO:
   // may need to set active on diff thread (or possibly don't even need to do it)
