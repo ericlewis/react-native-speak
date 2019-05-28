@@ -22,7 +22,16 @@
 
 RCT_EXPORT_MODULE();
 
-+ (NSDictionary *)constantsToExport {
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
+
+- (NSDictionary *)constantsToExport {
+  return [self getConstants];
+}
+
+- (NSDictionary *)getConstants {
   // TODO: implement
   return @{};
 }
@@ -43,7 +52,8 @@ RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
 }
 
 // Native synth engine
-RCT_EXPORT_METHOD(speak:(NSString *)utterance)
+RCT_EXPORT_METHOD(speak:(NSString *)utterance
+                  options:(NSDictionary *)options)
 {
   [self setupSynth];
   
@@ -61,7 +71,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance)
 }
 
 RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
-                     reject:(__unused RCTPromiseRejectBlock)reject)
+                  reject:(__unused RCTPromiseRejectBlock)reject)
 {
   NSArray<AVSpeechSynthesisVoice *>* voices = [AVSpeechSynthesisVoice speechVoices];
   NSMutableArray *convertedVoices = [[NSMutableArray alloc] initWithCapacity:voices.count];
