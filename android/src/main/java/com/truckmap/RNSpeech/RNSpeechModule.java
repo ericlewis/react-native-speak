@@ -45,16 +45,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     @Override
-    public void initialize() {
-        // nothing yet
-    }
-
-    @Override
-    public void onCatalystInstanceDestroy() {
-        // nothing yet
-    }
-
-    @Override
     public String getName() {
         return NAME;
     }
