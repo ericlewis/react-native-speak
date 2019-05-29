@@ -17,7 +17,7 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
       SPEECH_END_EVENT: string;
       SPEECH_ERROR_EVENT: string;
     };
-    provider?: string
+    provider?: string;
   };
   /**
    * Play LINEAR16 audio encoded in base64
@@ -53,6 +53,9 @@ export interface SpeechOptions {
 
   // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
   pitch?: number;
+
+  // Default is 1.0. 1.0 is the loudest, 0.0 is the lowest.
+  volume?: number;
 
   // Should we fallback to the native synth if anything goes wrong
   // default is `true`

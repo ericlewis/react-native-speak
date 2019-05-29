@@ -112,8 +112,12 @@ export default class ProviderManager {
    * @param name
    */
   public getProviderForName(name: string): Provider {
+    invariant(name, `Must provide a valid name, not: ${name}`);
     const provider = this.providers[name];
-    invariant(provider, 'Provider not found, please add the provider first.');
+    invariant(
+      provider,
+      `Provider: ${name} not found, please register the provider first.`
+    );
     return provider;
   }
 }

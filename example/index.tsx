@@ -9,6 +9,7 @@ import {
   Button,
   KeyboardAvoidingView,
   Picker,
+  Slider,
   StyleSheet,
   TextInput,
   View
@@ -16,6 +17,7 @@ import {
 
 // in your own application this would be: `import Speech from 'react-native-speech';`
 import Speech, { GoogleProvider, PollyProvider, Voice } from '../src';
+import { useInput, usePicker, useSlider } from './utils';
 const speech = new Speech([
   new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
   new PollyProvider({
@@ -26,44 +28,46 @@ const speech = new Speech([
   })
 ]);
 
-interface Props {}
-const App: React.FunctionComponent<Props> = () => {
-  const [value, setValue] = useState<string | undefined>(undefined);
+function fetchVoices(providerPicker: any, voicePicker: any) {
+  const provider = providerPicker.selectedValue;
   const [voices, setVoices] = useState<Voice[]>([]);
-  const [selectedVoice, setSelectedVoice] = useState<string | undefined>(
-    undefined
-  );
-  const [isSpeaking, setSpeaking] = useState(false);
+  useEffect(() => {
+    async function setup() {
+      if (provider) {
+        speech.setCurrentProvider(provider);
+      }
 
-  const [selectedProvider, setSelectedProvider] = useState(
-    speech.getCurrentProvider()
-  );
-
-  function speak() {
-    if (value) {
-      speech.speak(value, { voiceId: selectedVoice });
+      const res = await speech.getVoices();
+      setVoices(res);
+      voicePicker.onValueChange(res[0].id);
     }
-  }
 
+    setup();
+  }, [provider]);
+
+  return voices;
+}
+
+function registerSpeechListeners(setActive: (active: boolean) => void) {
   useEffect(() => {
     const speechLoadingListener = speech.events.addListener(
       speech.constants.events.SPEECH_LOADING_EVENT,
       () => {
-        setSpeaking(true);
+        setActive(true);
       }
     );
 
     const speechStartListener = speech.events.addListener(
       speech.constants.events.SPEECH_START_EVENT,
       () => {
-        setSpeaking(true);
+        setActive(true);
       }
     );
 
     const speechEndListener = speech.events.addListener(
       speech.constants.events.SPEECH_END_EVENT,
       () => {
-        setSpeaking(false);
+        setActive(false);
       }
     );
 
@@ -71,7 +75,7 @@ const App: React.FunctionComponent<Props> = () => {
       speech.constants.events.SPEECH_ERROR_EVENT,
       error => {
         Alert.alert(error.message);
-        setSpeaking(false);
+        setActive(false);
       }
     );
 
@@ -82,55 +86,59 @@ const App: React.FunctionComponent<Props> = () => {
       speechErrorListener.remove();
     };
   });
+}
 
-  useEffect(() => {
-    async function setup() {
-      speech.setCurrentProvider(selectedProvider);
-      const res = await speech.getVoices();
-      setVoices(res);
-      setSelectedVoice(res[0].id);
+interface Props {}
+const App: React.FunctionComponent<Props> = () => {
+  const [isSpeaking, setSpeaking] = useState(false);
+
+  const textInput = useInput();
+  const voicePicker = usePicker(undefined);
+  const providerPicker = usePicker(speech.getCurrentProvider());
+  const speakingRateSlider = useSlider(1.0);
+  const voices = fetchVoices(providerPicker, voicePicker);
+
+  registerSpeechListeners(setSpeaking);
+
+  function speak() {
+    const text = textInput.value;
+    if (text) {
+      speech.speak(text, {
+        voiceId: voicePicker.selectedValue,
+        speakingRate: speakingRateSlider.value
+      });
     }
-
-    setup();
-  }, [selectedProvider]);
+  }
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <View style={styles.input}>
           <TextInput
+            {...textInput}
             placeholder="Type something to say..."
-            onChangeText={setValue}
-            value={value}
             onSubmitEditing={speak}
           />
         </View>
         <Button
           title={isSpeaking ? 'Speaking...' : 'Say it!'}
-          disabled={!value || value.length <= 0 || isSpeaking}
+          disabled={
+            !textInput.value || textInput.value.length <= 0 || isSpeaking
+          }
           onPress={speak}
         />
-        <Picker
-          onValueChange={provider => {
-            setSelectedProvider(provider);
-          }}
-          selectedValue={selectedProvider}
-        >
+        <Slider {...speakingRateSlider} />
+        <Picker {...providerPicker}>
           {speech.getProviders().map(provider => {
             return (
               <Picker.Item key={provider} label={provider} value={provider} />
             );
           })}
         </Picker>
-        <Picker
-          onValueChange={voice => {
-            setSelectedVoice(voice);
-          }}
-          selectedValue={selectedVoice}
-        >
+        <Picker {...voicePicker}>
           {voices.map(voice => {
             const { id, name } = voice;
-            return <Picker.Item key={id} label={name} value={voice.id} />;
+            return <Picker.Item key={id} label={name} value={id} />;
           })}
         </Picker>
       </KeyboardAvoidingView>
