@@ -37,3 +37,9 @@ DerivedData/
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
+
+## Android
+.idea
+.gradle
+local.properties
+*.iml

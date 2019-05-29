@@ -32,19 +32,21 @@ export interface SpeechOptions {
   codec?: 'mp3';
 }
 
+export interface Constants {
+  events: {
+    SPEECH_LOADING_EVENT: string;
+    SPEECH_START_EVENT: string;
+    SPEECH_END_EVENT: string;
+    SPEECH_ERROR_EVENT: string;
+  };
+  provider?: string;
+}
+
 /**
  * The interface for interacting with the native side of things
  */
 export interface NativeSpeechModule extends EventSubscriptionVendor {
-  getConstants: () => {
-    events: {
-      SPEECH_LOADING_EVENT: string;
-      SPEECH_START_EVENT: string;
-      SPEECH_END_EVENT: string;
-      SPEECH_ERROR_EVENT: string;
-    };
-    provider?: string;
-  };
+  getConstants: () => Constants;
   /**
    * Play LINEAR16 audio encoded in base64
    */

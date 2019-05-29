@@ -2,6 +2,7 @@
  * @format
  */
 
+import Slider from '@react-native-community/slider';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
@@ -10,7 +11,6 @@ import {
   KeyboardAvoidingView,
   Picker,
   SafeAreaView,
-  Slider,
   StyleSheet,
   Text,
   TextInput,
@@ -70,6 +70,8 @@ const App: React.FunctionComponent<Props> = () => {
             {...textInput}
             placeholder="Type something to say..."
             onSubmitEditing={speak}
+            returnKeyType="done"
+            enablesReturnKeyAutomatically
           />
         </View>
         <Button

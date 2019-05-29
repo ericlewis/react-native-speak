@@ -1,7 +1,12 @@
 import { get } from 'lodash';
-import { NativeEventEmitter } from 'react-native';
+import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
-import { RNSpeech, SpeechOptions, Voice } from './NativeSpeechModule';
+import {
+  Constants,
+  RNSpeech,
+  SpeechOptions,
+  Voice
+} from './NativeSpeechModule';
 import ProviderManager, { Provider } from './providers';
 
 /**
@@ -29,8 +34,11 @@ class Speech implements SpeechModule {
     this.providerManager = new ProviderManager(providers);
   }
 
-  get constants() {
-    return RNSpeech.getConstants();
+  get constants(): Constants {
+    // have to cast types bc android doesn't like getConstants
+    return Platform.OS === 'ios'
+      ? RNSpeech.getConstants()
+      : ((RNSpeech as unknown) as Constants);
   }
 
   public setCurrentProvider(name: string) {

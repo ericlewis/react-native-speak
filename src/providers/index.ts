@@ -7,7 +7,8 @@ export * from './PollyProvider';
 import invariant from 'invariant';
 import { keyBy } from 'lodash';
 
-import { RNSpeech } from '../NativeSpeechModule';
+import { Platform } from 'react-native';
+import { Constants, RNSpeech } from '../NativeSpeechModule';
 import { Provider } from './BaseProvider';
 import { NativeProvider } from './NativeProvider';
 
@@ -35,7 +36,10 @@ export default class ProviderManager {
       );
       this.currentProvider = this.getProviderForName(providerToUse);
     } else {
-      const defaultProvider = RNSpeech.getConstants().provider;
+      const defaultProvider =
+        Platform.OS === 'ios'
+          ? RNSpeech.getConstants().provider
+          : ((RNSpeech as unknown) as Constants).provider;
       this.currentProvider = defaultProvider
         ? this.getProviderForName(defaultProvider)
         : Object.values(this.providers)[0];

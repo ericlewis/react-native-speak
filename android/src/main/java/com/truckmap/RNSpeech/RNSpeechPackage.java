@@ -1,3 +1,11 @@
+//
+//  RNSpeechPackage.java
+//  RNSpeech
+//
+//  Created by Eric Lewis on 5/24/19.
+//  Copyright © 2019 TruckMap. All rights reserved.
+//
+
 package com.truckmap.RNSpeech;
 
 import com.facebook.react.ReactPackage;
@@ -10,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNSpeech implements ReactPackage {
+public class RNSpeechPackage implements ReactPackage {
 
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
@@ -19,11 +27,6 @@ public class RNSpeech implements ReactPackage {
     modules.add(new RNSpeechModule(reactContext));
 
     return modules;
-  }
-
-  // Deprecated RN 0.47
-  public List<Class<? extends JavaScriptModule>> createJSModules() {
-    return Collections.emptyList();
   }
 
   @Override
