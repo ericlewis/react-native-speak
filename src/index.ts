@@ -118,4 +118,5 @@ class Speech implements SpeechModule {
 }
 
 export * from './providers';
+export * from './NativeSpeechModule';
 export default Speech;
