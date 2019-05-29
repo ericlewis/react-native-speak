@@ -57,25 +57,33 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 {
   [self setupSynth];
   
+  // stop speaking if we are already speaking
+  if ([synth_ isSpeaking]) {
+    [synth_ stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+  }
   
-  // TODO: dry me
-  NSError *error;
-  AVAudioSession *session = [AVAudioSession sharedInstance];
-  [self resetAudioSession];
-  [session setActive:YES error:&error];
-  if (error != nil) {
-    RCTLogError(@"Playback error");
-    return;
+  // NSNumber is like a nilable BOOL
+  NSNumber *shouldDuck = options[@"ducking"];
+  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
+    NSError *error;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setActive:YES error:&error];
+    if (error != nil) {
+      RCTLogError(@"Playback error");
+      return;
+    }
   }
   
   AVSpeechUtterance *synthUtterance = [[AVSpeechUtterance alloc] initWithString:utterance];
   
   NSString *voiceID = options[@"voiceId"];
+  
   if (voiceID) {
     [synthUtterance setVoice:[AVSpeechSynthesisVoice voiceWithIdentifier:voiceID]];
   }
   
   [synth_ speakUtterance:synthUtterance];
+  [self resetAudioSession];
 }
 
 RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
@@ -91,18 +99,24 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
   resolve(convertedVoices);
 }
 
-RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent)
+RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent options:(NSDictionary *)options)
 {
   NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
+  
   NSError *error;
-  AVAudioSession *session = [AVAudioSession sharedInstance];
-  [self resetAudioSession];
-  [session setActive:YES error:&error];
-  if (error != nil) {
-    RCTLogError(@"Playback error");
-    return;
+
+  NSNumber *shouldDuck = options[@"ducking"];
+  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [self resetAudioSession];
+    [session setActive:YES error:&error];
+    if (error != nil) {
+      RCTLogError(@"Playback error");
+      return;
+    }
   }
+  
   self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   self->player_.delegate = self;
   [self->player_ play];

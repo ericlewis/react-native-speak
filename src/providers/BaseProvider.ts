@@ -13,7 +13,10 @@ export interface NativeSpeechModule {
   /**
    * Play LINEAR16 audio encoded in base64
    */
-  playAudioContent: (base64AudioContent: string) => void;
+  playAudioContent: (
+    base64AudioContent: string,
+    options: SpeechOptions
+  ) => void;
 
   /**
    * Use the native synth to communicate
@@ -39,6 +42,10 @@ export interface SpeechOptions {
   // Should we fallback to the native synth if anything goes wrong
   // default is `true`
   fallbackToNativeSynth?: boolean;
+
+  // Should lower audio when talking
+  // default is `true`
+  ducking?: boolean;
 }
 
 export interface ProviderInterface {
@@ -68,8 +75,8 @@ export abstract class Provider implements ProviderInterface {
    * @param content base64 encoded string
    * @param options
    */
-  public playAudioContent(content: string, _: SpeechOptions): void {
-    return this.native.playAudioContent(content);
+  public playAudioContent(content: string, options: SpeechOptions): void {
+    return this.native.playAudioContent(content, options);
   }
 
   /**
