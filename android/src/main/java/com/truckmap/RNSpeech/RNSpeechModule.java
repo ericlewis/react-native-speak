@@ -8,7 +8,13 @@
 
 package com.truckmap.RNSpeech;
 
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.os.Build;
+import android.util.Base64;
+import android.util.Log;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -31,8 +37,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_END_EVENT = "SPEECH_END_EVENT";
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
 
+    private ReactApplicationContext mReactContext;
+
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        this.mReactContext = reactContext;
     }
 
     @Override
@@ -71,12 +80,32 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void playAudioContent(String base64AudioContent, String utterance, ReadableMap options) {
-        // do nothing yet
+        byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
+        int intSize = AudioTrack.getMinBufferSize(16000, 
+                                                AudioFormat.CHANNEL_OUT_MONO, 
+                                                AudioFormat.ENCODING_PCM_16BIT);
+        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 
+                                    16000, 
+                                    AudioFormat.CHANNEL_OUT_MONO, 
+                                    AudioFormat.ENCODING_PCM_16BIT, 
+                                    intSize, 
+                                    AudioTrack.MODE_STREAM);
+        if (at != null) {
+            sendEvent(SPEECH_START_EVENT, null);
+            at.play();
+            at.write(data, 0, data.length);
+            at.stop();
+            at.release();
+            sendEvent(SPEECH_END_EVENT, null);
+        } else {
+            sendEvent(SPEECH_ERROR_EVENT, null);
+        }
     }
 
     @ReactMethod
     public void speak(String utterance, ReadableMap options) {
-        // do nothing yet
+        sendEvent(SPEECH_START_EVENT, null);
+        sendEvent(SPEECH_END_EVENT, null);
     }
 
     @ReactMethod
@@ -89,10 +118,9 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         promise.resolve(null);
     }
 
-    private void sendEvent(ReactApplicationContext reactContext,
-                       String eventName,
-                       @Nullable WritableMap params) {
-        reactContext
+    private void sendEvent(String eventName,
+                           @Nullable WritableMap params) {
+        mReactContext
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, params);
     }
