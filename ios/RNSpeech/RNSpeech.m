@@ -170,6 +170,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   NSNumber *pitch = options[@"pitch"];
   if (pitch) {
     // TODO: we need to normalize this value probably
+    // -1 is the lowest pitch, 0 is normal, 1.0 is highest
     synthUtterance.pitchMultiplier = [pitch floatValue];
   }
 

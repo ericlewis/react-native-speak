@@ -101,7 +101,7 @@ const App: React.FunctionComponent<Props> = () => {
   const providerPicker = usePicker(speech.getCurrentProvider());
 
   const speakingRateSlider = useSlider(1.0, 2.0, 0.0);
-  const pitchSlider = useSlider(1.0, 2.0);
+  const pitchSlider = useSlider(0.0, 1.0, -1.0);
   const volumeSlider = useSlider(1.0);
 
   const voices = fetchVoices(providerPicker, voicePicker);

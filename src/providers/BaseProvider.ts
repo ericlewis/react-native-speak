@@ -205,6 +205,8 @@ export abstract class Provider implements ProviderInterface {
       ? (options.speakingRate * 100).toFixed(0)
       : 100;
 
-    return `<speak><prosody rate="${speakingRate}%">${utterance}</prosody></speak>`;
+    const pitch = options.pitch ? (options.pitch * 100).toFixed(0) : 0;
+
+    return `<speak><prosody rate="${speakingRate}%" pitch="${pitch}%">${utterance}</prosody></speak>`;
   }
 }
