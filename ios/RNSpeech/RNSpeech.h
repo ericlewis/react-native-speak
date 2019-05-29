@@ -7,7 +7,8 @@
 //
 
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface RNSpeech : NSObject <RCTBridgeModule>
+@interface RNSpeech : RCTEventEmitter <RCTBridgeModule>
 
 @end

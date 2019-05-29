@@ -22,6 +22,10 @@
 
 RCT_EXPORT_MODULE();
 
+static NSString *SPEECH_START_EVENT = @"SpeechStart";
+static NSString *SPEECH_END_EVENT = @"SpeechEnd";
+static NSString *SPEECH_ERROR_EVENT = @"SpeechError";
+
 + (BOOL)requiresMainQueueSetup
 {
   return NO;
@@ -32,8 +36,18 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSDictionary *)getConstants {
-  // TODO: implement
-  return @{};
+  return @{
+           @"events": @{
+             @"SPEECH_START_EVENT" : SPEECH_START_EVENT,
+             @"SPEECH_END_EVENT"   : SPEECH_END_EVENT,
+             @"SPEECH_ERROR_EVENT" : SPEECH_ERROR_EVENT
+           }
+           };
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"SpeechStart", @"SpeechEnd", @"SpeechError"];
 }
 
 RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
@@ -56,6 +70,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
                   options:(NSDictionary *)options)
 {
   [self setupSynth];
+  [self sendEventWithName:SPEECH_START_EVENT body:@{@"options": options}];
   
   // stop speaking if we are already speaking
   if ([synth_ isSpeaking]) {
@@ -69,6 +84,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
     AVAudioSession *session = [AVAudioSession sharedInstance];
     [session setActive:YES error:&error];
     if (error != nil) {
+      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"error": error}];
       RCTLogError(@"Playback error");
       return;
     }
@@ -101,6 +117,7 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
 
 RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent options:(NSDictionary *)options)
 {
+  [self sendEventWithName:SPEECH_START_EVENT body:@{@"options": options}];
   NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
   
@@ -113,6 +130,7 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent options:(NSDict
     [session setActive:YES error:&error];
     if (error != nil) {
       RCTLogError(@"Playback error");
+      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"error": error}];
       return;
     }
   }
@@ -120,6 +138,10 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent options:(NSDict
   self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   self->player_.delegate = self;
   [self->player_ play];
+  
+  if (error != nil) {
+    [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"error": error}];
+  }
 }
 
 - (void)setupSynth
@@ -132,11 +154,15 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent options:(NSDict
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
+  // TODO: improve?
+  [self sendEventWithName:SPEECH_END_EVENT body:@{@"utterance": utterance}];
   [self stopAudioSession];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+  // TODO: improve?
+  [self sendEventWithName:SPEECH_END_EVENT body:@{@"utterance": RCTNullIfNil(nil)}];
   [self stopAudioSession];
 }
 
