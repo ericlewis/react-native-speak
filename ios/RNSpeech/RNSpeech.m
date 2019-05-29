@@ -166,6 +166,12 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   if (speakingRate) {
     synthUtterance.rate = [speakingRate floatValue] / 2.0;
   }
+  
+  NSNumber *pitch = options[@"pitch"];
+  if (pitch) {
+    // TODO: we need to normalize this value probably
+    synthUtterance.pitchMultiplier = [pitch floatValue];
+  }
 
   
   NSString *voiceID = options[@"voiceId"];

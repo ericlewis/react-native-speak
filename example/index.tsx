@@ -100,7 +100,8 @@ const App: React.FunctionComponent<Props> = () => {
   const voicePicker = usePicker(undefined);
   const providerPicker = usePicker(speech.getCurrentProvider());
 
-  const speakingRateSlider = useSlider(1.0, 2.0, 0.1);
+  const speakingRateSlider = useSlider(1.0, 2.0, 0.0);
+  const pitchSlider = useSlider(1.0, 2.0);
   const volumeSlider = useSlider(1.0);
 
   const voices = fetchVoices(providerPicker, voicePicker);
@@ -117,7 +118,8 @@ const App: React.FunctionComponent<Props> = () => {
       speech.speak(text, {
         voiceId: voicePicker.selectedValue,
         speakingRate: speakingRateSlider.value,
-        volume: volumeSlider.value
+        volume: volumeSlider.value,
+        pitch: pitchSlider.value
       });
     }
   }
@@ -138,6 +140,7 @@ const App: React.FunctionComponent<Props> = () => {
           onPress={speak}
         />
         <Slider {...speakingRateSlider} />
+        <Slider {...pitchSlider} />
         <Slider {...volumeSlider} />
         <Picker {...providerPicker}>
           {speech.getProviders().map(provider => {
