@@ -29,7 +29,7 @@ export default class ProviderManager {
   public setCurrentProvider = (providerName: string) => {
     const provider = this.getProviderForName(providerName);
     // only update the current provider if they aren't matching
-    if (this.currentProvider.isEqualToProvider(provider)) {
+    if (!this.currentProvider.isEqualToProvider(provider)) {
       this.currentProvider = provider;
     }
   };

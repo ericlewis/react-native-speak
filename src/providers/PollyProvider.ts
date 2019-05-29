@@ -17,8 +17,12 @@ export class PollyProvider extends Provider {
   }
 
   public getVoices = async (): Promise<Voice[]> => {
-    // TODO: this.polly.describeVoices()
-    return [];
+    const { Voices } = await this.polly.describeVoices().promise();
+    // TODO: handle this force unwrapping
+    return Voices!.map(({ Id, Name }) => ({
+      id: this.sluggifyVoiceId(Id!),
+      name: Name!
+    }));
   };
 
   public getAudioContent = async (
@@ -32,7 +36,9 @@ export class PollyProvider extends Provider {
           Text,
           OutputFormat: 'mp3',
           TextType: 'ssml',
-          VoiceId: options.voiceId || 'Amy' // random default picked
+          VoiceId: options.voiceId
+            ? this.stripVoiceIdSlug(options.voiceId)
+            : 'Amy' // random default picked
         },
         (err, data) => {
           if (err) {

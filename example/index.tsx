@@ -14,8 +14,14 @@ import {
 } from 'react-native';
 
 // in your own application this would be: `import Speech from 'react-native-speech';`
-import Speech, { Voice } from '../src';
-const speech = new Speech();
+import Speech, { GoogleProvider, PollyProvider, Voice } from '../src';
+const speech = new Speech([
+  new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
+  new PollyProvider(
+    'AKIAJIB47SDUAFNNGQWA',
+    'JGGQebfE+Z7glcvjuUwJOmHPht3vLL2kPIcvzioq'
+  )
+]);
 
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
@@ -36,8 +42,10 @@ const App: React.FunctionComponent<Props> = () => {
 
   useEffect(() => {
     async function setup() {
+      speech.setCurrentProvider(selectedProvider);
       const res = await speech.getVoices();
       setVoices(res);
+      setSelectedVoice(res[0].id);
     }
 
     setup();
@@ -53,13 +61,11 @@ const App: React.FunctionComponent<Props> = () => {
             value={value}
           />
         </View>
-        <View style={styles.button}>
-          <Button
-            title="Say it!"
-            disabled={!value || value.length <= 0}
-            onPress={speak}
-          />
-        </View>
+        <Button
+          title="Say it!"
+          disabled={!value || value.length <= 0}
+          onPress={speak}
+        />
         <Picker
           onValueChange={provider => {
             setSelectedProvider(provider);
