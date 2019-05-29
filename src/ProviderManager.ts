@@ -19,7 +19,7 @@ export default class ProviderManager {
     );
 
     // Whatever the first provider is, is the one we choose to use.
-    // TODO: allow manual default setup when creating
+    // TODO: allow manual default setup when creating / use persisted default
     this.currentProvider = Object.values(this.providers)[0];
   }
 
@@ -30,6 +30,7 @@ export default class ProviderManager {
     const provider = this.getProviderForName(providerName);
     // only update the current provider if they aren't matching
     if (!this.currentProvider.isEqualToProvider(provider)) {
+      // TODO: we should probably remember this permanently
       this.currentProvider = provider;
     }
   };
