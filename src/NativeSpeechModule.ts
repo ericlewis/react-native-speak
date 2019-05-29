@@ -12,7 +12,7 @@ export interface SpeechOptions {
   // Default is 1.0. 2.0 is the fastest, 0.1 is the slowest.
   speakingRate?: number;
 
-  // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
+  // Default is 0.0. -1.0 is the lowest, 1.0 is the highest.
   pitch?: number;
 
   // Default is 1.0. 1.0 is the loudest, 0.0 is the lowest.
