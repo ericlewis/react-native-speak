@@ -1,8 +1,7 @@
 import { get } from 'lodash';
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import striptags from 'striptags';
-import ProviderManager from './ProviderManager';
-import {
+import ProviderManager, {
   NativeSpeechModule,
   Provider,
   SpeechOptions,
