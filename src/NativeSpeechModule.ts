@@ -29,7 +29,7 @@ export interface SpeechOptions {
   // The codec to retrieve
   // currently only supports mp3 cross providers
   // providers would need to transform this in some cases.
-  codec?: 'mp3';
+  codec?: 'mp3' | 'pcm';
 }
 
 export interface Constants {

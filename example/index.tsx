@@ -10,6 +10,7 @@ import {
   Button,
   KeyboardAvoidingView,
   Picker,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -57,7 +58,8 @@ const App: React.FunctionComponent<Props> = () => {
         voiceId: voicePicker.selectedValue,
         speakingRate: speakingRateSlider.value,
         volume: volumeSlider.value,
-        pitch: pitchSlider.value
+        pitch: pitchSlider.value,
+        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm'
       });
     }
   }
