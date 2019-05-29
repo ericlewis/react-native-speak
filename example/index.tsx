@@ -9,8 +9,10 @@ import {
   Button,
   KeyboardAvoidingView,
   Picker,
+  SafeAreaView,
   Slider,
   StyleSheet,
+  Text,
   TextInput,
   View
 } from 'react-native';
@@ -61,7 +63,7 @@ const App: React.FunctionComponent<Props> = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <View style={styles.input}>
           <TextInput
@@ -71,28 +73,35 @@ const App: React.FunctionComponent<Props> = () => {
           />
         </View>
         <Button
-          title={active ? 'Speaking...' : 'Say it!'}
+          title={active ? 'Speaking...' : 'Speak'}
           disabled={!textInput.value || textInput.value.length <= 0 || active}
           onPress={speak}
         />
-        <Slider {...speakingRateSlider} />
-        <Slider {...pitchSlider} />
-        <Slider {...volumeSlider} />
-        <Picker {...providerPicker}>
-          {speech.getProviders().map(provider => {
-            return (
-              <Picker.Item key={provider} label={provider} value={provider} />
-            );
-          })}
-        </Picker>
-        <Picker {...voicePicker}>
-          {voices.map(voice => {
-            const { id, name } = voice;
-            return <Picker.Item key={id} label={name} value={id} />;
-          })}
-        </Picker>
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          <Picker {...providerPicker} style={{ flex: 1 }}>
+            {speech.getProviders().map(provider => {
+              return (
+                <Picker.Item key={provider} label={provider} value={provider} />
+              );
+            })}
+          </Picker>
+          <Picker {...voicePicker} style={{ flex: 1.25 }}>
+            {voices.map(voice => {
+              const { id, name } = voice;
+              return <Picker.Item key={id} label={name} value={id} />;
+            })}
+          </Picker>
+        </View>
+        <View style={{ flex: 1, paddingHorizontal: 10 }}>
+          <Slider {...speakingRateSlider} />
+          <Text>Speaking Rate: {speakingRateSlider.value}</Text>
+          <Slider {...pitchSlider} />
+          <Text>Pitch: {pitchSlider.value}</Text>
+          <Slider {...volumeSlider} />
+          <Text>Volume: {volumeSlider.value}</Text>
+        </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 
