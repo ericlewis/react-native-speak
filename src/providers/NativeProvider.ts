@@ -15,6 +15,7 @@ export class NativeProvider extends Provider {
 
   public speak = (utterance: string, options: SpeechOptions) => {
     // TODO: this voiceId stuff is pretty lame, clean it up
+    // TODO: these settings may vary between OS
     return this.native.speak(utterance, {
       ...options,
       voiceId: options.voiceId

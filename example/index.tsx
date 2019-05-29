@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   AppRegistry,
   Button,
   KeyboardAvoidingView,
@@ -69,7 +70,7 @@ const App: React.FunctionComponent<Props> = () => {
     const speechErrorListener = speech.events.addListener(
       speech.constants.events.SPEECH_ERROR_EVENT,
       error => {
-        console.warn(error);
+        Alert.alert(error.message);
         setSpeaking(false);
       }
     );
