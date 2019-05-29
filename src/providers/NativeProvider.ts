@@ -1,4 +1,5 @@
-import { Provider, SpeechOptions, Voice } from './BaseProvider';
+import { SpeechOptions, Voice } from '../NativeSpeechModule';
+import { Provider } from './BaseProvider';
 
 /**
  * Native speech synth provider

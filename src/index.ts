@@ -1,14 +1,8 @@
 import { get } from 'lodash';
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeEventEmitter } from 'react-native';
 import striptags from 'striptags';
-import ProviderManager, {
-  NativeSpeechModule,
-  Provider,
-  SpeechOptions,
-  Voice
-} from './providers';
-
-const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;
+import { RNSpeech, SpeechOptions, Voice } from './NativeSpeechModule';
+import ProviderManager, { Provider } from './providers';
 
 /**
  * The interface for the JS class, typically will be used by frontend

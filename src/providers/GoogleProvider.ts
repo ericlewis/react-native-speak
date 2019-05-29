@@ -1,5 +1,6 @@
 import invariant from 'invariant';
-import { Provider, SpeechOptions, Voice } from './BaseProvider';
+import { SpeechOptions, Voice } from '../NativeSpeechModule';
+import { Provider } from './BaseProvider';
 
 export class GoogleProvider extends Provider {
   protected static baseURL = 'https://texttospeech.googleapis.com/v1beta1/';

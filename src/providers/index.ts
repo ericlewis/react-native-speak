@@ -6,11 +6,10 @@ export * from './PollyProvider';
 
 import invariant from 'invariant';
 import { keyBy } from 'lodash';
-import { NativeModules } from 'react-native';
-import { NativeSpeechModule, Provider } from './BaseProvider';
-import { NativeProvider } from './NativeProvider';
 
-const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;
+import { RNSpeech } from '../NativeSpeechModule';
+import { Provider } from './BaseProvider';
+import { NativeProvider } from './NativeProvider';
 
 export default class ProviderManager {
   // the currently selected provider
