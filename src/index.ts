@@ -1,5 +1,6 @@
 import striptags from 'striptags';
-import { NativeProvider, Provider, SpeechOptions, Voice } from './providers';
+import ProviderManager from './ProviderManager';
+import { Provider, SpeechOptions, Voice } from './providers';
 
 /**
  * The interface for the JS class, typically will be used by frontend
@@ -17,39 +18,22 @@ interface SpeechModule {
 }
 
 class Speech implements SpeechModule {
-  public providers: Provider[];
-  public currentProvider: Provider;
+  private providerManager: ProviderManager;
 
   constructor(providers?: Provider[]) {
-    if (providers && providers.length > 0) {
-      // if we are given a list of providers, we will tack the native provider to the end
-      this.providers = [...providers, new NativeProvider(null)];
-    } else {
-      // By default, we always provide the native synth
-      this.providers = [new NativeProvider(null)];
-    }
-
-    // Whatever the first provider is, is the one we choose to use.
-    this.currentProvider = this.providers[0];
+    this.providerManager = new ProviderManager(providers);
   }
 
-  public setCurrentProvider = (newProvider: Provider) => {
-    if (this.currentProvider !== newProvider) {
-      // TODO: hault any current audio first
-      this.currentProvider = newProvider;
-    }
-  };
-
   public getVoices = async () => {
-    return this.currentProvider.getVoices();
+    return this.providerManager.currentProvider.getVoices();
   };
 
   public speak = async (utterance: string, options: SpeechOptions = {}) => {
     try {
-      const provider = this.currentProvider;
+      const provider = this.providerManager.currentProvider;
 
       // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
-      // TODO: this would result in use ignoring the options passed, this should be *documented*
+      // TODO: this would result in us ignoring the options passed, this should be *documented*
       const cleanedUtterance = striptags(utterance);
 
       // see if we need to get some audio content first
@@ -70,7 +54,7 @@ class Speech implements SpeechModule {
         (options.fallbackToNativeSynth === undefined ||
           options.fallbackToNativeSynth === true)
       ) {
-        this.speakFallback(utterance, options);
+        this.fallback(utterance, options);
       } else {
         // bubble the error up instead
         throw error;
@@ -78,10 +62,10 @@ class Speech implements SpeechModule {
     }
   };
 
-  private speakFallback = (utterance: string, options: SpeechOptions) => {
+  private fallback = (utterance: string, options: SpeechOptions) => {
     try {
       // the last provider is always the native synth
-      return this.providers[this.providers.length - 1].playAudioContent(
+      return this.providerManager.nativeProvider.playAudioContent(
         utterance,
         options
       );

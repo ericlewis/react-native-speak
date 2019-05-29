@@ -1,3 +1,4 @@
+import invariant from 'invariant';
 import { NativeModules } from 'react-native';
 
 export interface Voice {
@@ -69,6 +70,49 @@ export abstract class Provider implements ProviderInterface {
    */
   public playAudioContent(content: string, _: SpeechOptions): void {
     return this.native.playAudioContent(content);
+  }
+
+  /**
+   * Convenience method for getting the class name
+   * we use this as a UUID essentially
+   */
+  public getClassName(): string {
+    return this.constructor.name;
+  }
+
+  /**
+   * Check if this provider is the same as the one passed
+   * @param provider
+   */
+  public isEqualToProvider(provider: Provider): boolean {
+    return this.getClassName() === provider.getClassName();
+  }
+
+  /**
+   * VoiceId prefix, used to ensure we aren't accidentally setting voiceId's that can't work with a provider
+   */
+  protected voiceIdSlug(): string {
+    return `${this.constructor.name}:`;
+  }
+
+  /**
+   * Verify the voiceId
+   * @param voiceId
+   */
+  protected isValidVoiceId(voiceId: string): boolean {
+    return voiceId.startsWith(this.voiceIdSlug());
+  }
+
+  /**
+   * String the voiceId slug, also enforces correctness
+   * @param voiceId
+   */
+  protected stripVoiceIdSlug(voiceId: string): string {
+    invariant(
+      this.isValidVoiceId(voiceId),
+      `This slug doesn't belong to this class`
+    );
+    return voiceId.replace(this.voiceIdSlug(), '');
   }
 
   /**

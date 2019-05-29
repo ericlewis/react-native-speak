@@ -1,4 +1,4 @@
-import { Provider, SpeechOptions } from './base';
+import { Provider, SpeechOptions } from './BaseProvider';
 
 /**
  * Native speech synth provider

@@ -17,8 +17,17 @@ import Speech from '../';
 
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState<string | undefined>(undefined);
   const speech = new Speech();
+
+  function speak() {
+    return () => {
+      if (value) {
+        speech.speak(value);
+      }
+    };
+  }
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -33,9 +42,7 @@ const App: React.FunctionComponent<Props> = () => {
           <Button
             title="Say it!"
             disabled={!value || value.length <= 0}
-            onPress={() => {
-              speech.speak(value);
-            }}
+            onPress={speak}
           />
         </View>
       </KeyboardAvoidingView>
