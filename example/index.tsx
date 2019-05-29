@@ -17,10 +17,12 @@ import {
 import Speech, { GoogleProvider, PollyProvider, Voice } from '../src';
 const speech = new Speech([
   new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
-  new PollyProvider(
-    'AKIAJIB47SDUAFNNGQWA',
-    'JGGQebfE+Z7glcvjuUwJOmHPht3vLL2kPIcvzioq'
-  )
+  new PollyProvider({
+    signatureVersion: 'v4',
+    region: 'us-east-1',
+    accessKeyId: 'AKIAJIB47SDUAFNNGQWA',
+    secretAccessKey: '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'
+  })
 ]);
 
 interface Props {}

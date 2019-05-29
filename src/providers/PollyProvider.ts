@@ -5,15 +5,9 @@ import { Provider, SpeechOptions } from './BaseProvider';
 export class PollyProvider extends Provider {
   private polly: Polly;
 
-  constructor(accessKeyId: string, secretAccessKey: string) {
-    super(secretAccessKey);
-
-    this.polly = new Polly({
-      signatureVersion: 'v4',
-      region: 'us-east-1',
-      accessKeyId,
-      secretAccessKey
-    });
+  constructor(config: Polly.ClientConfiguration) {
+    super(null);
+    this.polly = new Polly(config);
   }
 
   public getVoices = async (): Promise<Voice[]> => {
