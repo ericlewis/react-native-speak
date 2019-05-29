@@ -85,9 +85,12 @@ class Speech implements SpeechModule {
           cleanedUtterance,
           options
         );
-        return provider.playAudioContent(content, options);
+        return provider.playAudioContent(content, utterance, options);
+      } else if (provider.speak) {
+        return provider.speak(cleanedUtterance, options);
       } else {
-        return provider.playAudioContent(cleanedUtterance, options);
+        // this provider seems incomplete or broken
+        // we could move to the next one
       }
     } catch (error) {
       // fallback to the native provider if anything goes wrong
@@ -113,10 +116,7 @@ class Speech implements SpeechModule {
 
     // attempt to speak natively
     try {
-      return this.providerManager.nativeProvider.playAudioContent(
-        utterance,
-        options
-      );
+      return this.providerManager.nativeProvider.speak(utterance, options);
     } catch (error) {
       // we are in serious trouble if we got here.
     }

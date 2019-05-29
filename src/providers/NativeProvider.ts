@@ -13,7 +13,7 @@ export class NativeProvider extends Provider {
     }));
   };
 
-  public playAudioContent = (utterance: string, options: SpeechOptions) => {
+  public speak = (utterance: string, options: SpeechOptions) => {
     // TODO: this voiceId stuff is pretty lame, clean it up
     return this.native.speak(utterance, {
       ...options,

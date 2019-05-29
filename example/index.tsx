@@ -101,6 +101,7 @@ const App: React.FunctionComponent<Props> = () => {
             placeholder="Type something to say..."
             onChangeText={setValue}
             value={value}
+            onSubmitEditing={speak}
           />
         </View>
         <Button

@@ -23,6 +23,7 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
    */
   playAudioContent: (
     base64AudioContent: string,
+    utterance: string,
     options: SpeechOptions
   ) => void;
 
@@ -64,7 +65,12 @@ export interface SpeechOptions {
 export interface ProviderInterface {
   getVoices: () => Promise<Voice[]>;
   getAudioContent?: (utterance: string, options: SpeechOptions) => Promise<any>;
-  playAudioContent: (content: string, options: SpeechOptions) => void;
+  playAudioContent: (
+    content: string,
+    utterance: string,
+    options: SpeechOptions
+  ) => void;
+  speak?: (utterance: string, options: SpeechOptions) => void;
 }
 
 export abstract class Provider implements ProviderInterface {
@@ -83,13 +89,19 @@ export abstract class Provider implements ProviderInterface {
     options: SpeechOptions
   ): Promise<any>;
 
+  public speak?(utterance: string, options: SpeechOptions): void;
+
   /**
    * Plays a base64 encoded string on the native platform
    * @param content base64 encoded string
    * @param options
    */
-  public playAudioContent(content: string, options: SpeechOptions): void {
-    return this.native.playAudioContent(content, options);
+  public playAudioContent(
+    content: string,
+    utterance: string,
+    options: SpeechOptions
+  ): void {
+    return this.native.playAudioContent(content, utterance, options);
   }
 
   /**
