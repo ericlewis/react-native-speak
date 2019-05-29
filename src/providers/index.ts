@@ -28,8 +28,8 @@ export default class ProviderManager {
       provider => provider.getClassName()
     );
 
-    // Whatever the first provider is, is the one we choose to use.
     if (providerToUse) {
+      // TODO: we probably don't want to error out, we should fallback to avail
       invariant(
         this.hasProvider(providerToUse),
         'Default provider not found in providers'
@@ -40,6 +40,10 @@ export default class ProviderManager {
       this.currentProvider = defaultProvider
         ? this.getProviderForName(defaultProvider)
         : Object.values(this.providers)[0];
+
+      if (!defaultProvider) {
+        RNSpeech.saveProviderAsDefault(this.currentProvider.getClassName());
+      }
     }
   }
 
