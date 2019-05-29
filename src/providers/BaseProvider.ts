@@ -12,6 +12,7 @@ export interface Voice {
 export interface NativeSpeechModule extends EventSubscriptionVendor {
   getConstants: () => {
     events: {
+      SPEECH_LOADING_EVENT: string;
       SPEECH_START_EVENT: string;
       SPEECH_END_EVENT: string;
       SPEECH_ERROR_EVENT: string;

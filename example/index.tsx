@@ -45,6 +45,13 @@ const App: React.FunctionComponent<Props> = () => {
   }
 
   useEffect(() => {
+    const speechLoadingListener = speech.events.addListener(
+      speech.constants.events.SPEECH_LOADING_EVENT,
+      () => {
+        setSpeaking(true);
+      }
+    );
+
     const speechStartListener = speech.events.addListener(
       speech.constants.events.SPEECH_START_EVENT,
       () => {
@@ -59,9 +66,19 @@ const App: React.FunctionComponent<Props> = () => {
       }
     );
 
+    const speechErrorListener = speech.events.addListener(
+      speech.constants.events.SPEECH_ERROR_EVENT,
+      error => {
+        console.warn(error);
+        setSpeaking(false);
+      }
+    );
+
     return () => {
+      speechLoadingListener.remove();
       speechStartListener.remove();
       speechEndListener.remove();
+      speechErrorListener.remove();
     };
   });
 

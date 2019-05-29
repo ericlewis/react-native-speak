@@ -22,6 +22,7 @@
 
 RCT_EXPORT_MODULE();
 
+static NSString *SPEECH_LOADING_EVENT = @"SpeechLoading";
 static NSString *SPEECH_START_EVENT = @"SpeechStart";
 static NSString *SPEECH_END_EVENT = @"SpeechEnd";
 static NSString *SPEECH_ERROR_EVENT = @"SpeechError";
@@ -38,6 +39,7 @@ static NSString *SPEECH_ERROR_EVENT = @"SpeechError";
 - (NSDictionary *)getConstants {
   return @{
            @"events": @{
+             @"SPEECH_LOADING_EVENT" : SPEECH_LOADING_EVENT,
              @"SPEECH_START_EVENT" : SPEECH_START_EVENT,
              @"SPEECH_END_EVENT"   : SPEECH_END_EVENT,
              @"SPEECH_ERROR_EVENT" : SPEECH_ERROR_EVENT
@@ -47,7 +49,7 @@ static NSString *SPEECH_ERROR_EVENT = @"SpeechError";
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"SpeechStart", @"SpeechEnd", @"SpeechError"];
+  return [[[self getConstants] valueForKey:@"events"] allValues];
 }
 
 RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve

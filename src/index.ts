@@ -81,6 +81,7 @@ class Speech implements SpeechModule {
       // see if we need to get some audio content first
       // if we don't that means we should just try to play the utterance
       if (provider.getAudioContent) {
+        this.events.emit(this.constants.events.SPEECH_LOADING_EVENT);
         const content = await provider.getAudioContent(
           cleanedUtterance,
           options
