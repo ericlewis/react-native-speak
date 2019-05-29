@@ -6,8 +6,11 @@ export * from './PollyProvider';
 
 import invariant from 'invariant';
 import { keyBy } from 'lodash';
-import { Provider } from './BaseProvider';
+import { NativeModules } from 'react-native';
+import { NativeSpeechModule, Provider } from './BaseProvider';
 import { NativeProvider } from './NativeProvider';
+
+const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;
 
 export default class ProviderManager {
   // the currently selected provider
@@ -18,7 +21,7 @@ export default class ProviderManager {
 
   private providers: { [key: string]: Provider };
 
-  constructor(providers?: Provider[]) {
+  constructor(providers?: Provider[], providerToUse?: string) {
     // this automatically dedupes.
     this.providers = keyBy(
       providers ? [...providers, this.nativeProvider] : [this.nativeProvider],
@@ -26,18 +29,33 @@ export default class ProviderManager {
     );
 
     // Whatever the first provider is, is the one we choose to use.
-    // TODO: allow manual default setup when creating / use persisted default
-    this.currentProvider = Object.values(this.providers)[0];
+    if (providerToUse) {
+      invariant(
+        this.hasProvider(providerToUse),
+        'Default provider not found in providers'
+      );
+      this.currentProvider = this.getProviderForName(providerToUse);
+    } else {
+      const defaultProvider = RNSpeech.getConstants().provider;
+      this.currentProvider = defaultProvider
+        ? this.getProviderForName(defaultProvider)
+        : Object.values(this.providers)[0];
+    }
   }
 
   /**
-   * Change the active provider
+   * Change the active provider, optionally set to default too.
    */
-  public setCurrentProvider = (providerName: string) => {
+  public setCurrentProvider = (providerName: string, setDefault = true) => {
     const provider = this.getProviderForName(providerName);
+
+    // TODO: this may not be very efficient, we should check if this has to happen first
+    if (setDefault) {
+      RNSpeech.saveProviderAsDefault(providerName);
+    }
+
     // only update the current provider if they aren't matching
     if (!this.currentProvider.isEqualToProvider(provider)) {
-      // TODO: we should probably remember this permanently
       this.currentProvider = provider;
     }
   };
@@ -75,8 +93,14 @@ export default class ProviderManager {
    * Check if we are managing a particular provider
    * @param provider
    */
-  public hasProvider(provider: Provider): boolean {
-    return Boolean(this.providers[provider.getClassName()]);
+  public hasProvider(provider?: Provider | string): boolean {
+    if (!provider) {
+      return false;
+    }
+
+    return typeof provider === 'string'
+      ? Boolean(this.providers[provider])
+      : Boolean(this.providers[provider.getClassName()]);
   }
 
   /**

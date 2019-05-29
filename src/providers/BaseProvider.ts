@@ -17,6 +17,7 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
       SPEECH_END_EVENT: string;
       SPEECH_ERROR_EVENT: string;
     };
+    provider?: string
   };
   /**
    * Play LINEAR16 audio encoded in base64
@@ -36,6 +37,11 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
    * Get the native voices.
    */
   getVoices: () => Promise<Voice[]>;
+
+  /**
+   * Persists the provider, will be used at next launch
+   */
+  saveProviderAsDefault: (name: string) => void;
 }
 
 export interface SpeechOptions {
