@@ -1,12 +1,22 @@
 import { get } from 'lodash';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 import striptags from 'striptags';
 import ProviderManager from './ProviderManager';
-import { Provider, SpeechOptions, Voice } from './providers';
+import {
+  NativeSpeechModule,
+  Provider,
+  SpeechOptions,
+  Voice
+} from './providers';
+
+const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;
 
 /**
  * The interface for the JS class, typically will be used by frontend
  */
 interface SpeechModule {
+  events: NativeEventEmitter;
+
   /**
    * Returns a list of voices from the Google API
    */
@@ -19,10 +29,15 @@ interface SpeechModule {
 }
 
 class Speech implements SpeechModule {
+  public events = new NativeEventEmitter(RNSpeech);
   private providerManager: ProviderManager;
 
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
+  }
+
+  get constants() {
+    return RNSpeech.getConstants();
   }
 
   public setCurrentProvider(name: string) {

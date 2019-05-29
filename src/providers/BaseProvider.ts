@@ -1,5 +1,5 @@
 import invariant from 'invariant';
-import { NativeModules } from 'react-native';
+import { EventSubscriptionVendor, NativeModules } from 'react-native';
 
 export interface Voice {
   id: string;
@@ -9,7 +9,14 @@ export interface Voice {
 /**
  * The interface for interacting with the native side of things
  */
-export interface NativeSpeechModule {
+export interface NativeSpeechModule extends EventSubscriptionVendor {
+  getConstants: () => {
+    events: {
+      SPEECH_START_EVENT: string;
+      SPEECH_END_EVENT: string;
+      SPEECH_ERROR_EVENT: string;
+    };
+  };
   /**
    * Play LINEAR16 audio encoded in base64
    */

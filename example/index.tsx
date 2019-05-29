@@ -32,6 +32,8 @@ const App: React.FunctionComponent<Props> = () => {
   const [selectedVoice, setSelectedVoice] = useState<string | undefined>(
     undefined
   );
+  const [isSpeaking, setSpeaking] = useState(false);
+
   const [selectedProvider, setSelectedProvider] = useState(
     speech.getCurrentProvider()
   );
@@ -41,6 +43,27 @@ const App: React.FunctionComponent<Props> = () => {
       speech.speak(value, { voiceId: selectedVoice });
     }
   }
+
+  useEffect(() => {
+    const speechStartListener = speech.events.addListener(
+      speech.constants.events.SPEECH_START_EVENT,
+      () => {
+        setSpeaking(true);
+      }
+    );
+
+    const speechEndListener = speech.events.addListener(
+      speech.constants.events.SPEECH_END_EVENT,
+      () => {
+        setSpeaking(false);
+      }
+    );
+
+    return () => {
+      speechStartListener.remove();
+      speechEndListener.remove();
+    };
+  });
 
   useEffect(() => {
     async function setup() {
@@ -64,8 +87,8 @@ const App: React.FunctionComponent<Props> = () => {
           />
         </View>
         <Button
-          title="Say it!"
-          disabled={!value || value.length <= 0}
+          title={isSpeaking ? 'Speaking...' : 'Say it!'}
+          disabled={!value || value.length <= 0 || isSpeaking}
           onPress={speak}
         />
         <Picker
