@@ -28,7 +28,7 @@ export class PollyProvider extends Provider {
       this.polly.synthesizeSpeech(
         {
           Text,
-          OutputFormat: 'mp3',
+          OutputFormat: options.codec || 'mp3',
           TextType: 'ssml',
           VoiceId: options.voiceId
             ? this.stripVoiceIdSlug(options.voiceId)

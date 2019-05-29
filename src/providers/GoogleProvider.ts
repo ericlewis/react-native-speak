@@ -40,7 +40,7 @@ export class GoogleProvider extends Provider {
           languageCode: 'en-US'
         },
         audioConfig: {
-          audioEncoding: 'LINEAR16'
+          audioEncoding: options.codec || 'mp3'
         }
       }),
       headers: {

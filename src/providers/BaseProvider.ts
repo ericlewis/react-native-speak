@@ -46,6 +46,11 @@ export interface SpeechOptions {
   // Should lower audio when talking
   // default is `true`
   ducking?: boolean;
+
+  // The codec to retrieve
+  // currently only supports mp3 cross providers
+  // providers would need to transform this in some cases.
+  codec?: 'mp3';
 }
 
 export interface ProviderInterface {
