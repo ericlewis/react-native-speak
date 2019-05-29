@@ -26,17 +26,20 @@ export default class ProviderManager {
   /**
    * Change the active provider
    */
-  public setCurrentProvider = (newProvider: Provider) => {
-    invariant(
-      this.hasProvider(newProvider),
-      'Provider not managed, please add the provider first.'
-    );
-
+  public setCurrentProvider = (providerName: string) => {
+    const provider = this.getProviderForName(providerName);
     // only update the current provider if they aren't matching
-    if (!this.currentProvider.isEqualToProvider(newProvider)) {
-      this.currentProvider = newProvider;
+    if (this.currentProvider.isEqualToProvider(provider)) {
+      this.currentProvider = provider;
     }
   };
+
+  /**
+   * Returns a list of all the provider class names
+   */
+  public getProviderNames(): string[] {
+    return Object.keys(this.providers);
+  }
 
   /**
    * Register a new provider
@@ -66,5 +69,15 @@ export default class ProviderManager {
    */
   public hasProvider(provider: Provider): boolean {
     return Boolean(this.providers[provider.getClassName()]);
+  }
+
+  /**
+   * Returns a provider for a given (class) name
+   * @param name
+   */
+  public getProviderForName(name: string): Provider {
+    const provider = this.providers[name];
+    invariant(provider, 'Provider not found, please add the provider first.');
+    return provider;
   }
 }

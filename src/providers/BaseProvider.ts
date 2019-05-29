@@ -42,7 +42,7 @@ export interface SpeechOptions {
 }
 
 export interface ProviderInterface {
-  getVoices: () => Promise<any>;
+  getVoices: () => Promise<Voice[]>;
   getAudioContent?: (utterance: string, options: SpeechOptions) => Promise<any>;
   playAudioContent: (content: string, options: SpeechOptions) => void;
 }
@@ -89,10 +89,32 @@ export abstract class Provider implements ProviderInterface {
   }
 
   /**
+   * Check if the options are compatible with the provider
+   * Mostly a precheck to ensure that we have no problems with voiceId
+   */
+  public optionsCompatible(options: SpeechOptions) {
+    const voiceId = options.voiceId;
+    if (voiceId) {
+      invariant(
+        this.isValidVoiceId(voiceId),
+        'VoiceId belongs to a different provider'
+      );
+    }
+  }
+
+  /**
    * VoiceId prefix, used to ensure we aren't accidentally setting voiceId's that can't work with a provider
    */
-  protected voiceIdSlug(): string {
-    return `${this.constructor.name}:`;
+  protected getVoiceIdSlug(): string {
+    return `${this.getClassName()}:`;
+  }
+
+  /**
+   * Adds slug to voiceId, ignores if the slug has already been added
+   */
+  protected sluggifyVoiceId(voiceId: string): string {
+    const slug = this.getClassName();
+    return voiceId.startsWith(slug) ? voiceId : `${slug}:${voiceId}`;
   }
 
   /**
@@ -100,7 +122,7 @@ export abstract class Provider implements ProviderInterface {
    * @param voiceId
    */
   protected isValidVoiceId(voiceId: string): boolean {
-    return voiceId.startsWith(this.voiceIdSlug());
+    return voiceId.startsWith(this.getVoiceIdSlug());
   }
 
   /**
@@ -108,11 +130,8 @@ export abstract class Provider implements ProviderInterface {
    * @param voiceId
    */
   protected stripVoiceIdSlug(voiceId: string): string {
-    invariant(
-      this.isValidVoiceId(voiceId),
-      `This slug doesn't belong to this class`
-    );
-    return voiceId.replace(this.voiceIdSlug(), '');
+    invariant(this.isValidVoiceId(voiceId), `Slug doesn't belong to provider`);
+    return voiceId.replace(this.getVoiceIdSlug(), '');
   }
 
   /**

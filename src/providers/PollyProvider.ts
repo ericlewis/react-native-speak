@@ -1,5 +1,6 @@
 import Polly from 'aws-sdk/clients/polly';
-import { Provider, SpeechOptions } from './base';
+import { Voice } from '../../build/main';
+import { Provider, SpeechOptions } from './BaseProvider';
 
 export class PollyProvider extends Provider {
   private polly: Polly;
@@ -15,8 +16,9 @@ export class PollyProvider extends Provider {
     });
   }
 
-  public getVoices = async (): Promise<any> => {
-    return this.polly.describeVoices();
+  public getVoices = async (): Promise<Voice[]> => {
+    // TODO: this.polly.describeVoices()
+    return [];
   };
 
   public getAudioContent = async (

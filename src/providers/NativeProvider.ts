@@ -1,15 +1,25 @@
-import { Provider, SpeechOptions } from './BaseProvider';
+import { Provider, SpeechOptions, Voice } from './BaseProvider';
 
 /**
  * Native speech synth provider
  * It is the simplest provider, with no audioContent
  */
 export class NativeProvider extends Provider {
-  public getVoices = async () => {
-    return this.native.getVoices();
+  public getVoices = async (): Promise<Voice[]> => {
+    const voices = await this.native.getVoices();
+    return voices.map(({ name, id }) => ({
+      id: this.sluggifyVoiceId(id),
+      name
+    }));
   };
 
   public playAudioContent = (utterance: string, options: SpeechOptions) => {
-    return this.native.speak(utterance, options);
+    // TODO: this voiceId stuff is pretty lame, clean it up
+    return this.native.speak(utterance, {
+      ...options,
+      voiceId: options.voiceId
+        ? this.stripVoiceIdSlug(options.voiceId)
+        : undefined
+    });
   };
 }

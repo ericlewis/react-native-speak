@@ -1,33 +1,32 @@
-import { Provider, SpeechOptions } from './base';
+import invariant from 'invariant';
+import { Provider, SpeechOptions, Voice } from './BaseProvider';
 
 export class GoogleProvider extends Provider {
   protected static baseURL = 'https://texttospeech.googleapis.com/v1beta1/';
 
-  public getVoices = async (): Promise<any> => {
-    // TODO: use invariant or asserts
-    if (this.accessToken === null) {
-      throw new Error('No access token provided');
-    }
+  public getVoices = async (): Promise<Voice[]> => {
+    invariant(this.accessToken, 'No access token provided');
 
     const res = await fetch(this.getBaseURL('voices?languageCode=en-US'), {
       headers: {
-        'X-Goog-Api-Key': this.accessToken
+        'X-Goog-Api-Key': this.accessToken!
       }
     });
-    return res.json();
+
+    const { voices }: { voices: Array<{ name: string }> } = await res.json();
+    return voices.map(({ name }) => ({
+      id: this.sluggifyVoiceId(name),
+      name
+    }));
   };
 
   public getAudioContent = async (
     utterance: string,
     options: SpeechOptions
   ) => {
-    // TODO: use invariant or asserts
-    if (this.accessToken === null) {
-      throw new Error('No access token provided');
-    }
+    invariant(this.accessToken, 'No access token provided');
 
     const ssml = this.getSSML(utterance, options);
-
     const raw = await fetch(this.getBaseURL('text:synthesize'), {
       method: 'POST',
       body: JSON.stringify({
@@ -35,7 +34,9 @@ export class GoogleProvider extends Provider {
           ssml
         },
         voice: {
-          ...(options.voiceId ? { name: options.voiceId } : {}),
+          ...(options.voiceId
+            ? { name: this.stripVoiceIdSlug(options.voiceId) }
+            : {}),
           languageCode: 'en-US'
         },
         audioConfig: {
@@ -43,10 +44,11 @@ export class GoogleProvider extends Provider {
         }
       }),
       headers: {
-        'X-Goog-Api-Key': this.accessToken
+        'X-Goog-Api-Key': this.accessToken!
       }
     });
-    const result: { audioContent: string } = await raw.json();
-    return result.audioContent;
+
+    const { audioContent }: { audioContent: string } = await raw.json();
+    return audioContent;
   };
 }

@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import striptags from 'striptags';
 import ProviderManager from './ProviderManager';
 import { Provider, SpeechOptions, Voice } from './providers';
@@ -24,17 +25,43 @@ class Speech implements SpeechModule {
     this.providerManager = new ProviderManager(providers);
   }
 
+  public setCurrentProvider(name: string) {
+    this.providerManager.setCurrentProvider(name);
+  }
+
+  public getCurrentProvider(): string {
+    return this.providerManager.currentProvider.getClassName();
+  }
+
+  public getProviders(): string[] {
+    return this.providerManager.getProviderNames();
+  }
+
   public getVoices = async () => {
     return this.providerManager.currentProvider.getVoices();
   };
 
-  public speak = async (utterance: string, options: SpeechOptions = {}) => {
-    try {
-      const provider = this.providerManager.currentProvider;
+  public getVoicesForProvider = async (name: string) => {
+    return this.providerManager.getProviderForName(name).getVoices();
+  };
 
+  public speak = async (utterance: string, options: SpeechOptions = {}) => {
+    const currentProvider = this.providerManager.currentProvider;
+    return this.speakWithProvider(currentProvider, utterance, options);
+  };
+
+  public speakWithProvider = async (
+    provider: Provider,
+    utterance: string,
+    options: SpeechOptions
+  ) => {
+    try {
       // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
       // TODO: this would result in us ignoring the options passed, this should be *documented*
       const cleanedUtterance = striptags(utterance);
+
+      // check option compatibility, will throw if there is any problem
+      provider.optionsCompatible(options);
 
       // see if we need to get some audio content first
       // if we don't that means we should just try to play the utterance
@@ -49,12 +76,9 @@ class Speech implements SpeechModule {
       }
     } catch (error) {
       // fallback to the native provider if anything goes wrong
-      if (
-        options.fallbackToNativeSynth &&
-        (options.fallbackToNativeSynth === undefined ||
-          options.fallbackToNativeSynth === true)
-      ) {
-        this.fallback(utterance, options);
+      // default is true
+      if (get(options, 'fallbackToNativeSynth', true)) {
+        this.fallback(error, utterance, options);
       } else {
         // bubble the error up instead
         throw error;
@@ -62,9 +86,18 @@ class Speech implements SpeechModule {
     }
   };
 
-  private fallback = (utterance: string, options: SpeechOptions) => {
+  private fallback = (
+    originalError: Error,
+    utterance: string,
+    options: SpeechOptions
+  ) => {
+    // log the OG error
+    if (__DEV__) {
+      console.warn(originalError);
+    }
+
+    // attempt to speak natively
     try {
-      // the last provider is always the native synth
       return this.providerManager.nativeProvider.playAudioContent(
         utterance,
         options

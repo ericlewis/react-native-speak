@@ -57,6 +57,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 {
   [self setupSynth];
   
+  
   // TODO: dry me
   NSError *error;
   AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -67,7 +68,14 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
     return;
   }
   
-  [synth_ speakUtterance:[[AVSpeechUtterance alloc] initWithString:utterance]];
+  AVSpeechUtterance *synthUtterance = [[AVSpeechUtterance alloc] initWithString:utterance];
+  
+  NSString *voiceID = options[@"voiceId"];
+  if (voiceID) {
+    [synthUtterance setVoice:[AVSpeechSynthesisVoice voiceWithIdentifier:voiceID]];
+  }
+  
+  [synth_ speakUtterance:synthUtterance];
 }
 
 RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
