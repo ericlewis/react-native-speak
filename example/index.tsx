@@ -96,6 +96,7 @@ function registerSpeechListeners() {
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
   const textInput = useInput();
+
   const voicePicker = usePicker(undefined);
   const providerPicker = usePicker(speech.getCurrentProvider());
 

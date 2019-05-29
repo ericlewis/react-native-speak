@@ -113,7 +113,10 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
   // TODO: set from options
-  self->player_.volume = 1.0;
+  NSNumber *volume = options[@"volume"];
+  if (volume) {
+    self->player_.volume = [volume floatValue];
+  }
   
   self->player_.delegate = self;
   
@@ -153,8 +156,17 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   
   AVSpeechUtterance *synthUtterance = [[AVSpeechUtterance alloc] initWithString:utterance];
   
-  // TODO: set from options
-  synthUtterance.volume = 1.0;
+  NSNumber *volume = options[@"volume"];
+  if (volume) {
+    // TODO: check the min/max, i think these values aren't just 0-1
+    synthUtterance.volume = [volume floatValue];
+  }
+  
+  NSNumber *speakingRate = options[@"speakingRate"];
+  if (speakingRate) {
+    synthUtterance.rate = [speakingRate floatValue] / 2.0;
+  }
+
   
   NSString *voiceID = options[@"voiceId"];
   
