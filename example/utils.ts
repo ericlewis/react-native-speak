@@ -12,8 +12,8 @@ export function usePicker<T>(initialState: T) {
 
 export function useSlider(
   initialState: number,
-  minimumValue = 0.0,
-  maximumValue = 1.0
+  maximumValue = 1.0,
+  minimumValue = 0.0
 ) {
   const [value, setValue] = useState(initialState);
   return {

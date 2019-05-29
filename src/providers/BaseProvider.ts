@@ -48,7 +48,7 @@ export interface SpeechOptions {
   // UUID for the Voice we want to use
   voiceId?: string;
 
-  // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
+  // Default is 1.0. 2.0 is the fastest, 0.1 is the slowest.
   speakingRate?: number;
 
   // Default is 0.5. 1.0 is the fastest, 0.0 is the slowest.
@@ -134,11 +134,18 @@ export abstract class Provider implements ProviderInterface {
    * Mostly a precheck to ensure that we have no problems with voiceId
    */
   public optionsCompatible(options: SpeechOptions) {
-    const voiceId = options.voiceId;
+    const { voiceId, speakingRate } = options;
     if (voiceId) {
       invariant(
         this.isValidVoiceId(voiceId),
         'VoiceId belongs to a different provider'
+      );
+    }
+
+    if (speakingRate) {
+      invariant(
+        speakingRate <= 2.0 || speakingRate >= 0.1,
+        'Speaking rate must be between 0.1 & 2.0'
       );
     }
   }

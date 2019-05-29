@@ -48,34 +48,37 @@ function fetchVoices(providerPicker: any, voicePicker: any) {
   return voices;
 }
 
-function registerSpeechListeners(setActive: (active: boolean) => void) {
+function registerSpeechListeners() {
+  const [state, setState] = useState<{ active: boolean; error?: Error }>({
+    active: false
+  });
+
   useEffect(() => {
     const speechLoadingListener = speech.events.addListener(
       speech.constants.events.SPEECH_LOADING_EVENT,
       () => {
-        setActive(true);
+        setState({ active: true });
       }
     );
 
     const speechStartListener = speech.events.addListener(
       speech.constants.events.SPEECH_START_EVENT,
       () => {
-        setActive(true);
+        setState({ active: true });
       }
     );
 
     const speechEndListener = speech.events.addListener(
       speech.constants.events.SPEECH_END_EVENT,
       () => {
-        setActive(false);
+        setState({ active: false });
       }
     );
 
     const speechErrorListener = speech.events.addListener(
       speech.constants.events.SPEECH_ERROR_EVENT,
       error => {
-        Alert.alert(error.message);
-        setActive(false);
+        setState({ active: false, error });
       }
     );
 
@@ -86,26 +89,34 @@ function registerSpeechListeners(setActive: (active: boolean) => void) {
       speechErrorListener.remove();
     };
   });
+
+  return state;
 }
 
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
-  const [isSpeaking, setSpeaking] = useState(false);
-
   const textInput = useInput();
   const voicePicker = usePicker(undefined);
   const providerPicker = usePicker(speech.getCurrentProvider());
-  const speakingRateSlider = useSlider(1.0);
+
+  const speakingRateSlider = useSlider(1.0, 2.0, 0.1);
+  const volumeSlider = useSlider(1.0);
+
   const voices = fetchVoices(providerPicker, voicePicker);
 
-  registerSpeechListeners(setSpeaking);
+  const { active, error } = registerSpeechListeners();
+
+  if (error) {
+    Alert.alert(error.message);
+  }
 
   function speak() {
     const text = textInput.value;
     if (text) {
       speech.speak(text, {
         voiceId: voicePicker.selectedValue,
-        speakingRate: speakingRateSlider.value
+        speakingRate: speakingRateSlider.value,
+        volume: volumeSlider.value
       });
     }
   }
@@ -121,13 +132,12 @@ const App: React.FunctionComponent<Props> = () => {
           />
         </View>
         <Button
-          title={isSpeaking ? 'Speaking...' : 'Say it!'}
-          disabled={
-            !textInput.value || textInput.value.length <= 0 || isSpeaking
-          }
+          title={active ? 'Speaking...' : 'Say it!'}
+          disabled={!textInput.value || textInput.value.length <= 0 || active}
           onPress={speak}
         />
         <Slider {...speakingRateSlider} />
+        <Slider {...volumeSlider} />
         <Picker {...providerPicker}>
           {speech.getProviders().map(provider => {
             return (
