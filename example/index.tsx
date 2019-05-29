@@ -18,6 +18,7 @@ import {
 // in your own application this would be: `import Speech from 'react-native-speech';`
 import Speech, { GoogleProvider, PollyProvider, Voice } from '../src';
 import { useInput, usePicker, useSlider } from './utils';
+
 const speech = new Speech([
   new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
   new PollyProvider({
@@ -27,71 +28,6 @@ const speech = new Speech([
     secretAccessKey: 'JGGQebfE+Z7glcvjuUwJOmHPht3vLL2kPIcvzioq'
   })
 ]);
-
-function fetchVoices(providerPicker: any, voicePicker: any) {
-  const provider = providerPicker.selectedValue;
-  const [voices, setVoices] = useState<Voice[]>([]);
-  useEffect(() => {
-    async function setup() {
-      if (provider) {
-        speech.setCurrentProvider(provider);
-      }
-
-      const res = await speech.getVoices();
-      setVoices(res);
-      voicePicker.onValueChange(res[0].id);
-    }
-
-    setup();
-  }, [provider]);
-
-  return voices;
-}
-
-function registerSpeechListeners() {
-  const [state, setState] = useState<{ active: boolean; error?: Error }>({
-    active: false
-  });
-
-  useEffect(() => {
-    const speechLoadingListener = speech.events.addListener(
-      speech.constants.events.SPEECH_LOADING_EVENT,
-      () => {
-        setState({ active: true });
-      }
-    );
-
-    const speechStartListener = speech.events.addListener(
-      speech.constants.events.SPEECH_START_EVENT,
-      () => {
-        setState({ active: true });
-      }
-    );
-
-    const speechEndListener = speech.events.addListener(
-      speech.constants.events.SPEECH_END_EVENT,
-      () => {
-        setState({ active: false });
-      }
-    );
-
-    const speechErrorListener = speech.events.addListener(
-      speech.constants.events.SPEECH_ERROR_EVENT,
-      error => {
-        setState({ active: false, error });
-      }
-    );
-
-    return () => {
-      speechLoadingListener.remove();
-      speechStartListener.remove();
-      speechEndListener.remove();
-      speechErrorListener.remove();
-    };
-  });
-
-  return state;
-}
 
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
@@ -159,6 +95,71 @@ const App: React.FunctionComponent<Props> = () => {
     </View>
   );
 };
+
+function fetchVoices(providerPicker: any, voicePicker: any) {
+  const provider = providerPicker.selectedValue;
+  const [voices, setVoices] = useState<Voice[]>([]);
+  useEffect(() => {
+    async function setup() {
+      if (provider) {
+        speech.setCurrentProvider(provider);
+      }
+
+      const res = await speech.getVoices();
+      setVoices(res);
+      voicePicker.onValueChange(res[0].id);
+    }
+
+    setup();
+  }, [provider]);
+
+  return voices;
+}
+
+function registerSpeechListeners() {
+  const [state, setState] = useState<{ active: boolean; error?: Error }>({
+    active: false
+  });
+
+  useEffect(() => {
+    const speechLoadingListener = speech.events.addListener(
+      speech.constants.events.SPEECH_LOADING_EVENT,
+      () => {
+        setState({ active: true });
+      }
+    );
+
+    const speechStartListener = speech.events.addListener(
+      speech.constants.events.SPEECH_START_EVENT,
+      () => {
+        setState({ active: true });
+      }
+    );
+
+    const speechEndListener = speech.events.addListener(
+      speech.constants.events.SPEECH_END_EVENT,
+      () => {
+        setState({ active: false });
+      }
+    );
+
+    const speechErrorListener = speech.events.addListener(
+      speech.constants.events.SPEECH_ERROR_EVENT,
+      error => {
+        setState({ active: false, error });
+      }
+    );
+
+    return () => {
+      speechLoadingListener.remove();
+      speechStartListener.remove();
+      speechEndListener.remove();
+      speechErrorListener.remove();
+    };
+  });
+
+  return state;
+}
 
 const styles = StyleSheet.create({
   container: {
