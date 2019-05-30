@@ -18,19 +18,9 @@ import {
   View
 } from 'react-native';
 
-// in your own application this would be: `import Speech from 'react-native-speech';`
-import Speech, { GoogleProvider, PollyProvider, Voice } from '../src';
+import { Voice } from '../src';
+import { speech } from './module';
 import { useInput, usePicker, useSlider } from './utils';
-
-const speech = new Speech([
-  new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
-  new PollyProvider({
-    signatureVersion: 'v4',
-    region: 'us-east-1',
-    accessKeyId: 'AKIAJIB47SDUAFNNGQWA',
-    secretAccessKey: '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'
-  })
-]);
 
 interface Props {}
 const App: React.FunctionComponent<Props> = () => {
