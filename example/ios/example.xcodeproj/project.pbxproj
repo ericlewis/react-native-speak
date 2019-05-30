@@ -355,8 +355,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				686924FF229F191400B4B621 /* libRNCSlider.a in Frameworks */,
 				6807A691229DEE5F0079771D /* libReact.a in Frameworks */,
+				686924FF229F191400B4B621 /* libRNCSlider.a in Frameworks */,
 				6807A690229DE88D0079771D /* libRNSpeech.a in Frameworks */,
 				6807A656229DDE140079771D /* libRCTActionSheet.a in Frameworks */,
 				6807A655229DDE0D0079771D /* libRCTAnimation.a in Frameworks */,
