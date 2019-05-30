@@ -216,14 +216,16 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   // TODO:
   // may need to set active on diff thread (or possibly don't even need to do it)
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setActive:NO error:nil];
+  [session setActive:NO
+         withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation
+               error:nil];
 }
 
 - (void)resetAudioSession
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryAmbient
-           withOptions:AVAudioSessionCategoryOptionDuckOthers
+  [session setCategory:AVAudioSessionCategoryPlayback
+           withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers
                  error:nil];
 }
 
