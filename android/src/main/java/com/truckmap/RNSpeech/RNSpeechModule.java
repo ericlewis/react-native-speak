@@ -8,6 +8,8 @@
 
 package com.truckmap.RNSpeech;
 
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -45,10 +47,12 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private TextToSpeech tts;
 
     private AudioManager audioManager;
+    private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
         audioManager = (AudioManager) reactContext.getApplicationContext().getSystemService(reactContext.AUDIO_SERVICE);
 
         tts = new TextToSpeech(getReactApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -165,14 +169,28 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         promise.resolve(null);
     }
 
-    private void duckAudio() {
-        int result = audioManager.requestAudioFocus(afChangeListener,
-                                                        AudioManager.STREAM_MUSIC,
-                                                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+    private Boolean duckAudio() {
+        int duckType = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK;
 
-        if(result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // DO SOMETHING! like throw an error or swallow it
-            return;
+        if (Build.VERSION.SDK_INT >= 26) {
+            AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build();
+            mAudioFocusRequest = new AudioFocusRequest.Builder(duckType)
+                .setAudioAttributes(mPlaybackAttributes)
+                .setAcceptsDelayedFocusGain(true)
+                .setOnAudioFocusChangeListener(afChangeListener)
+                .build();
+
+            int result = audioManager.requestAudioFocus(mAudioFocusRequest);
+            return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+        } else {
+            int result = audioManager.requestAudioFocus(afChangeListener,
+                                                            AudioManager.STREAM_MUSIC,
+                                                            duckType);
+
+            return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
         }
     }
 
@@ -185,7 +203,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         {
             case SPEECH_END_EVENT:
             case SPEECH_ERROR_EVENT:
-                audioManager.abandonAudioFocus(afChangeListener);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
+                } else {
+                    audioManager.abandonAudioFocus(afChangeListener);
+                }
                 break;
             default:
                 // do nothing
