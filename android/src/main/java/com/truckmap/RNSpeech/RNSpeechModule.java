@@ -12,14 +12,19 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.Voice;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -37,11 +42,38 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_END_EVENT = "SPEECH_END_EVENT";
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
 
-    private ReactApplicationContext mReactContext;
+    private TextToSpeech tts;
+
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.mReactContext = reactContext;
+        audioManager = (AudioManager) reactContext.getApplicationContext().getSystemService(reactContext.AUDIO_SERVICE);
+
+        tts = new TextToSpeech(getReactApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                // we have init'd let do somethin with it.
+            }
+        });
+
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                sendEvent(SPEECH_START_EVENT, null);
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+                sendEvent(SPEECH_END_EVENT, null);
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+                sendEvent(SPEECH_ERROR_EVENT, null);
+            }
+        });
     }
 
     @Override
@@ -70,11 +102,12 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void playAudioContent(String base64AudioContent, String utterance, ReadableMap options) {
+        // TODO: handle options, utteranceId's should map to a map so we can report our events better
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
         int intSize = AudioTrack.getMinBufferSize(16000, 
                                                 AudioFormat.CHANNEL_OUT_MONO, 
                                                 AudioFormat.ENCODING_PCM_16BIT);
-        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 
+        AudioTrack at = new AudioTrack(audioManager.STREAM_MUSIC, 
                                     16000, 
                                     AudioFormat.CHANNEL_OUT_MONO, 
                                     AudioFormat.ENCODING_PCM_16BIT, 
@@ -94,24 +127,72 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void speak(String utterance, ReadableMap options) {
-        sendEvent(SPEECH_START_EVENT, null);
-        sendEvent(SPEECH_END_EVENT, null);
+        // TODO: handle options, utteranceId's should map to a map so we can report our events better
+        String utteranceId = Integer.toString(utterance.hashCode());
+        tts.speak(utterance, TextToSpeech.QUEUE_ADD, null, utteranceId);
     }
 
     @ReactMethod
     public void getVoices(Promise promise) {
-        promise.resolve(null);
+        WritableArray voiceArray = Arguments.createArray();
+
+        // TODO: check out our options for lower SDKs
+        // TODO: notInstalled / network connection required may have equiv on iOS
+        if (Build.VERSION.SDK_INT >= 21) {
+            try {
+                for(Voice voice: tts.getVoices()) {
+                    WritableMap voiceMap = Arguments.createMap();
+                    voiceMap.putString("id", voice.getName());
+                    voiceMap.putString("name", voice.getName());
+                    voiceMap.putBoolean("networkConnectionRequired", voice.isNetworkConnectionRequired());
+                    voiceMap.putBoolean("notInstalled", voice.getFeatures().contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED));
+                    voiceArray.pushMap(voiceMap);
+                }
+            } catch (Exception e) {
+              // Purposefully ignore exceptions here due to some buggy TTS engines.
+              // See http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
+            }
+        } else {
+            // no extra voice options on older SDKs...
+        }
+
+        promise.resolve(voiceArray);
     }
 
     @ReactMethod
     public void getAudioSources(Promise promise) {
+        // TODO: implement
         promise.resolve(null);
     }
 
+    private void duckAudio() {
+        int result = audioManager.requestAudioFocus(afChangeListener,
+                                                        AudioManager.STREAM_MUSIC,
+                                                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+
+        if(result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            // DO SOMETHING! like throw an error or swallow it
+            return;
+        }
+    }
+
     private void sendEvent(String eventName,
-                           @Nullable WritableMap params) {
-        mReactContext
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(eventName, params);
+                           @Nullable WritableMap options) {
+
+        // this is the easiest way to ensure we remove our ducking      
+        // if ducking...                 
+        switch(eventName)
+        {
+            case SPEECH_END_EVENT:
+            case SPEECH_ERROR_EVENT:
+                audioManager.abandonAudioFocus(afChangeListener);
+                break;
+            default:
+                // do nothing
+        }
+
+        getReactApplicationContext()
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, options);
     }
 }
