@@ -81,6 +81,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     @Override
+    public void onCatalystInstanceDestroy() {
+        tts.shutdown();
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }
