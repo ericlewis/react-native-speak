@@ -47,12 +47,13 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
     private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
+    private SharedPreferences preferences;
+
     private TextToSpeech tts;
 
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
-    private SharedPreferences preferences;
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -68,6 +69,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             }
         });
 
+        // TODO: we should pass along the options for the given utteranceId
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
@@ -134,14 +136,14 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
                                     intSize, 
                                     AudioTrack.MODE_STREAM);
         if (at != null) {
-            sendEvent(SPEECH_START_EVENT, null);
+            sendEvent(SPEECH_START_EVENT, options);
             at.play();
             at.write(data, 0, data.length);
             at.stop();
             at.release();
-            sendEvent(SPEECH_END_EVENT, null);
+            sendEvent(SPEECH_END_EVENT, options);
         } else {
-            sendEvent(SPEECH_ERROR_EVENT, null);
+            sendEvent(SPEECH_ERROR_EVENT, options);
         }
     }
 
@@ -211,23 +213,26 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     private void sendEvent(String eventName,
-                           @Nullable WritableMap options) {
+                           @Nullable ReadableMap options) {
 
-        // this is the easiest way to ensure we remove our ducking      
-        // if ducking...                 
-        switch(eventName)
-        {
-            case SPEECH_END_EVENT:
-            case SPEECH_ERROR_EVENT:
-                if (Build.VERSION.SDK_INT >= 26) {
-                    audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
-                } else {
-                    audioManager.abandonAudioFocus(afChangeListener);
-                }
-                break;
-            default:
-                // do nothing
-        }
+        Boolean shouldDuck = options.getBoolean("ducking");
+
+        // default is to always duck
+        if (shouldDuck == null || shouldDuck == true) {
+            switch(eventName)
+            {
+                case SPEECH_END_EVENT:
+                case SPEECH_ERROR_EVENT:
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
+                    } else {
+                        audioManager.abandonAudioFocus(afChangeListener);
+                    }
+                    break;
+                default:
+                    // do nothing
+            }
+        }             
 
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
