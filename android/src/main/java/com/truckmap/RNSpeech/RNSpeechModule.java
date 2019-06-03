@@ -55,6 +55,8 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
+    private HashMap mUtteranceMap = new HashMap();
+
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
@@ -73,17 +75,20 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
-                sendEvent(SPEECH_START_EVENT, null);
+                sendEvent(SPEECH_START_EVENT, (String) mUtteranceMap.get(utteranceId), null);
             }
 
             @Override
             public void onDone(String utteranceId) {
-                sendEvent(SPEECH_END_EVENT, null);
+                sendEvent(SPEECH_END_EVENT, (String) mUtteranceMap.get(utteranceId), null);
+                mUtteranceMap.remove(utteranceId);
             }
 
+            // TODO: this is deprecated in 21, update to also get an error code back
             @Override
             public void onError(String utteranceId) {
-                sendEvent(SPEECH_ERROR_EVENT, null);
+                sendEvent(SPEECH_ERROR_EVENT, (String) mUtteranceMap.get(utteranceId), null);
+                mUtteranceMap.remove(utteranceId);
             }
         });
     }
@@ -124,7 +129,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void playAudioContent(String base64AudioContent, String utterance, ReadableMap options) {
-        // TODO: handle options, utteranceId's should map to a map so we can report our events better
+        String utteranceId = Integer.toString(utterance.hashCode());
+        mUtteranceMap.put(utteranceId, utterance);
+
+        // TODO: handle options
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
         int intSize = AudioTrack.getMinBufferSize(16000, 
                                                 AudioFormat.CHANNEL_OUT_MONO, 
@@ -136,21 +144,22 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
                                     intSize, 
                                     AudioTrack.MODE_STREAM);
         if (at != null) {
-            sendEvent(SPEECH_START_EVENT, options);
+            sendEvent(SPEECH_START_EVENT, utterance, options);
             at.play();
             at.write(data, 0, data.length);
             at.stop();
             at.release();
-            sendEvent(SPEECH_END_EVENT, options);
+            sendEvent(SPEECH_END_EVENT, utterance, options);
         } else {
-            sendEvent(SPEECH_ERROR_EVENT, options);
+            sendEvent(SPEECH_ERROR_EVENT, utterance, options);
         }
     }
 
     @ReactMethod
     public void speak(String utterance, ReadableMap options) {
-        // TODO: handle options, utteranceId's should map to a map so we can report our events better
+        // TODO: handle options
         String utteranceId = Integer.toString(utterance.hashCode());
+        mUtteranceMap.put(utteranceId, utterance);
         tts.speak(utterance, TextToSpeech.QUEUE_ADD, null, utteranceId);
     }
 
@@ -213,6 +222,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     private void sendEvent(String eventName,
+                           String utterance,
                            @Nullable ReadableMap options) {
 
         Boolean shouldDuck = options.getBoolean("ducking");
