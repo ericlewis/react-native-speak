@@ -8,6 +8,8 @@
 
 package com.truckmap.RNSpeech;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioFormat;
@@ -53,9 +55,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
-        audioManager = (AudioManager) reactContext.getApplicationContext().getSystemService(reactContext.AUDIO_SERVICE);
+        Context appContext = reactContext.getApplicationContext();
+        audioManager = (AudioManager) appContext.getSystemService(reactContext.AUDIO_SERVICE);
 
-        tts = new TextToSpeech(getReactApplicationContext(), new TextToSpeech.OnInitListener() {
+        tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 // we have init'd let do somethin with it.
@@ -106,7 +109,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveProviderAsDefault(String provider) {
-        // do nothing yet
+        SharedPreferences preferences = getReactApplicationContext()
+                                            .getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);  
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("provider", provider);
+        editor.apply();
     }
 
     @ReactMethod
