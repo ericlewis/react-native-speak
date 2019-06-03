@@ -45,18 +45,21 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_START_EVENT = "SPEECH_START_EVENT";
     private static final String SPEECH_END_EVENT = "SPEECH_END_EVENT";
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
+    private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
     private TextToSpeech tts;
 
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
+    private SharedPreferences preferences;
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
         Context appContext = reactContext.getApplicationContext();
         audioManager = (AudioManager) appContext.getSystemService(reactContext.AUDIO_SERVICE);
+        preferences = getReactApplicationContext().getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);  
 
         tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
             @Override
@@ -104,15 +107,16 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         events.put(SPEECH_ERROR_EVENT, SPEECH_ERROR_EVENT);
         constants.put("events", events);
 
+        // Settings
+        constants.put("provider", preferences.getString(DEFAULT_PROVIDER_KEY, null));
+
         return constants;
     }
 
     @ReactMethod
     public void saveProviderAsDefault(String provider) {
-        SharedPreferences preferences = getReactApplicationContext()
-                                            .getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);  
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("provider", provider);
+        editor.putString(DEFAULT_PROVIDER_KEY, provider);
         editor.apply();
     }
 
