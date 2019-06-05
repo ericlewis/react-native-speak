@@ -171,11 +171,15 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         String utteranceId = Integer.toString(utterance.hashCode());
         mUtteranceMap.put(utteranceId, utterance);
 
+        float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
+
         if (Build.VERSION.SDK_INT >= 21) {
-            Bundle params = Arguments.toBundle(options);
+            Bundle params = new Bundle();
+            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume);
             tts.speak(utterance, TextToSpeech.QUEUE_ADD, params, utteranceId);
         } else {
             HashMap<String, String> params = new HashMap();
+            params.put(TextToSpeech.Engine.KEY_PARAM_VOLUME, String.valueOf(volume));
             tts.speak(utterance, TextToSpeech.QUEUE_ADD, params);
         }
     }
