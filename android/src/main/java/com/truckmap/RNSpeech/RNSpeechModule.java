@@ -63,7 +63,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     private boolean isPlaying;
 
-    private HashMap mUtteranceMap = new HashMap();
+    private HashMap<String,HashMap<String,Object>> mUtteranceMap = new HashMap();
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -83,19 +83,22 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
-                sendEvent(SPEECH_START_EVENT, (String) mUtteranceMap.get(utteranceId), null);
+                HashMap utteranceMap = mUtteranceMap.get(utteranceId);
+                sendEvent(SPEECH_START_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
             }
 
             @Override
             public void onDone(String utteranceId) {
-                sendEvent(SPEECH_END_EVENT, (String) mUtteranceMap.get(utteranceId), null);
+                HashMap utteranceMap = mUtteranceMap.get(utteranceId);
+                sendEvent(SPEECH_END_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
 
             // TODO: this is deprecated in 21, update to also get an error code back
             @Override
             public void onError(String utteranceId) {
-                sendEvent(SPEECH_ERROR_EVENT, (String) mUtteranceMap.get(utteranceId), null);
+                HashMap utteranceMap = mUtteranceMap.get(utteranceId);
+                sendEvent(SPEECH_ERROR_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
         });
@@ -138,7 +141,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void playAudioContent(String base64AudioContent, String utterance, ReadableMap options) {
         String utteranceId = Integer.toString(utterance.hashCode());
-        mUtteranceMap.put(utteranceId, utterance);
+        HashMap utteranceMap = new HashMap();
+        utteranceMap.put("utterance", utterance);
+        utteranceMap.put("options", options);
+        mUtteranceMap.put(utteranceId, utteranceMap);
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
@@ -161,19 +167,25 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             isPlaying = false;
             at.release();
             sendEvent(SPEECH_END_EVENT, utterance, options);
+            mUtteranceMap.remove(utteranceId);
         } else {
             isPlaying = false;
             sendEvent(SPEECH_ERROR_EVENT, utterance, options);
+            mUtteranceMap.remove(utteranceId);
         }
     }
 
     @ReactMethod
     public void speak(String utterance, ReadableMap options) {
         String utteranceId = Integer.toString(utterance.hashCode());
-        mUtteranceMap.put(utteranceId, utterance);
+        HashMap utteranceMap = new HashMap();
+        utteranceMap.put("utterance", utterance);
+        utteranceMap.put("options", options);
+        mUtteranceMap.put(utteranceId, utteranceMap);
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
 
+        // TODO: handle different voices
         if (Build.VERSION.SDK_INT >= 21) {
             Bundle params = new Bundle();
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume);
