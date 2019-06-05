@@ -69,11 +69,25 @@ class Speech implements SpeechModule {
     return this.providerManager.getProviderForName(name).getVoices();
   }
 
-  public async speak(utterance: string, options: SpeechOptions = {}) {
+  /**
+   * Note: speakInstantly option is ignored if you add a batch of utterances
+   * @param utterance
+   * @param options
+   */
+  public async speak(
+    utterance: string | string[],
+    options: SpeechOptions = {}
+  ) {
     const currentProvider = this.providerManager.currentProvider;
-    return options.speakInstantly === true
-      ? this.speakWithProvider(currentProvider, utterance, options)
-      : this.queue.add({ currentProvider, utterance, options });
+    if (Array.isArray(utterance)) {
+      this.queue.batchAdd(
+        utterance.map(u => ({ currentProvider, utterance: u, options }))
+      );
+    } else {
+      return options.speakInstantly === true
+        ? this.speakWithProvider(currentProvider, utterance, options)
+        : this.queue.add({ currentProvider, utterance, options });
+    }
   }
 
   /**

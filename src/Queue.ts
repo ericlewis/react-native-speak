@@ -21,6 +21,21 @@ export default class Queue<T> {
   }
 
   /**
+   * Add a batch of items to the queue
+   * Defaults to adding items to the beginning of the queue
+   * @param items array of items to be added to the queue
+   * @param beginning (optional) add to the 0 index. If false, adds after the last item.
+   * @returns null
+   */
+  public batchAdd(items: T[], beginning = true): T {
+    this.data = beginning ? [...items, ...this.data] : [...this.data, ...items];
+    return this.fireCallbackAndReturn(
+      Queue.ADDED_ITEM,
+      beginning ? this.first() : this.last()
+    )!;
+  }
+
+  /**
    * Adds item to the queue
    * Defaults to adding items to the beginning of the queue
    * @param item item to be added to the queue
