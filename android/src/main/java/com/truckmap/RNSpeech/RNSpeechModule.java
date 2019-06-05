@@ -259,34 +259,23 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
                            String utterance,
                            @Nullable ReadableMap options) {
 
+        boolean shouldDuck = options != null && options.hasKey("ducking") ? (boolean) options.getBoolean("ducking") : true;
+
         switch(eventName)
         {
             case SPEECH_END_EVENT:
             case SPEECH_ERROR_EVENT:
-                if (options != null && options.hasKey("ducking")) {
-                    Boolean shouldDuck = options.getBoolean("ducking");
-                    if (shouldDuck == null || shouldDuck == true) {
-                        releaseDucking();
-                    }
-                } else {
-                    // if none of this is set, we duckin'
+                if (shouldDuck) {
                     releaseDucking();
                 }
                 break;
             case SPEECH_START_EVENT:
-                if (options != null && options.hasKey("ducking")) {
-                    Boolean shouldDuck = options.getBoolean("ducking");
-                    if (shouldDuck == null || shouldDuck == true) {
-                        duckAudio();
-                    }
-                } else {
-                    // if none of this is set, we duckin'
+                if (shouldDuck) {
                     duckAudio();
                 }
             default:
                 // do nothing
         }
-       
 
         WritableMap emittableOptions = Arguments.createMap();
         emittableOptions.merge(options);
