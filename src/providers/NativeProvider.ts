@@ -6,32 +6,32 @@ import { Provider } from './BaseProvider';
  * It is the simplest provider, with no audioContent
  */
 export class NativeProvider extends Provider {
-  public getVoices = async (): Promise<Voice[]> => {
+  public async getVoices(): Promise<Voice[]> {
     const voices = await this.native.getVoices();
     return voices.map(({ name, id }) => ({
       id: this.sluggifyVoiceId(id),
       name
     }));
-  };
+  }
 
-  public speak = (utterance: string, options: SpeechOptions) => {
+  public speak(utterance: string, options: SpeechOptions) {
     // TODO: this voiceId stuff is pretty lame, clean it up
     // TODO: these settings may vary between OS
 
-    const scale = (
+    function scale(
       num: number,
       in_min: number,
       in_max: number,
       out_min: number,
       out_max: number
-    ) => {
+    ) {
       if (num < 0.001 && num > -0.001) {
         return 1.0;
       }
       return (
         ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
       );
-    };
+    }
 
     return this.native.speak(utterance, {
       ...options,
@@ -40,5 +40,5 @@ export class NativeProvider extends Provider {
         ? this.stripVoiceIdSlug(options.voiceId)
         : undefined
     });
-  };
+  }
 }

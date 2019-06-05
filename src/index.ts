@@ -8,6 +8,7 @@ import {
   Voice
 } from './NativeSpeechModule';
 import ProviderManager, { Provider } from './providers';
+import Queue from './Queue';
 
 /**
  * The interface for the JS class, typically will be used by frontend
@@ -29,9 +30,11 @@ interface SpeechModule {
 class Speech implements SpeechModule {
   public events = new NativeEventEmitter(RNSpeech);
   private providerManager: ProviderManager;
+  private queue = new Queue();
 
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
+    this.queue.addListener(this.queueListener);
   }
 
   get constants(): Constants {
@@ -53,24 +56,28 @@ class Speech implements SpeechModule {
     return this.providerManager.getProviderNames();
   }
 
-  public getVoices = async () => {
+  public async getVoices() {
     return this.providerManager.currentProvider.getVoices();
-  };
+  }
 
-  public getVoicesForProvider = async (name: string) => {
+  public async getVoicesForProvider(name: string) {
     return this.providerManager.getProviderForName(name).getVoices();
-  };
+  }
 
-  public speak = async (utterance: string, options: SpeechOptions = {}) => {
+  public async speak(utterance: string, options: SpeechOptions = {}) {
     const currentProvider = this.providerManager.currentProvider;
     return this.speakWithProvider(currentProvider, utterance, options);
-  };
+  }
 
-  public speakWithProvider = async (
+  /**
+   * Use an arbitrary provider to speak
+   * protected so you can extend this class and use it however you like
+   */
+  protected async speakWithProvider(
     provider: Provider,
     utterance: string,
     options: SpeechOptions
-  ) => {
+  ) {
     try {
       // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
       // TODO: this would result in us ignoring the options passed, this should be *documented*
@@ -104,13 +111,17 @@ class Speech implements SpeechModule {
         throw error;
       }
     }
-  };
+  }
 
-  private fallback = (
+  private queueListener() {
+    // TODO
+  }
+
+  private fallback(
     originalError: Error,
     utterance: string,
     options: SpeechOptions
-  ) => {
+  ) {
     // log the OG error
     if (__DEV__) {
       console.warn(originalError);
@@ -122,7 +133,7 @@ class Speech implements SpeechModule {
     } catch (error) {
       // we are in serious trouble if we got here.
     }
-  };
+  }
 }
 
 export * from './providers';

@@ -10,19 +10,16 @@ export class PollyProvider extends Provider {
     this.polly = new Polly(config);
   }
 
-  public getVoices = async (): Promise<Voice[]> => {
+  public async getVoices(): Promise<Voice[]> {
     const { Voices } = await this.polly.describeVoices().promise();
     // TODO: handle this force unwrapping
     return Voices!.map(({ Id, Name }) => ({
       id: this.sluggifyVoiceId(Id!),
       name: Name!
     }));
-  };
+  }
 
-  public getAudioContent = async (
-    utterance: string,
-    options: SpeechOptions
-  ) => {
+  public async getAudioContent(utterance: string, options: SpeechOptions) {
     return new Promise((resolve, reject) => {
       const Text = this.getSSML(utterance, options);
       this.polly.synthesizeSpeech(
@@ -49,5 +46,5 @@ export class PollyProvider extends Provider {
         }
       );
     });
-  };
+  }
 }

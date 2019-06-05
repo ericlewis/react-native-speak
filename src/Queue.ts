@@ -23,10 +23,10 @@ export default class Queue<T> {
    * @param beginning (optional) add to the 0 index. If false, adds after the last item.
    * @returns the item added
    */
-  public add = (item: T, beginning = true): T => {
+  public add(item: T, beginning = true): T {
     beginning ? this.data.unshift(item) : this.data.push(item);
     return this.fireCallbackAndReturn(Queue.ADDED_ITEM, item)!;
-  };
+  }
 
   /**
    * Removes an item from the queue
@@ -34,42 +34,50 @@ export default class Queue<T> {
    * @param lastItem (optional) remove the last item if true. If false, it removes the *first* item.
    * @returns the item removed
    */
-  public remove = (lastItem = true): T | undefined => {
+  public remove(lastItem = true): T | undefined {
     const result = lastItem ? this.data.pop() : this.data.shift();
     return this.fireCallbackAndReturn(Queue.REMOVED_ITEM, result);
-  };
+  }
+
+  /**
+   * Resets the queue
+   * TODO: should this fire an event?
+   */
+  public flush() {
+    this.data = [];
+  }
 
   /**
    * @returns first item in queue
    */
-  public first = (): T => {
+  public first(): T {
     return this.data[0];
-  };
+  }
 
   /**
    * @returns last item in queue
    */
-  public last = (): T => {
+  public last(): T {
     return this.data[this.data.length - 1];
-  };
+  }
 
   /**
    *
    */
-  public itemAtIndex = (index: number): T => {
+  public itemAtIndex(index: number): T {
     if (index >= this.size() || index < 0) {
       throw new Error('Queue error: out of bounds');
     }
 
     return this.data[index];
-  };
+  }
 
   /**
    * @returns number of items in queue
    */
-  public size = (): number => {
+  public size(): number {
     return this.data.length;
-  };
+  }
 
   /**
    * Listen for add / remove events

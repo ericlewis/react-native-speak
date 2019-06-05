@@ -53,7 +53,7 @@ export default class ProviderManager {
   /**
    * Change the active provider, optionally set to default too.
    */
-  public setCurrentProvider = (providerName: string, setDefault = true) => {
+  public setCurrentProvider(providerName: string, setDefault = true) {
     const provider = this.getProviderForName(providerName);
 
     // TODO: this may not be very efficient, we should check if this has to happen first
@@ -65,7 +65,7 @@ export default class ProviderManager {
     if (!this.currentProvider.isEqualToProvider(provider)) {
       this.currentProvider = provider;
     }
-  };
+  }
 
   /**
    * Returns a list of all the provider class names
