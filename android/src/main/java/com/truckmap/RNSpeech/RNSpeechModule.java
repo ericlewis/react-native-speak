@@ -53,7 +53,13 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
-    private AudioManager.OnAudioFocusChangeListener afChangeListener;
+    private AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+			public void onAudioFocusChange(int focusChange) {
+                // do nothing
+            }
+    };
+
     private boolean isPlaying;
 
     private HashMap mUtteranceMap = new HashMap();
@@ -230,28 +236,46 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private void releaseDucking() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
+        } else {
+            audioManager.abandonAudioFocus(afChangeListener);
+        }
+    }
+
     private void sendEvent(String eventName,
                            String utterance,
                            @Nullable ReadableMap options) {
 
-        Boolean shouldDuck = options.getBoolean("ducking");
-
-        // default is to always duck
-        if (shouldDuck == null || shouldDuck == true) {
-            switch(eventName)
-            {
-                case SPEECH_END_EVENT:
-                case SPEECH_ERROR_EVENT:
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
-                    } else {
-                        audioManager.abandonAudioFocus(afChangeListener);
+        switch(eventName)
+        {
+            case SPEECH_END_EVENT:
+            case SPEECH_ERROR_EVENT:
+                if (options != null && options.hasKey("ducking")) {
+                    Boolean shouldDuck = options.getBoolean("ducking");
+                    if (shouldDuck == null || shouldDuck == true) {
+                        releaseDucking();
                     }
-                    break;
-                default:
-                    // do nothing
-            }
-        }             
+                } else {
+                    // if none of this is set, we duckin'
+                    releaseDucking();
+                }
+                break;
+            case SPEECH_START_EVENT:
+                if (options != null && options.hasKey("ducking")) {
+                    Boolean shouldDuck = options.getBoolean("ducking");
+                    if (shouldDuck == null || shouldDuck == true) {
+                        duckAudio();
+                    }
+                } else {
+                    // if none of this is set, we duckin'
+                    duckAudio();
+                }
+            default:
+                // do nothing
+        }
+       
 
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
