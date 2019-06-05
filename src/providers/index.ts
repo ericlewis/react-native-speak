@@ -5,7 +5,7 @@ export * from './NativeProvider';
 export * from './PollyProvider';
 
 import invariant from 'invariant';
-import { keyBy } from 'lodash';
+import keyBy from 'lodash.keyby';
 
 import { Platform } from 'react-native';
 import { Constants, RNSpeech } from '../NativeSpeechModule';

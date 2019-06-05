@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash.get';
 import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
 import {
