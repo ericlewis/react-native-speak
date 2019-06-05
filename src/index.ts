@@ -88,7 +88,7 @@ class Speech implements SpeechModule {
       this.queue.batchAdd(
         utterance.map(u => ({ currentProvider, utterance: u, options }))
       );
-    } else if (options.speakInstantly) {
+    } else if (options.instant) {
       // TODO: also stop any inflight speech
       this.queue.flush();
       this.speakWithProvider(currentProvider, utterance, options);

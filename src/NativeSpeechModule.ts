@@ -32,7 +32,7 @@ export interface SpeechOptions {
   codec?: 'mp3' | 'pcm';
 
   // Should we skip the queue, and speak right away?
-  speakInstantly?: boolean;
+  instant?: boolean;
 }
 
 export interface Constants {
