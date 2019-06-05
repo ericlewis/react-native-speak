@@ -127,7 +127,6 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   
   player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
-  // TODO: set from options
   NSNumber *volume = options[@"volume"];
   if (volume) {
     player_.volume = [volume floatValue];
@@ -154,8 +153,6 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   [self setupSynth];
   
   NSDictionary *body = @{@"utterance": utterance, @"options": options};
-  NSString *utteranceId = [self hashStringForObject:utterance];
-  [utterances_ setValue:body forKey:utteranceId];
   
   [self sendEventWithName:SPEECH_START_EVENT body:body];
   
@@ -192,8 +189,6 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   
   NSNumber *pitch = options[@"pitch"];
   if (pitch) {
-    // TODO: we need to normalize this value probably
-    // -1 is the lowest pitch, 0 is normal, 1.0 is highest
     synthUtterance.pitchMultiplier = [pitch floatValue];
   }
 
@@ -204,8 +199,9 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
     [synthUtterance setVoice:[AVSpeechSynthesisVoice voiceWithIdentifier:voiceID]];
   }
   
-//  currentUtterance_ = utterance;
-//  currentOptions_ = options;
+  NSString *utteranceId = [self hashStringForObject:synthUtterance];
+  [utterances_ setValue:body forKey:utteranceId];
+  
   [synth_ speakUtterance:synthUtterance];
   [self resetAudioSession];
 }
@@ -222,7 +218,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
-  NSString *utteranceId = [self hashStringForObject:utterance.speechString];
+  NSString *utteranceId = [self hashStringForObject:utterance];
   [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
   [self stopAudioSession];
   [utterances_ removeObjectForKey:utteranceId];
