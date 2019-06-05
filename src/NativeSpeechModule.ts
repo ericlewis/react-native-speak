@@ -73,6 +73,8 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
    * Persists the provider, will be used at next launch
    */
   saveProviderAsDefault: (name: string) => void;
+
+  isSpeaking: () => boolean;
 }
 
 export const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;

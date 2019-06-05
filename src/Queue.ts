@@ -84,6 +84,13 @@ export default class Queue<T> {
   }
 
   /**
+   * @returns if the queue is still needed
+   */
+  public isEmpty(): boolean {
+    return this.data.length <= 0;
+  }
+
+  /**
    * Listen for add / remove events
    * Note: you can only have 1 listener at a time
    * @param callback function to fire when adding / removing items

@@ -30,6 +30,8 @@ interface SpeechModule {
 class Speech implements SpeechModule {
   public events = new NativeEventEmitter(RNSpeech);
   private providerManager: ProviderManager;
+
+  // TODO: use a proper type for the queue
   private queue = new Queue<any>();
 
   constructor(providers?: Provider[]) {
@@ -121,7 +123,9 @@ class Speech implements SpeechModule {
   private playbackEndedListener = () => {
     // remove the last spoken item
     this.queue.remove();
-    if (this.queue.size() > 0) {
+
+    // there are more items in the queue still, lets work it!
+    if (!this.queue.isEmpty()) {
       const { currentProvider, utterance, options } = this.queue.first();
       this.speakWithProvider(currentProvider, utterance, options);
     }
@@ -129,10 +133,12 @@ class Speech implements SpeechModule {
 
   private queueListener = (eventName: EventName, _: any[], item?: any) => {
     // the queue is FIFO, so it's pretty safe to react this way probably. but not clearly how it should be used.
-    if (eventName === 'ADDED_ITEM') {
+    if (eventName === 'ADDED_ITEM' && !RNSpeech.isSpeaking()) {
       // we obviously should check if we should be speaking first.
       const { currentProvider, utterance, options } = item;
       this.speakWithProvider(currentProvider, utterance, options);
+    } else {
+      // an item was removed, we can log it here if we want
     }
   };
 

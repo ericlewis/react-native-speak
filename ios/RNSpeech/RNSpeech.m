@@ -88,6 +88,8 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
   resolve(convertedVoices);
 }
 
+#pragma mark - Audio Player
+
 RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
                   forUtterance:(NSString *)utterance
                   withOptions:(NSDictionary *)options)
@@ -129,7 +131,13 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   }
 }
 
-// Native synth engine
+RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
+{
+  return @(player_.isPlaying == TRUE || synth_.isSpeaking == TRUE);
+}
+
+#pragma mark - Native Synth Provider
+
 RCT_EXPORT_METHOD(speak:(NSString *)utterance
                   options:(NSDictionary *)options)
 {
@@ -195,6 +203,8 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   }
 }
 
+#pragma mark - Delegates
+
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
   [self sendEventWithName:SPEECH_END_EVENT body:@{@"utterance": utterance, @"options": currentOptions_}];
@@ -210,6 +220,8 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   currentOptions_ = nil;
   currentUtterance_ = nil;
 }
+
+#pragma mark - Utils
 
 - (void)stopAudioSession
 {
