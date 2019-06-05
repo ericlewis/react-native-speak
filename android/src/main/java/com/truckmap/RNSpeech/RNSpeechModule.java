@@ -140,7 +140,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         String utteranceId = Integer.toString(utterance.hashCode());
         mUtteranceMap.put(utteranceId, utterance);
 
-        // TODO: handle options
+        float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
         int intSize = AudioTrack.getMinBufferSize(16000, 
                                                 AudioFormat.CHANNEL_OUT_MONO, 
@@ -151,6 +151,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
                                     AudioFormat.ENCODING_PCM_16BIT, 
                                     intSize, 
                                     AudioTrack.MODE_STREAM);
+        at.setVolume(volume);
         if (at != null) {
             sendEvent(SPEECH_START_EVENT, utterance, options);
             at.play();
