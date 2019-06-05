@@ -27,12 +27,17 @@ interface SpeechModule {
   speak: (utterance: string, options: SpeechOptions) => Promise<any>;
 }
 
+interface SpeakPacket {
+  currentProvider: Provider;
+  utterance: string;
+  options: SpeechOptions;
+}
+
 class Speech implements SpeechModule {
   public events = new NativeEventEmitter(RNSpeech);
   private providerManager: ProviderManager;
 
-  // TODO: use a proper type for the queue
-  private queue = new Queue<any>();
+  private queue = new Queue<SpeakPacket>();
 
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
@@ -83,10 +88,12 @@ class Speech implements SpeechModule {
       this.queue.batchAdd(
         utterance.map(u => ({ currentProvider, utterance: u, options }))
       );
+    } else if (options.speakInstantly) {
+      // TODO: also stop any inflight speech
+      this.queue.flush();
+      this.speakWithProvider(currentProvider, utterance, options);
     } else {
-      return options.speakInstantly === true
-        ? this.speakWithProvider(currentProvider, utterance, options)
-        : this.queue.add({ currentProvider, utterance, options });
+      this.queue.add({ currentProvider, utterance, options });
     }
   }
 
