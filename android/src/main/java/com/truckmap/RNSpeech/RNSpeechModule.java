@@ -211,7 +211,9 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         float pitch = options.hasKey("pitch") ? (float) options.getDouble("pitch") : 1.0f;
         float speakingRate = options.hasKey("speakingRate") ? (float) options.getDouble("speakingRate") : 1.0f;
 
-        // TODO: tts.setSpeechRate(speakingRate) & tts.setPitch(pitch)
+        // TODO: we probably need these values normalized
+        tts.setSpeechRate(speakingRate);
+        tts.setPitch(pitch);
 
         if (Build.VERSION.SDK_INT >= 21) {
             Bundle params = new Bundle();
