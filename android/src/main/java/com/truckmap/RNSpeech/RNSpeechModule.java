@@ -51,6 +51,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private SharedPreferences preferences;
 
     private TextToSpeech tts;
+    private Voice previousVoice;
 
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
@@ -90,6 +91,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             @Override
             public void onDone(String utteranceId) {
                 HashMap utteranceMap = mUtteranceMap.get(utteranceId);
+                tts.setVoice(previousVoice);
                 sendEvent(SPEECH_END_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
@@ -98,6 +100,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             @Override
             public void onError(String utteranceId) {
                 HashMap utteranceMap = mUtteranceMap.get(utteranceId);
+                tts.setVoice(previousVoice);
                 sendEvent(SPEECH_ERROR_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
@@ -185,7 +188,27 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
 
-        // TODO: handle different voices
+        previousVoice = tts.getVoice();
+        if (options.hasKey("voiceId")) {
+            String voiceId = options.getString("voiceId");
+            if (previousVoice.getName().equals(voiceId) == false) {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    try {
+                        for(Voice voice: tts.getVoices()) {
+                            if(voice.getName().equals(voiceId)) {
+                                int result = tts.setVoice(voice);
+                            }
+                        }
+                    } catch (Exception e) {
+                      // Purposefully ignore exceptions here due to some buggy TTS engines.
+                      // See http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
+                    }
+                } else {
+                    // do nothing
+                }
+            } 
+        }
+
         if (Build.VERSION.SDK_INT >= 21) {
             Bundle params = new Bundle();
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume);
