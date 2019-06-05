@@ -186,8 +186,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         utteranceMap.put("options", options);
         mUtteranceMap.put(utteranceId, utteranceMap);
 
-        float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
-
         previousVoice = tts.getVoice();
         if (options.hasKey("voiceId")) {
             String voiceId = options.getString("voiceId");
@@ -208,6 +206,12 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
                 }
             } 
         }
+
+        float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
+        float pitch = options.hasKey("pitch") ? (float) options.getDouble("pitch") : 1.0f;
+        float speakingRate = options.hasKey("speakingRate") ? (float) options.getDouble("speakingRate") : 1.0f;
+
+        // TODO: tts.setSpeechRate(speakingRate) & tts.setPitch(pitch)
 
         if (Build.VERSION.SDK_INT >= 21) {
             Bundle params = new Bundle();
