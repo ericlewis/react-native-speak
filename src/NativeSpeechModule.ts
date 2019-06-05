@@ -30,6 +30,9 @@ export interface SpeechOptions {
   // currently only supports mp3 cross providers
   // providers would need to transform this in some cases.
   codec?: 'mp3' | 'pcm';
+
+  // Should we skip the queue, and speak right away?
+  speakInstantly?: boolean;
 }
 
 export interface Constants {
