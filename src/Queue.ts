@@ -1,12 +1,16 @@
-type EventName = 'ADDED_ITEM' | 'REMOVED_ITEM';
-type Callback = <T>(eventName: EventName, data: T[], item?: T) => void;
+export type EventName = 'ADDED_ITEM' | 'REMOVED_ITEM';
+export type QueueCallback = <T>(
+  eventName: EventName,
+  data: T[],
+  item?: T
+) => void;
 
 export default class Queue<T> {
   public static ADDED_ITEM: EventName = 'ADDED_ITEM';
   public static REMOVED_ITEM: EventName = 'REMOVED_ITEM';
 
   private data: T[];
-  private callback?: Callback;
+  private callback?: QueueCallback;
 
   /**
    * Creates a new queue
@@ -84,7 +88,7 @@ export default class Queue<T> {
    * Note: you can only have 1 listener at a time
    * @param callback function to fire when adding / removing items
    */
-  public addListener(callback: Callback): void {
+  public addListener(callback: QueueCallback): void {
     this.callback = callback;
   }
 
