@@ -8,7 +8,7 @@ import {
   Voice
 } from './NativeSpeechModule';
 import ProviderManager, { Provider } from './providers';
-import Queue from './Queue';
+import Queue, { EventName } from './Queue';
 
 /**
  * The interface for the JS class, typically will be used by frontend
@@ -30,11 +30,14 @@ interface SpeechModule {
 class Speech implements SpeechModule {
   public events = new NativeEventEmitter(RNSpeech);
   private providerManager: ProviderManager;
-  private queue = new Queue();
+  private queue = new Queue<any>();
 
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
     this.queue.addListener(this.queueListener);
+
+    // TODO: we should have these constants somewhere in JS too, would be cool to auto gen as well..
+    this.events.addListener('SPEECH_END_EVENT', this.playbackEndedListener);
   }
 
   get constants(): Constants {
@@ -66,7 +69,9 @@ class Speech implements SpeechModule {
 
   public async speak(utterance: string, options: SpeechOptions = {}) {
     const currentProvider = this.providerManager.currentProvider;
-    return this.speakWithProvider(currentProvider, utterance, options);
+    return options.speakInstantly === true
+      ? this.speakWithProvider(currentProvider, utterance, options)
+      : this.queue.add({ currentProvider, utterance, options });
   }
 
   /**
@@ -113,9 +118,23 @@ class Speech implements SpeechModule {
     }
   }
 
-  private queueListener() {
-    // TODO
-  }
+  private playbackEndedListener = () => {
+    // remove the last spoken item
+    this.queue.remove();
+    if (this.queue.size() > 0) {
+      const { currentProvider, utterance, options } = this.queue.first();
+      this.speakWithProvider(currentProvider, utterance, options);
+    }
+  };
+
+  private queueListener = (eventName: EventName, _: any[], item?: any) => {
+    // the queue is FIFO, so it's pretty safe to react this way probably. but not clearly how it should be used.
+    if (eventName === 'ADDED_ITEM') {
+      // we obviously should check if we should be speaking first.
+      const { currentProvider, utterance, options } = item;
+      this.speakWithProvider(currentProvider, utterance, options);
+    }
+  };
 
   private fallback(
     originalError: Error,
