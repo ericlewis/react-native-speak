@@ -16,6 +16,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
+import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
@@ -167,10 +168,15 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void speak(String utterance, ReadableMap options) {
-        // TODO: handle options
         String utteranceId = Integer.toString(utterance.hashCode());
         mUtteranceMap.put(utteranceId, utterance);
-        tts.speak(utterance, TextToSpeech.QUEUE_ADD, null, utteranceId);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Bundle params = Arguments.toBundle(options);
+            tts.speak(utterance, TextToSpeech.QUEUE_ADD, params, utteranceId);
+        } else {
+            // TODO: handle versions lower than 21
+        }
     }
 
     @ReactMethod
