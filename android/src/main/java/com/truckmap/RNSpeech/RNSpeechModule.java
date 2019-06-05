@@ -147,14 +147,14 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         if (at != null) {
             sendEvent(SPEECH_START_EVENT, utterance, options);
             at.play();
-            isPlaying = true
+            isPlaying = true;
             at.write(data, 0, data.length);
             at.stop();
-            isPlaying = false
+            isPlaying = false;
             at.release();
             sendEvent(SPEECH_END_EVENT, utterance, options);
         } else {
-            isPlaying = false
+            isPlaying = false;
             sendEvent(SPEECH_ERROR_EVENT, utterance, options);
         }
     }
