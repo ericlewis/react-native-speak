@@ -17,8 +17,7 @@
 @implementation RNSpeech {
   AVAudioPlayer *player_;
   AVSpeechSynthesizer *synth_;
-  NSString *currentUtterance_; // this may not be stable
-  NSDictionary *currentOptions_; // this may not be stable
+  NSMutableDictionary *utterances_;
 }
 
 RCT_EXPORT_MODULE();
@@ -28,6 +27,15 @@ static NSString *SPEECH_LOADING_EVENT = @"SPEECH_LOADING_EVENT";
 static NSString *SPEECH_START_EVENT = @"SPEECH_START_EVENT";
 static NSString *SPEECH_END_EVENT = @"SPEECH_END_EVENT";
 static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
+
+- (instancetype)init
+{
+  if (self = [super init]) {
+    utterances_ = [NSMutableDictionary new];
+  }
+  
+  return self;
+}
 
 + (BOOL)requiresMainQueueSetup
 {
@@ -94,10 +102,15 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
                   forUtterance:(NSString *)utterance
                   withOptions:(NSDictionary *)options)
 {
-  [self sendEventWithName:SPEECH_START_EVENT body:@{@"utterance": utterance, @"options": options}];
   NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
   
+  NSDictionary *body = @{@"utterance": utterance, @"options": options};
+  NSString *utteranceId = [self hashStringForObject:audio];
+  [utterances_ setValue:body forKey:utteranceId];
+  
+  [self sendEventWithName:SPEECH_START_EVENT body:body];
+
   NSError *error;
 
   NSNumber *shouldDuck = options[@"ducking"];
@@ -112,19 +125,16 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
     }
   }
   
-  self->player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
+  player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
   // TODO: set from options
   NSNumber *volume = options[@"volume"];
   if (volume) {
-    self->player_.volume = [volume floatValue];
+    player_.volume = [volume floatValue];
   }
   
-  self->player_.delegate = self;
-  
-  currentUtterance_ = utterance;
-  currentOptions_ = options;
-  [self->player_ play];
+  player_.delegate = self;
+  [player_ play];
   
   if (error != nil) {
     [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
@@ -142,7 +152,12 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
                   options:(NSDictionary *)options)
 {
   [self setupSynth];
-  [self sendEventWithName:SPEECH_START_EVENT body:@{@"utterance": utterance, @"options": options}];
+  
+  NSDictionary *body = @{@"utterance": utterance, @"options": options};
+  NSString *utteranceId = [self hashStringForObject:utterance];
+  [utterances_ setValue:body forKey:utteranceId];
+  
+  [self sendEventWithName:SPEECH_START_EVENT body:body];
   
   // stop speaking if we are already speaking
   if ([synth_ isSpeaking]) {
@@ -189,8 +204,8 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
     [synthUtterance setVoice:[AVSpeechSynthesisVoice voiceWithIdentifier:voiceID]];
   }
   
-  currentUtterance_ = utterance;
-  currentOptions_ = options;
+//  currentUtterance_ = utterance;
+//  currentOptions_ = options;
   [synth_ speakUtterance:synthUtterance];
   [self resetAudioSession];
 }
@@ -207,26 +222,24 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
-  [self sendEventWithName:SPEECH_END_EVENT body:@{@"utterance": utterance, @"options": currentOptions_}];
+  NSString *utteranceId = [self hashStringForObject:utterance.speechString];
+  [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
   [self stopAudioSession];
-  currentOptions_ = nil;
-  currentUtterance_ = nil;
+  [utterances_ removeObjectForKey:utteranceId];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-  [self sendEventWithName:SPEECH_END_EVENT body:@{@"utterance": currentUtterance_, @"options": currentOptions_}];
+  NSString *utteranceId = [self hashStringForObject:player.data];
+  [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
   [self stopAudioSession];
-  currentOptions_ = nil;
-  currentUtterance_ = nil;
+  [utterances_ removeObjectForKey:utteranceId];
 }
 
 #pragma mark - Utils
 
 - (void)stopAudioSession
 {
-  // TODO:
-  // may need to set active on diff thread (or possibly don't even need to do it)
   AVAudioSession *session = [AVAudioSession sharedInstance];
   [session setActive:NO
          withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation
@@ -239,6 +252,11 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   [session setCategory:AVAudioSessionCategoryPlayback
            withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers
                  error:nil];
+}
+
+- (NSString*)hashStringForObject:(id)object
+{
+  return [NSString stringWithFormat:@"%lu", (unsigned long)[object hash]];
 }
 
 @end
