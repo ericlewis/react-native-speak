@@ -43,3 +43,6 @@ DerivedData/
 .gradle
 local.properties
 *.iml
+.settings
+.classpath
+.project

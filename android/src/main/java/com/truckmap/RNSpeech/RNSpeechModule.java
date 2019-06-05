@@ -54,6 +54,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
+    private boolean isPlaying;
 
     private HashMap mUtteranceMap = new HashMap();
 
@@ -146,11 +147,14 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         if (at != null) {
             sendEvent(SPEECH_START_EVENT, utterance, options);
             at.play();
+            isPlaying = true
             at.write(data, 0, data.length);
             at.stop();
+            isPlaying = false
             at.release();
             sendEvent(SPEECH_END_EVENT, utterance, options);
         } else {
+            isPlaying = false
             sendEvent(SPEECH_ERROR_EVENT, utterance, options);
         }
     }
@@ -194,6 +198,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     public void getAudioSources(Promise promise) {
         // TODO: implement
         promise.resolve(null);
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public boolean isSpeaking() {
+        return tts.isSpeaking() || isPlaying;
     }
 
     private Boolean duckAudio() {

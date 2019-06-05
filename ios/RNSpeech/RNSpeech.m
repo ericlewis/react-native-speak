@@ -92,7 +92,6 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
     [convertedVoices addObject:@{@"id": voice.identifier, @"name": voice.name}];
   }
   
-  // this doesn't reject, but we gotta include it anyway
   resolve(convertedVoices);
 }
 
