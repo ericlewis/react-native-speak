@@ -210,14 +210,6 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   [self resetAudioSession];
 }
 
-- (void)setupSynth
-{
-  if (synth_ == nil) {
-    synth_ = [AVSpeechSynthesizer new];
-    synth_.delegate = self;
-  }
-}
-
 #pragma mark - Delegates
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
@@ -244,6 +236,15 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 }
 
 #pragma mark - Utils
+
+- (void)setupSynth
+{
+  if (synth_ == nil) {
+    synth_ = [AVSpeechSynthesizer new];
+    synth_.delegate = self;
+  }
+}
+
 
 - (void)stopAudioSession
 {
