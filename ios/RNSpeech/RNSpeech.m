@@ -121,6 +121,7 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
     if (error != nil) {
       RCTLogError(@"Playback error");
       [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
+      [utterances_ removeObjectForKey:utteranceId];
       return;
     }
   }
@@ -137,6 +138,7 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   
   if (error != nil) {
     [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
+    [utterances_ removeObjectForKey:utteranceId];
   }
 }
 
@@ -160,20 +162,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   if ([synth_ isSpeaking]) {
     [synth_ stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
   }
-  
-  // NSNumber is like a nilable BOOL
-  NSNumber *shouldDuck = options[@"ducking"];
-  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
-    NSError *error;
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setActive:YES error:&error];
-    if (error != nil) {
-      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
-      RCTLogError(@"Playback error");
-      return;
-    }
-  }
-  
+
   AVSpeechUtterance *synthUtterance = [[AVSpeechUtterance alloc] initWithString:utterance];
   
   NSNumber *volume = options[@"volume"];
@@ -202,6 +191,21 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   NSString *utteranceId = [self hashStringForObject:synthUtterance];
   [utterances_ setValue:body forKey:utteranceId];
   
+  
+  // NSNumber is like a nilable BOOL
+  NSNumber *shouldDuck = options[@"ducking"];
+  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
+    NSError *error;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setActive:YES error:&error];
+    if (error != nil) {
+      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
+      RCTLogError(@"Playback error");
+      [utterances_ removeObjectForKey:utteranceId];
+      return;
+    }
+  }
+  
   [synth_ speakUtterance:synthUtterance];
   [self resetAudioSession];
 }
@@ -227,7 +231,14 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
   NSString *utteranceId = [self hashStringForObject:player.data];
-  [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
+  NSDictionary *body = [utterances_ valueForKey:utteranceId];
+  if (flag) {
+    [self sendEventWithName:SPEECH_END_EVENT body:body];
+  } else {
+    // TODO: should we create an error?
+    [self sendEventWithName:SPEECH_ERROR_EVENT body:body];
+  }
+  
   [self stopAudioSession];
   [utterances_ removeObjectForKey:utteranceId];
 }
