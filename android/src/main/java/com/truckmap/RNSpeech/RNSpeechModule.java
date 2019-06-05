@@ -175,7 +175,8 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             Bundle params = Arguments.toBundle(options);
             tts.speak(utterance, TextToSpeech.QUEUE_ADD, params, utteranceId);
         } else {
-            // TODO: handle versions lower than 21
+            HashMap<String, String> params = new HashMap();
+            tts.speak(utterance, TextToSpeech.QUEUE_ADD, params);
         }
     }
 
