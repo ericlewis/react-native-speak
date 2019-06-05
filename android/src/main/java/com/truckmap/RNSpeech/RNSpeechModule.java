@@ -277,8 +277,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         }
        
 
+        WritableMap emittableOptions = Arguments.createMap();
+        emittableOptions.merge(options);
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, options);
+                .emit(eventName, emittableOptions);
     }
 }
