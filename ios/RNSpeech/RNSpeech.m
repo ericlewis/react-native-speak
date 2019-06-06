@@ -28,6 +28,11 @@ static NSString *SPEECH_START_EVENT = @"SPEECH_START_EVENT";
 static NSString *SPEECH_END_EVENT = @"SPEECH_END_EVENT";
 static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
 
+static NSString *OUTPUT_PHONE = @"Phone";
+static NSString *OUTPUT_PHONE_SPEAKER = @"Phone Speaker";
+static NSString *OUTPUT_BLUETOOTH = @"Bluetooth";
+static NSString *OUTPUT_HEADPHONES = @"Headphones";
+
 - (instancetype)init
 {
   if (self = [super init]) {
@@ -76,8 +81,28 @@ RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
   NSArray *sources = [[session currentRoute] outputs];
   NSMutableArray *mutableSources = [[NSMutableArray alloc] initWithCapacity:sources.count];
   
+  BOOL isHeadsetOn = false;
+  BOOL isBluetoothConnected = false;
+  
   for (AVAudioSessionPortDescription *source in sources) {
-    [mutableSources addObject:@{@"name": source.portName}];
+    if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
+      isHeadsetOn = true;
+      continue;
+    }
+    
+    if ([[source portType] isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
+        [[source portType] isEqualToString:AVAudioSessionPortBluetoothLE] ||
+        [[source portType] isEqualToString:AVAudioSessionPortBluetoothHFP]) {
+      isBluetoothConnected = true;
+    }
+  }
+  
+  if (isHeadsetOn) {
+    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE]];
+  } else if (isBluetoothConnected) {
+    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE, OUTPUT_PHONE_SPEAKER, OUTPUT_BLUETOOTH]];
+  } else {
+    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE, OUTPUT_PHONE_SPEAKER]];
   }
   
   resolve(mutableSources);

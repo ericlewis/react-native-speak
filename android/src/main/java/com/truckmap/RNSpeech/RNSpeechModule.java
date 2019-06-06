@@ -48,6 +48,11 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
     private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
+    private static final String OUTPUT_PHONE = "Phone";
+    private static final String OUTPUT_PHONE_SPEAKER = "Phone Speaker";
+    private static final String OUTPUT_BLUETOOTH = "Bluetooth";
+    private static final String OUTPUT_HEADPHONES = "Headphones";
+
     private SharedPreferences preferences;
 
     private TextToSpeech tts;
@@ -255,8 +260,20 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getAudioSources(Promise promise) {
-        // TODO: implement
-        promise.resolve(null);
+        WritableArray outputsArray = Arguments.createArray();
+
+        if (audioManager.isWiredHeadsetOn()) {
+            outputsArray.pushString(OUTPUT_HEADPHONES);
+        } else if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
+            outputsArray.pushString(OUTPUT_PHONE);
+            outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
+            outputsArray.pushString(OUTPUT_BLUETOOTH);
+        } else {
+            outputsArray.pushString(OUTPUT_PHONE);
+            outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
+        }
+
+        promise.resolve(outputsArray);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
