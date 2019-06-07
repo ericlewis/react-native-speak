@@ -62,7 +62,8 @@ const App: React.FunctionComponent<Props> = () => {
       <View
         style={{
           paddingHorizontal: 10,
-          marginVertical: 10
+          marginVertical: 10,
+          flexDirection: 'row'
         }}
       >
         {Platform.OS === 'ios' ? (
@@ -72,6 +73,7 @@ const App: React.FunctionComponent<Props> = () => {
             onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
               setPreferredOutputIndex(selectedSegmentIndex);
             }}
+            style={{ flex: 1 }}
           />
         ) : (
           <Picker
