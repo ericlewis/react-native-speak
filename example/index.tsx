@@ -35,7 +35,9 @@ const App: React.FunctionComponent<Props> = () => {
 
   const voices = useVoices(providerPicker, voicePicker);
   const outputs = useOutputs();
-  const [preferredOutputIndex, setPreferredOutputIndex] = useState();
+  const [preferredOutputIndex, setPreferredOutputIndex] = useState<
+    number | undefined
+  >(undefined);
 
   const { active, error } = useSpeechListeners();
 
@@ -52,7 +54,7 @@ const App: React.FunctionComponent<Props> = () => {
         volume: volumeSlider.value,
         pitch: pitchSlider.value,
         codec: Platform.OS === 'ios' ? 'mp3' : 'pcm',
-        preferredOutput: outputs[preferredOutputIndex]
+        preferredOutput: outputs[preferredOutputIndex || 0]
       });
     }
   }
@@ -77,10 +79,14 @@ const App: React.FunctionComponent<Props> = () => {
           />
         ) : (
           <Picker
-            onValueChange={(_, idx) => {
-              setPreferredOutputIndex(idx);
+            onValueChange={value => {
+              setPreferredOutputIndex(value);
             }}
-            selectedValue={preferredOutputIndex || outputs.length - 1}
+            selectedValue={
+              preferredOutputIndex === undefined
+                ? outputs.length - 1
+                : preferredOutputIndex
+            }
             style={{ flex: 1.25 }}
           >
             {outputs.map((output, idx) => {
