@@ -13,23 +13,43 @@ import Queue, { EventName } from './Queue';
 /**
  * The interface for the JS class, typically will be used by frontend
  */
-interface SpeechModule {
+export interface SpeechModule {
   events: NativeEventEmitter;
 
   /**
-   * Returns a list of available outputs
+   * Returns a list of available outputs in human readable format
    */
   getOutputs: (key: string) => Promise<string[]>;
 
   /**
-   * Returns a list of voices from the Google API
+   * Returns a list of available voices for the current provider
    */
   getVoices: (key: string) => Promise<Voice[]>;
+
+  /**
+   * Returns a list of available voices for a given providers name
+   */
+  getVoicesForProvider: (name: string) => Promise<Voice[]>;
 
   /**
    * Convenience method for fetching & playing a given utterance
    */
   speak: (utterance: string, options: SpeechOptions) => Promise<any>;
+
+  /**
+   * Sets the active provider (persisted across launches)
+   */
+  setCurrentProvider: (name: string) => void;
+
+  /**
+   * Returns the active providers name
+   */
+  getCurrentProvider: () => string;
+
+  /**
+   * Returns a list of available provider names
+   */
+  getProviders: () => string[];
 }
 
 // TODO: improve this name
