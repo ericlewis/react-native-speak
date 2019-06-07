@@ -15,9 +15,6 @@ export class NativeProvider extends Provider {
   }
 
   public speak(utterance: string, options: SpeechOptions) {
-    // TODO: this voiceId stuff is pretty lame, clean it up
-    // TODO: these settings may vary between OS
-
     function scale(
       num: number,
       in_min: number,
@@ -33,6 +30,7 @@ export class NativeProvider extends Provider {
       );
     }
 
+    // TODO: these settings may vary between OS
     return this.native.speak(utterance, {
       ...options,
       pitch: options.pitch ? scale(options.pitch, -1, 1, 0.5, 2.0) : 1.0,
