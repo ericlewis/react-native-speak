@@ -37,6 +37,11 @@ static NSString *OUTPUT_HEADPHONES = @"Headphones";
 {
   if (self = [super init]) {
     utterances_ = [NSMutableDictionary new];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(audioSessionRouteChanged:)
+                                                 name:AVAudioSessionRouteChangeNotification
+                                               object:nil];
   }
   
   return self;
@@ -73,27 +78,34 @@ static NSString *OUTPUT_HEADPHONES = @"Headphones";
   return [[[self getConstants] valueForKey:@"events"] allValues];
 }
 
+- (void)audioSessionRouteChanged:(NSNotification *)notification
+{
+  NSLog(@"%@", notification);
+}
+
 RCT_EXPORT_METHOD(saveProviderAsDefault:(NSString *)name)
 {
   [NSUserDefaults.standardUserDefaults setObject:name forKey:DEFAULT_PROVIDER_KEY];
 }
 
-RCT_EXPORT_METHOD(getCurrentOutput:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(getOutputs:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
   AVAudioSessionPortDescription *source = [[[session currentRoute] outputs] firstObject];
+  NSMutableArray *outputs = [[NSMutableArray alloc] initWithCapacity:2];
+  
+  [outputs addObject:OUTPUT_PHONE_SPEAKER];
   
   if ([[source portType] isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
       [[source portType] isEqualToString:AVAudioSessionPortBluetoothLE] ||
       [[source portType] isEqualToString:AVAudioSessionPortBluetoothHFP]) {
-    resolve(OUTPUT_BLUETOOTH);
+    [outputs addObject:OUTPUT_BLUETOOTH];
   } else if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
-    resolve(OUTPUT_HEADPHONES);
-  } else {
-    resolve(OUTPUT_PHONE_SPEAKER);
+    [outputs addObject:OUTPUT_HEADPHONES];
   }
   
+  resolve(outputs);
 }
 
 RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
@@ -135,8 +147,8 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
 
   AVAudioSession *session = [AVAudioSession sharedInstance];
   
-  NSNumber *prefersSpeaker = options[@"prefersSpeaker"];
-  [session overrideOutputAudioPort: [prefersSpeaker isEqual:@(1)] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
+  NSString *preferredOutput = options[@"preferredOutput"];
+  [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
   
   [session setActive:YES error:&error];
 
@@ -204,8 +216,8 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 
   AVAudioSession *session = [AVAudioSession sharedInstance];
   
-  NSNumber *prefersSpeaker = options[@"prefersSpeaker"];
-  [session overrideOutputAudioPort: [prefersSpeaker isEqual:@(1)] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
+  NSString *preferredOutput = options[@"preferredOutput"];
+  [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
   
   [session setActive:YES error:nil];
   [synth_ speakUtterance:synthUtterance];

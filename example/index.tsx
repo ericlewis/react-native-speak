@@ -13,7 +13,6 @@ import {
   SafeAreaView,
   SegmentedControlIOS,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   View
@@ -35,8 +34,8 @@ const App: React.FunctionComponent<Props> = () => {
   const volumeSlider = useSlider(1.0);
 
   const voices = useVoices(providerPicker, voicePicker);
-  const output = useCurrentOutput();
-  const [prefersSpeaker, setPrefersSpeaker] = useState(false);
+  const outputs = useOutputs();
+  const [preferredOutputIndex, setPreferredOutputIndex] = useState();
 
   const { active, error } = useSpeechListeners();
 
@@ -53,7 +52,7 @@ const App: React.FunctionComponent<Props> = () => {
         volume: volumeSlider.value,
         pitch: pitchSlider.value,
         codec: Platform.OS === 'ios' ? 'mp3' : 'pcm',
-        prefersSpeaker
+        preferredOutput: outputs[preferredOutputIndex]
       });
     }
   }
@@ -67,11 +66,28 @@ const App: React.FunctionComponent<Props> = () => {
           flexDirection: 'row'
         }}
       >
-        <SegmentedControlIOS
-          values={[output]}
-          style={{ flex: 1, marginRight: 10 }}
-        />
-        <Switch value={prefersSpeaker} onValueChange={setPrefersSpeaker} />
+        {Platform.OS === 'ios' ? (
+          <SegmentedControlIOS
+            values={outputs}
+            selectedIndex={preferredOutputIndex || outputs.length - 1}
+            onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
+              setPreferredOutputIndex(selectedSegmentIndex);
+            }}
+            style={{ flex: 1, marginRight: 10 }}
+          />
+        ) : (
+          <Picker
+            onValueChange={(_, idx) => {
+              setPreferredOutputIndex(idx);
+            }}
+            selectedValue={preferredOutputIndex || outputs.length - 1}
+            style={{ flex: 1.25 }}
+          >
+            {outputs.map((output, idx) => {
+              return <Picker.Item key={idx} label={output} value={idx} />;
+            })}
+          </Picker>
+        )}
       </View>
       <View style={styles.input}>
         <TextInput
@@ -114,11 +130,11 @@ const App: React.FunctionComponent<Props> = () => {
   );
 };
 
-function useCurrentOutput() {
-  const [outputs, setOutputs] = useState<string>('');
+function useOutputs() {
+  const [outputs, setOutputs] = useState<string[]>([]);
   useEffect(() => {
     async function setup() {
-      const res = await speech.getCurrentOutput();
+      const res = await speech.getOutputs();
       setOutputs(res);
     }
 
