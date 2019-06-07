@@ -48,7 +48,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
     private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
-    private static final String OUTPUT_PHONE_SPEAKER = "Phone Speaker";
+    private static final String OUTPUT_PHONE_SPEAKER = "Speaker";
     private static final String OUTPUT_BLUETOOTH = "Bluetooth";
     private static final String OUTPUT_HEADPHONES = "Headphones";
 
