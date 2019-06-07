@@ -23,6 +23,7 @@
 RCT_EXPORT_MODULE();
 
 static NSString *DEFAULT_PROVIDER_KEY = @"DEFAULT_PROVIDER_KEY";
+
 static NSString *SPEECH_LOADING_EVENT = @"SPEECH_LOADING_EVENT";
 static NSString *SPEECH_START_EVENT = @"SPEECH_START_EVENT";
 static NSString *SPEECH_END_EVENT = @"SPEECH_END_EVENT";
@@ -54,10 +55,16 @@ static NSString *OUTPUT_HEADPHONES = @"Headphones";
 - (NSDictionary *)getConstants {
   return @{
            @"events": @{
-             @"SPEECH_LOADING_EVENT" : SPEECH_LOADING_EVENT,
-             @"SPEECH_START_EVENT"   : SPEECH_START_EVENT,
-             @"SPEECH_END_EVENT"     : SPEECH_END_EVENT,
-             @"SPEECH_ERROR_EVENT"   : SPEECH_ERROR_EVENT
+             @"SPEECH_LOADING" : SPEECH_LOADING_EVENT,
+             @"SPEECH_START"   : SPEECH_START_EVENT,
+             @"SPEECH_END"     : SPEECH_END_EVENT,
+             @"SPEECH_ERROR"   : SPEECH_ERROR_EVENT
+           },
+           @"outputs": @{
+             @"PHONE" : OUTPUT_PHONE,
+             @"PHONE_SPEAKER" : OUTPUT_PHONE_SPEAKER,
+             @"BLUETOOTH" : OUTPUT_BLUETOOTH,
+             @"HEADPHONES": OUTPUT_HEADPHONES
            },
            @"provider": RCTNullIfNil([NSUserDefaults.standardUserDefaults valueForKey:DEFAULT_PROVIDER_KEY])
            };
@@ -73,7 +80,7 @@ RCT_EXPORT_METHOD(saveProviderAsDefault:(NSString *)name)
   [NSUserDefaults.standardUserDefaults setObject:name forKey:DEFAULT_PROVIDER_KEY];
 }
 
-RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(getOutputs:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];

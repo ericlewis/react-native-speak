@@ -126,28 +126,28 @@ function registerSpeechListeners() {
 
   useEffect(() => {
     const speechLoadingListener = speech.events.addListener(
-      speech.constants.events.SPEECH_LOADING_EVENT,
+      speech.constants.events.SPEECH_LOADING,
       () => {
         setState({ active: true });
       }
     );
 
     const speechStartListener = speech.events.addListener(
-      speech.constants.events.SPEECH_START_EVENT,
+      speech.constants.events.SPEECH_START,
       () => {
         setState({ active: true });
       }
     );
 
     const speechEndListener = speech.events.addListener(
-      speech.constants.events.SPEECH_END_EVENT,
+      speech.constants.events.SPEECH_END,
       () => {
         setState({ active: false });
       }
     );
 
     const speechErrorListener = speech.events.addListener(
-      speech.constants.events.SPEECH_ERROR_EVENT,
+      speech.constants.events.SPEECH_ERROR,
       error => {
         setState({ active: false, error });
       }
