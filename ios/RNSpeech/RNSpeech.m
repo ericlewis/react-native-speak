@@ -29,7 +29,6 @@ static NSString *SPEECH_START_EVENT = @"SPEECH_START_EVENT";
 static NSString *SPEECH_END_EVENT = @"SPEECH_END_EVENT";
 static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
 
-static NSString *OUTPUT_PHONE = @"Phone";
 static NSString *OUTPUT_PHONE_SPEAKER = @"Phone Speaker";
 static NSString *OUTPUT_BLUETOOTH = @"Bluetooth";
 static NSString *OUTPUT_HEADPHONES = @"Headphones";
@@ -61,7 +60,6 @@ static NSString *OUTPUT_HEADPHONES = @"Headphones";
              @"SPEECH_ERROR"   : SPEECH_ERROR_EVENT
            },
            @"outputs": @{
-             @"PHONE" : OUTPUT_PHONE,
              @"PHONE_SPEAKER" : OUTPUT_PHONE_SPEAKER,
              @"BLUETOOTH" : OUTPUT_BLUETOOTH,
              @"HEADPHONES": OUTPUT_HEADPHONES

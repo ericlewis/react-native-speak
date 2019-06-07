@@ -43,7 +43,6 @@ export interface Constants {
     SPEECH_ERROR: string;
   };
   outputs: {
-    PHONE: string;
     PHONE_SPEAKER: string;
     BLUETOOTH: string;
     HEADPHONES: string;
