@@ -8,10 +8,10 @@ import {
   Alert,
   AppRegistry,
   Button,
-  KeyboardAvoidingView,
   Picker,
   Platform,
   SafeAreaView,
+  SegmentedControlIOS,
   StyleSheet,
   Text,
   TextInput,
@@ -33,9 +33,13 @@ const App: React.FunctionComponent<Props> = () => {
   const pitchSlider = useSlider(0.0, 1.0, -1.0);
   const volumeSlider = useSlider(1.0);
 
-  const voices = fetchVoices(providerPicker, voicePicker);
+  const voices = useVoices(providerPicker, voicePicker);
+  const outputs = useOutputs();
+  const [preferredOutputIndex, setPreferredOutputIndex] = useState<
+    number | undefined
+  >(undefined);
 
-  const { active, error } = registerSpeechListeners();
+  const { active, error } = useSpeechListeners();
 
   if (error) {
     Alert.alert(error.message);
@@ -49,57 +53,104 @@ const App: React.FunctionComponent<Props> = () => {
         speakingRate: speakingRateSlider.value,
         volume: volumeSlider.value,
         pitch: pitchSlider.value,
-        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm'
+        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm',
+        preferredOutput: outputs[preferredOutputIndex || 0]
       });
     }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <View style={styles.input}>
-          <TextInput
-            {...textInput}
-            placeholder="Type something to say..."
-            onSubmitEditing={speak}
-            returnKeyType="done"
-            enablesReturnKeyAutomatically
+      <View
+        style={{
+          paddingHorizontal: 10,
+          marginVertical: 10,
+          flexDirection: 'row'
+        }}
+      >
+        {Platform.OS === 'ios' ? (
+          <SegmentedControlIOS
+            values={outputs}
+            selectedIndex={preferredOutputIndex || outputs.length - 1}
+            onChange={({ nativeEvent: { selectedSegmentIndex } }) => {
+              setPreferredOutputIndex(selectedSegmentIndex);
+            }}
+            style={{ flex: 1 }}
           />
-        </View>
-        <Button
-          title={active ? 'Speaking...' : 'Speak'}
-          disabled={!textInput.value || textInput.value.length <= 0 || active}
-          onPress={speak}
+        ) : (
+          <Picker
+            onValueChange={value => {
+              setPreferredOutputIndex(value);
+            }}
+            selectedValue={
+              preferredOutputIndex === undefined
+                ? outputs.length - 1
+                : preferredOutputIndex
+            }
+            style={{ flex: 1.25 }}
+          >
+            {outputs.map((output, idx) => {
+              return <Picker.Item key={idx} label={output} value={idx} />;
+            })}
+          </Picker>
+        )}
+      </View>
+      <View style={styles.input}>
+        <TextInput
+          {...textInput}
+          placeholder="Type something to say..."
+          onSubmitEditing={speak}
+          returnKeyType="done"
+          enablesReturnKeyAutomatically
         />
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          <Picker {...providerPicker} style={{ flex: 1 }}>
-            {speech.getProviders().map(provider => {
-              return (
-                <Picker.Item key={provider} label={provider} value={provider} />
-              );
-            })}
-          </Picker>
-          <Picker {...voicePicker} style={{ flex: 1.25 }}>
-            {voices.map(voice => {
-              const { id, name } = voice;
-              return <Picker.Item key={id} label={name} value={id} />;
-            })}
-          </Picker>
-        </View>
-        <View style={{ flex: 1, paddingHorizontal: 10 }}>
-          <Slider {...speakingRateSlider} />
-          <Text>Speaking Rate: {speakingRateSlider.value}</Text>
-          <Slider {...pitchSlider} />
-          <Text>Pitch: {pitchSlider.value}</Text>
-          <Slider {...volumeSlider} />
-          <Text>Volume: {volumeSlider.value}</Text>
-        </View>
-      </KeyboardAvoidingView>
+      </View>
+      <Button
+        title={active ? 'Speaking...' : 'Speak'}
+        disabled={!textInput.value || textInput.value.length <= 0 || active}
+        onPress={speak}
+      />
+      <View style={{ flexDirection: 'row', flex: 1 }}>
+        <Picker {...providerPicker} style={{ flex: 1 }}>
+          {speech.getProviders().map(provider => {
+            return (
+              <Picker.Item key={provider} label={provider} value={provider} />
+            );
+          })}
+        </Picker>
+        <Picker {...voicePicker} style={{ flex: 1.25 }}>
+          {voices.map(voice => {
+            const { id, name } = voice;
+            return <Picker.Item key={id} label={name} value={id} />;
+          })}
+        </Picker>
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <Slider {...speakingRateSlider} />
+        <Text>Speaking Rate: {speakingRateSlider.value}</Text>
+        <Slider {...pitchSlider} />
+        <Text>Pitch: {pitchSlider.value}</Text>
+        <Slider {...volumeSlider} />
+        <Text>Volume: {volumeSlider.value}</Text>
+      </View>
     </SafeAreaView>
   );
 };
 
-function fetchVoices(providerPicker: any, voicePicker: any) {
+function useOutputs() {
+  const [outputs, setOutputs] = useState<string[]>([]);
+  useEffect(() => {
+    async function setup() {
+      const res = await speech.getOutputs();
+      setOutputs(res);
+    }
+
+    setup();
+  }, []);
+
+  return outputs;
+}
+
+function useVoices(providerPicker: any, voicePicker: any) {
   const provider = providerPicker.selectedValue;
   const [voices, setVoices] = useState<Voice[]>([]);
   useEffect(() => {
@@ -119,35 +170,35 @@ function fetchVoices(providerPicker: any, voicePicker: any) {
   return voices;
 }
 
-function registerSpeechListeners() {
+function useSpeechListeners() {
   const [state, setState] = useState<{ active: boolean; error?: Error }>({
     active: false
   });
 
   useEffect(() => {
     const speechLoadingListener = speech.events.addListener(
-      speech.constants.events.SPEECH_LOADING_EVENT,
+      speech.constants.events.SPEECH_LOADING,
       () => {
         setState({ active: true });
       }
     );
 
     const speechStartListener = speech.events.addListener(
-      speech.constants.events.SPEECH_START_EVENT,
+      speech.constants.events.SPEECH_START,
       () => {
         setState({ active: true });
       }
     );
 
     const speechEndListener = speech.events.addListener(
-      speech.constants.events.SPEECH_END_EVENT,
+      speech.constants.events.SPEECH_END,
       () => {
         setState({ active: false });
       }
     );
 
     const speechErrorListener = speech.events.addListener(
-      speech.constants.events.SPEECH_ERROR_EVENT,
+      speech.constants.events.SPEECH_ERROR,
       error => {
         setState({ active: false, error });
       }

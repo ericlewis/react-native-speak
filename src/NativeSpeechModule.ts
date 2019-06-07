@@ -33,14 +33,23 @@ export interface SpeechOptions {
 
   // Should we skip the queue, and speak right away?
   instant?: boolean;
+
+  // Which output to use for playback
+  // TODO: improve type with all options
+  preferredOutput?: string;
 }
 
 export interface Constants {
   events: {
-    SPEECH_LOADING_EVENT: string;
-    SPEECH_START_EVENT: string;
-    SPEECH_END_EVENT: string;
-    SPEECH_ERROR_EVENT: string;
+    SPEECH_LOADING: string;
+    SPEECH_START: string;
+    SPEECH_END: string;
+    SPEECH_ERROR: string;
+  };
+  outputs: {
+    PHONE_SPEAKER: string;
+    BLUETOOTH: string;
+    HEADPHONES: string;
   };
   provider?: string;
 }
@@ -50,6 +59,7 @@ export interface Constants {
  */
 export interface NativeSpeechModule extends EventSubscriptionVendor {
   getConstants: () => Constants;
+
   /**
    * Play LINEAR16 audio encoded in base64
    */
@@ -58,6 +68,8 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
     utterance: string,
     options: SpeechOptions
   ) => void;
+
+  getOutputs: () => Promise<string[]>;
 
   /**
    * Use the native synth to communicate
@@ -74,6 +86,9 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
    */
   saveProviderAsDefault: (name: string) => void;
 
+  /**
+   * Wether or not we are currently playing audio or speaking from the native synth
+   */
   isSpeaking: () => boolean;
 }
 

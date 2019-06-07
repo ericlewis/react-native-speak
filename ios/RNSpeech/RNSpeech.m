@@ -23,15 +23,25 @@
 RCT_EXPORT_MODULE();
 
 static NSString *DEFAULT_PROVIDER_KEY = @"DEFAULT_PROVIDER_KEY";
+
 static NSString *SPEECH_LOADING_EVENT = @"SPEECH_LOADING_EVENT";
 static NSString *SPEECH_START_EVENT = @"SPEECH_START_EVENT";
 static NSString *SPEECH_END_EVENT = @"SPEECH_END_EVENT";
 static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
 
+static NSString *OUTPUT_PHONE_SPEAKER = @"Speaker";
+static NSString *OUTPUT_BLUETOOTH = @"Bluetooth";
+static NSString *OUTPUT_HEADPHONES = @"Headphones";
+
 - (instancetype)init
 {
   if (self = [super init]) {
     utterances_ = [NSMutableDictionary new];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(audioSessionRouteChanged:)
+                                                 name:AVAudioSessionRouteChangeNotification
+                                               object:nil];
   }
   
   return self;
@@ -49,10 +59,15 @@ static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
 - (NSDictionary *)getConstants {
   return @{
            @"events": @{
-             @"SPEECH_LOADING_EVENT" : SPEECH_LOADING_EVENT,
-             @"SPEECH_START_EVENT"   : SPEECH_START_EVENT,
-             @"SPEECH_END_EVENT"     : SPEECH_END_EVENT,
-             @"SPEECH_ERROR_EVENT"   : SPEECH_ERROR_EVENT
+             @"SPEECH_LOADING" : SPEECH_LOADING_EVENT,
+             @"SPEECH_START"   : SPEECH_START_EVENT,
+             @"SPEECH_END"     : SPEECH_END_EVENT,
+             @"SPEECH_ERROR"   : SPEECH_ERROR_EVENT
+           },
+           @"outputs": @{
+             @"PHONE_SPEAKER" : OUTPUT_PHONE_SPEAKER,
+             @"BLUETOOTH" : OUTPUT_BLUETOOTH,
+             @"HEADPHONES": OUTPUT_HEADPHONES
            },
            @"provider": RCTNullIfNil([NSUserDefaults.standardUserDefaults valueForKey:DEFAULT_PROVIDER_KEY])
            };
@@ -63,24 +78,34 @@ static NSString *SPEECH_ERROR_EVENT = @"SPEECH_ERROR_EVENT";
   return [[[self getConstants] valueForKey:@"events"] allValues];
 }
 
+- (void)audioSessionRouteChanged:(NSNotification *)notification
+{
+  NSLog(@"%@", notification);
+}
+
 RCT_EXPORT_METHOD(saveProviderAsDefault:(NSString *)name)
 {
   [NSUserDefaults.standardUserDefaults setObject:name forKey:DEFAULT_PROVIDER_KEY];
 }
 
-RCT_EXPORT_METHOD(getAudioSources:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(getOutputs:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryMultiRoute error:nil];
-  NSArray *sources = [[session currentRoute] outputs];
-  NSMutableArray *mutableSources = [[NSMutableArray alloc] initWithCapacity:sources.count];
+  AVAudioSessionPortDescription *source = [[[session currentRoute] outputs] firstObject];
+  NSMutableArray *outputs = [[NSMutableArray alloc] initWithCapacity:2];
   
-  for (AVAudioSessionPortDescription *source in sources) {
-    [mutableSources addObject:@{@"name": source.portName}];
+  [outputs addObject:OUTPUT_PHONE_SPEAKER];
+  
+  if ([[source portType] isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
+      [[source portType] isEqualToString:AVAudioSessionPortBluetoothLE] ||
+      [[source portType] isEqualToString:AVAudioSessionPortBluetoothHFP]) {
+    [outputs addObject:OUTPUT_BLUETOOTH];
+  } else if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
+    [outputs addObject:OUTPUT_HEADPHONES];
   }
   
-  resolve(mutableSources);
+  resolve(outputs);
 }
 
 RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
@@ -95,36 +120,38 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
   resolve(convertedVoices);
 }
 
+RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
+{
+  return @(player_.isPlaying == TRUE || synth_.isSpeaking == TRUE);
+}
+
+
 #pragma mark - Audio Player
 
 RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
                   forUtterance:(NSString *)utterance
                   withOptions:(NSDictionary *)options)
 {
+  NSNumber *shouldDuck = options[@"ducking"];
+  [self resetAudioSession:shouldDuck == nil || [shouldDuck isEqual:@(1)]];
+  
   NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
   
   NSDictionary *body = @{@"utterance": utterance, @"options": options};
   NSString *utteranceId = [self hashStringForObject:audio];
   [utterances_ setValue:body forKey:utteranceId];
-  
   [self sendEventWithName:SPEECH_START_EVENT body:body];
 
   NSError *error;
 
-  NSNumber *shouldDuck = options[@"ducking"];
-  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [self resetAudioSession];
-    [session setActive:YES error:&error];
-    if (error != nil) {
-      RCTLogError(@"Playback error");
-      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
-      [utterances_ removeObjectForKey:utteranceId];
-      return;
-    }
-  }
+  AVAudioSession *session = [AVAudioSession sharedInstance];
   
+  NSString *preferredOutput = options[@"preferredOutput"];
+  [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
+  
+  [session setActive:YES error:&error];
+
   player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
   NSNumber *volume = options[@"volume"];
@@ -141,18 +168,15 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   }
 }
 
-RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
-{
-  return @(player_.isPlaying == TRUE || synth_.isSpeaking == TRUE);
-}
-
 #pragma mark - Native Synth Provider
 
 RCT_EXPORT_METHOD(speak:(NSString *)utterance
                   options:(NSDictionary *)options)
 {
+  NSNumber *shouldDuck = options[@"ducking"];
   [self setupSynth];
-  
+  [self resetAudioSession:shouldDuck == nil || [shouldDuck isEqual:@(1)]];
+
   NSDictionary *body = @{@"utterance": utterance, @"options": options};
   
   [self sendEventWithName:SPEECH_START_EVENT body:body];
@@ -189,24 +213,14 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
   
   NSString *utteranceId = [self hashStringForObject:synthUtterance];
   [utterances_ setValue:body forKey:utteranceId];
+
+  AVAudioSession *session = [AVAudioSession sharedInstance];
   
+  NSString *preferredOutput = options[@"preferredOutput"];
+  [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
   
-  // NSNumber is like a nilable BOOL
-  NSNumber *shouldDuck = options[@"ducking"];
-  if (shouldDuck == nil || [shouldDuck isEqual:@(1)]) {
-    NSError *error;
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setActive:YES error:&error];
-    if (error != nil) {
-      [self sendEventWithName:SPEECH_ERROR_EVENT body:@{@"utterance": utterance, @"options": options, @"error": error}];
-      RCTLogError(@"Playback error");
-      [utterances_ removeObjectForKey:utteranceId];
-      return;
-    }
-  }
-  
+  [session setActive:YES error:nil];
   [synth_ speakUtterance:synthUtterance];
-  [self resetAudioSession];
 }
 
 #pragma mark - Delegates
@@ -253,11 +267,11 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
                error:nil];
 }
 
-- (void)resetAudioSession
+- (void)resetAudioSession:(BOOL)shouldDuck
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryPlayback
-           withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers
+  [session setCategory:AVAudioSessionCategoryPlayAndRecord
+           withOptions:shouldDuck ? AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers : AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers
                  error:nil];
 }
 

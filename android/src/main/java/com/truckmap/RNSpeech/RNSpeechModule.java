@@ -48,6 +48,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
     private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
+    private static final String OUTPUT_PHONE_SPEAKER = "Speaker";
+    private static final String OUTPUT_BLUETOOTH = "Bluetooth";
+    private static final String OUTPUT_HEADPHONES = "Headphones";
+
     private SharedPreferences preferences;
 
     private TextToSpeech tts;
@@ -57,21 +61,21 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
-			public void onAudioFocusChange(int focusChange) {
-                // do nothing
-            }
+        public void onAudioFocusChange(int focusChange) {
+            // do nothing
+        }
     };
 
     private boolean isPlaying;
 
-    private HashMap<String,HashMap<String,Object>> mUtteranceMap = new HashMap();
+    private HashMap<String, HashMap<String, Object>> mUtteranceMap = new HashMap();
 
     public RNSpeechModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
         Context appContext = reactContext.getApplicationContext();
         audioManager = (AudioManager) appContext.getSystemService(reactContext.AUDIO_SERVICE);
-        preferences = getReactApplicationContext().getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);  
+        preferences = getReactApplicationContext().getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);
 
         tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
             @Override
@@ -85,14 +89,16 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             @Override
             public void onStart(String utteranceId) {
                 HashMap utteranceMap = mUtteranceMap.get(utteranceId);
-                sendEvent(SPEECH_START_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
+                sendEvent(SPEECH_START_EVENT, (String) utteranceMap.get("utterance"),
+                        (ReadableMap) utteranceMap.get("options"));
             }
 
             @Override
             public void onDone(String utteranceId) {
                 HashMap utteranceMap = mUtteranceMap.get(utteranceId);
                 tts.setVoice(previousVoice);
-                sendEvent(SPEECH_END_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
+                sendEvent(SPEECH_END_EVENT, (String) utteranceMap.get("utterance"),
+                        (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
 
@@ -101,7 +107,8 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             public void onError(String utteranceId) {
                 HashMap utteranceMap = mUtteranceMap.get(utteranceId);
                 tts.setVoice(previousVoice);
-                sendEvent(SPEECH_ERROR_EVENT, (String) utteranceMap.get("utterance"), (ReadableMap) utteranceMap.get("options"));
+                sendEvent(SPEECH_ERROR_EVENT, (String) utteranceMap.get("utterance"),
+                        (ReadableMap) utteranceMap.get("options"));
                 mUtteranceMap.remove(utteranceId);
             }
         });
@@ -120,13 +127,19 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     @Override
     public @Nullable Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        final Map<String, Object> events = new HashMap<>();
 
-        events.put(SPEECH_LOADING_EVENT, SPEECH_LOADING_EVENT);
-        events.put(SPEECH_START_EVENT, SPEECH_START_EVENT);
-        events.put(SPEECH_END_EVENT, SPEECH_END_EVENT);
-        events.put(SPEECH_ERROR_EVENT, SPEECH_ERROR_EVENT);
+        final Map<String, Object> events = new HashMap<>();
+        events.put("SPEECH_LOADING", SPEECH_LOADING_EVENT);
+        events.put("SPEECH_START", SPEECH_START_EVENT);
+        events.put("SPEECH_END", SPEECH_END_EVENT);
+        events.put("SPEECH_ERROR", SPEECH_ERROR_EVENT);
         constants.put("events", events);
+
+        final Map<String, Object> outputs = new HashMap<>();
+        outputs.put("PHONE_SPEAKER", OUTPUT_PHONE_SPEAKER);
+        outputs.put("BLUETOOTH", OUTPUT_BLUETOOTH);
+        outputs.put("HEADPHONES", OUTPUT_HEADPHONES);
+        constants.put("outputs", outputs);
 
         // Settings
         constants.put("provider", preferences.getString(DEFAULT_PROVIDER_KEY, null));
@@ -151,15 +164,9 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
-        int intSize = AudioTrack.getMinBufferSize(16000, 
-                                                AudioFormat.CHANNEL_OUT_MONO, 
-                                                AudioFormat.ENCODING_PCM_16BIT);
-        AudioTrack at = new AudioTrack(audioManager.STREAM_MUSIC, 
-                                    16000, 
-                                    AudioFormat.CHANNEL_OUT_MONO, 
-                                    AudioFormat.ENCODING_PCM_16BIT, 
-                                    intSize, 
-                                    AudioTrack.MODE_STREAM);
+        int intSize = AudioTrack.getMinBufferSize(16000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        AudioTrack at = new AudioTrack(audioManager.STREAM_MUSIC, 16000, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
         at.setVolume(volume);
         if (at != null) {
             sendEvent(SPEECH_START_EVENT, utterance, options);
@@ -192,19 +199,20 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             if (previousVoice.getName().equals(voiceId) == false) {
                 if (Build.VERSION.SDK_INT >= 21) {
                     try {
-                        for(Voice voice: tts.getVoices()) {
-                            if(voice.getName().equals(voiceId)) {
+                        for (Voice voice : tts.getVoices()) {
+                            if (voice.getName().equals(voiceId)) {
                                 int result = tts.setVoice(voice);
                             }
                         }
                     } catch (Exception e) {
-                      // Purposefully ignore exceptions here due to some buggy TTS engines.
-                      // See http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
+                        // Purposefully ignore exceptions here due to some buggy TTS engines.
+                        // See
+                        // http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
                     }
                 } else {
                     // do nothing
                 }
-            } 
+            }
         }
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
@@ -234,17 +242,19 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         // TODO: notInstalled / network connection required may have equiv on iOS
         if (Build.VERSION.SDK_INT >= 21) {
             try {
-                for(Voice voice: tts.getVoices()) {
+                for (Voice voice : tts.getVoices()) {
                     WritableMap voiceMap = Arguments.createMap();
                     voiceMap.putString("id", voice.getName());
                     voiceMap.putString("name", voice.getName());
                     voiceMap.putBoolean("networkConnectionRequired", voice.isNetworkConnectionRequired());
-                    voiceMap.putBoolean("notInstalled", voice.getFeatures().contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED));
+                    voiceMap.putBoolean("notInstalled",
+                            voice.getFeatures().contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED));
                     voiceArray.pushMap(voiceMap);
                 }
             } catch (Exception e) {
-              // Purposefully ignore exceptions here due to some buggy TTS engines.
-              // See http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
+                // Purposefully ignore exceptions here due to some buggy TTS engines.
+                // See
+                // http://stackoverflow.com/questions/26730082/illegalargumentexception-invalid-int-os-with-samsung-tts
             }
         } else {
             // no extra voice options on older SDKs...
@@ -254,9 +264,20 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getAudioSources(Promise promise) {
-        // TODO: implement
-        promise.resolve(null);
+    public void getOutputs(Promise promise) {
+        WritableArray outputsArray = Arguments.createArray();
+
+        outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
+
+        if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
+            outputsArray.pushString(OUTPUT_BLUETOOTH);
+        }
+
+        if (audioManager.isWiredHeadsetOn()) {
+            outputsArray.pushString(OUTPUT_HEADPHONES);
+        }
+
+        promise.resolve(outputsArray);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
@@ -268,22 +289,15 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         int duckType = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK;
 
         if (Build.VERSION.SDK_INT >= 26) {
-            AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                .build();
-            mAudioFocusRequest = new AudioFocusRequest.Builder(duckType)
-                .setAudioAttributes(mPlaybackAttributes)
-                .setAcceptsDelayedFocusGain(true)
-                .setOnAudioFocusChangeListener(afChangeListener)
-                .build();
+            AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build();
+            mAudioFocusRequest = new AudioFocusRequest.Builder(duckType).setAudioAttributes(mPlaybackAttributes)
+                    .setAcceptsDelayedFocusGain(true).setOnAudioFocusChangeListener(afChangeListener).build();
 
             int result = audioManager.requestAudioFocus(mAudioFocusRequest);
             return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
         } else {
-            int result = audioManager.requestAudioFocus(afChangeListener,
-                                                            AudioManager.STREAM_MUSIC,
-                                                            duckType);
+            int result = audioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, duckType);
 
             return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
         }
@@ -297,32 +311,66 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void sendEvent(String eventName,
-                           String utterance,
-                           @Nullable ReadableMap options) {
+    private void sendEvent(String eventName, String utterance, @Nullable ReadableMap options) {
 
-        boolean shouldDuck = options != null && options.hasKey("ducking") ? (boolean) options.getBoolean("ducking") : true;
+        boolean shouldDuck = options != null && options.hasKey("ducking") ? (boolean) options.getBoolean("ducking")
+                : true;
 
-        switch(eventName)
-        {
-            case SPEECH_END_EVENT:
-            case SPEECH_ERROR_EVENT:
-                if (shouldDuck) {
-                    releaseDucking();
-                }
-                break;
-            case SPEECH_START_EVENT:
-                if (shouldDuck) {
-                    duckAudio();
-                }
-            default:
-                // do nothing
+        switch (eventName) {
+        case SPEECH_END_EVENT:
+        case SPEECH_ERROR_EVENT:
+            if (shouldDuck) {
+                releaseDucking();
+            }
+            break;
+        case SPEECH_START_EVENT:
+            if (shouldDuck) {
+                duckAudio();
+                setAudioOutput(options);
+            }
+        default:
+            // do nothing
         }
 
         WritableMap emittableOptions = Arguments.createMap();
         emittableOptions.merge(options);
-        getReactApplicationContext()
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, emittableOptions);
+        getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName,
+                emittableOptions);
+    }
+
+    private void setAudioOutput(ReadableMap options) {
+        if (options != null && options.hasKey("preferredOutput")) {
+            String audioPort = options.getString("preferredOutput");
+            switch (audioPort) {
+            case OUTPUT_BLUETOOTH:
+                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+                audioManager.startBluetoothSco();
+                audioManager.setBluetoothScoOn(true);
+                break;
+            case OUTPUT_HEADPHONES:
+                if (audioManager.isBluetoothScoOn() || audioManager.isBluetoothA2dpOn()) {
+                    audioManager.setMode(AudioManager.MODE_IN_CALL);
+                } else {
+                    audioManager.setMode(AudioManager.MODE_NORMAL);
+                }
+                audioManager.stopBluetoothSco();
+                audioManager.setBluetoothScoOn(false);
+                audioManager.setSpeakerphoneOn(false);
+                audioManager.setWiredHeadsetOn(true);
+                break;
+            case OUTPUT_PHONE_SPEAKER:
+                if (audioManager.isBluetoothScoOn() || audioManager.isBluetoothA2dpOn()) {
+                    audioManager.setMode(AudioManager.MODE_IN_CALL);
+                } else {
+                    audioManager.setMode(AudioManager.MODE_NORMAL);
+                }
+                audioManager.stopBluetoothSco();
+                audioManager.setBluetoothScoOn(false);
+                audioManager.setSpeakerphoneOn(true);
+                break;
+            default:
+                break;
+            }
+        }
     }
 }

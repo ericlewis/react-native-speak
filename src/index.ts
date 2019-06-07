@@ -17,6 +17,11 @@ interface SpeechModule {
   events: NativeEventEmitter;
 
   /**
+   * Returns a list of available outputs
+   */
+  getOutputs: (key: string) => Promise<string[]>;
+
+  /**
    * Returns a list of voices from the Google API
    */
   getVoices: (key: string) => Promise<Voice[]>;
@@ -27,7 +32,8 @@ interface SpeechModule {
   speak: (utterance: string, options: SpeechOptions) => Promise<any>;
 }
 
-interface SpeakPacket {
+// TODO: improve this name
+interface SpeechUtterance {
   currentProvider: Provider;
   utterance: string;
   options: SpeechOptions;
@@ -35,23 +41,26 @@ interface SpeakPacket {
 
 class Speech implements SpeechModule {
   public events = new NativeEventEmitter(RNSpeech);
-  private providerManager: ProviderManager;
+  public constants =
+    Platform.OS === 'ios'
+      ? RNSpeech.getConstants()
+      : ((RNSpeech as unknown) as Constants);
 
-  private queue = new Queue<SpeakPacket>();
+  private providerManager: ProviderManager;
+  private queue = new Queue<SpeechUtterance>();
 
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
     this.queue.addListener(this.queueListener);
 
-    // TODO: we should have these constants somewhere in JS too, would be cool to auto gen as well..
-    this.events.addListener('SPEECH_END_EVENT', this.playbackEndedListener);
+    this.events.addListener(
+      this.constants.events.SPEECH_END,
+      this.playbackEndedListener
+    );
   }
 
-  get constants(): Constants {
-    // have to cast types bc android doesn't like getConstants
-    return Platform.OS === 'ios'
-      ? RNSpeech.getConstants()
-      : ((RNSpeech as unknown) as Constants);
+  public getOutputs() {
+    return RNSpeech.getOutputs();
   }
 
   public setCurrentProvider(name: string) {
@@ -117,7 +126,7 @@ class Speech implements SpeechModule {
       // see if we need to get some audio content first
       // if we don't that means we should just try to play the utterance
       if (provider.getAudioContent) {
-        this.events.emit(this.constants.events.SPEECH_LOADING_EVENT);
+        this.events.emit(this.constants.events.SPEECH_LOADING);
         const content = await provider.getAudioContent(
           cleanedUtterance,
           options
