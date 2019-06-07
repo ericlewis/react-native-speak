@@ -92,24 +92,26 @@ RCT_EXPORT_METHOD(getOutputs:(RCTPromiseResolveBlock)resolve
   BOOL isBluetoothConnected = false;
   
   for (AVAudioSessionPortDescription *source in sources) {
-    if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
-      isHeadsetOn = true;
-      continue;
-    }
     
     if ([[source portType] isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
         [[source portType] isEqualToString:AVAudioSessionPortBluetoothLE] ||
         [[source portType] isEqualToString:AVAudioSessionPortBluetoothHFP]) {
       isBluetoothConnected = true;
+      continue;
+    }
+    
+    if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
+      isHeadsetOn = true;
     }
   }
   
-  if (isHeadsetOn) {
-    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE]];
-  } else if (isBluetoothConnected) {
-    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE, OUTPUT_PHONE_SPEAKER, OUTPUT_BLUETOOTH]];
-  } else {
-    mutableSources = [NSMutableArray arrayWithArray:@[OUTPUT_PHONE, OUTPUT_PHONE_SPEAKER]];
+  // We always have a speaker (right?)
+  [mutableSources addObject:OUTPUT_PHONE_SPEAKER];
+  
+  if (isBluetoothConnected) {
+    [mutableSources addObject:OUTPUT_HEADPHONES];
+  } else if (isHeadsetOn) {
+    [mutableSources addObject:OUTPUT_BLUETOOTH];
   }
   
   resolve(mutableSources);
