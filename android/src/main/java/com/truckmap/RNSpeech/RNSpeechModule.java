@@ -326,6 +326,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         case SPEECH_START_EVENT:
             if (shouldDuck) {
                 duckAudio();
+                setAudioOutput(options);
             }
         default:
             // do nothing
@@ -335,5 +336,41 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         emittableOptions.merge(options);
         getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName,
                 emittableOptions);
+    }
+
+    private void setAudioOutput(ReadableMap options) {
+        if (options != null && options.hasKey("preferredOutput")) {
+            String audioPort = options.getString("preferredOutput");
+            switch (audioPort) {
+            case OUTPUT_BLUETOOTH:
+                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+                audioManager.startBluetoothSco();
+                audioManager.setBluetoothScoOn(true);
+                break;
+            case OUTPUT_HEADPHONES:
+                if (audioManager.isBluetoothScoOn() || audioManager.isBluetoothA2dpOn()) {
+                    audioManager.setMode(AudioManager.MODE_IN_CALL);
+                } else {
+                    audioManager.setMode(AudioManager.MODE_NORMAL);
+                }
+                audioManager.stopBluetoothSco();
+                audioManager.setBluetoothScoOn(false);
+                audioManager.setSpeakerphoneOn(false);
+                audioManager.setWiredHeadsetOn(true);
+                break;
+            case OUTPUT_PHONE_SPEAKER:
+                if (audioManager.isBluetoothScoOn() || audioManager.isBluetoothA2dpOn()) {
+                    audioManager.setMode(AudioManager.MODE_IN_CALL);
+                } else {
+                    audioManager.setMode(AudioManager.MODE_NORMAL);
+                }
+                audioManager.stopBluetoothSco();
+                audioManager.setBluetoothScoOn(false);
+                audioManager.setSpeakerphoneOn(true);
+                break;
+            default:
+                break;
+            }
+        }
     }
 }
