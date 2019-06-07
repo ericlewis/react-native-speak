@@ -48,7 +48,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
     private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
-    private static final String OUTPUT_PHONE = "Phone";
     private static final String OUTPUT_PHONE_SPEAKER = "Phone Speaker";
     private static final String OUTPUT_BLUETOOTH = "Bluetooth";
     private static final String OUTPUT_HEADPHONES = "Headphones";
@@ -137,7 +136,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         constants.put("events", events);
 
         final Map<String, Object> outputs = new HashMap<>();
-        outputs.put("PHONE", OUTPUT_PHONE);
         outputs.put("PHONE_SPEAKER", OUTPUT_PHONE_SPEAKER);
         outputs.put("BLUETOOTH", OUTPUT_BLUETOOTH);
         outputs.put("HEADPHONES", OUTPUT_HEADPHONES);
@@ -268,16 +266,12 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getOutputs(Promise promise) {
         WritableArray outputsArray = Arguments.createArray();
+        outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
 
-        if (audioManager.isWiredHeadsetOn()) {
-            outputsArray.pushString(OUTPUT_HEADPHONES);
-        } else if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
-            outputsArray.pushString(OUTPUT_PHONE);
-            outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
+        if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
             outputsArray.pushString(OUTPUT_BLUETOOTH);
-        } else {
-            outputsArray.pushString(OUTPUT_PHONE);
-            outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
+        } else if (audioManager.isWiredHeadsetOn()) {
+            outputsArray.pushString(OUTPUT_HEADPHONES);
         }
 
         promise.resolve(outputsArray);
