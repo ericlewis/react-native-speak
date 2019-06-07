@@ -264,17 +264,14 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getOutputs(Promise promise) {
-        WritableArray outputsArray = Arguments.createArray();
-        outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
-
+    public void getCurrentOutput(Promise promise) {
         if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
-            outputsArray.pushString(OUTPUT_BLUETOOTH);
+            promise.resolve(OUTPUT_BLUETOOTH);
         } else if (audioManager.isWiredHeadsetOn()) {
-            outputsArray.pushString(OUTPUT_HEADPHONES);
+            promise.resolve(OUTPUT_HEADPHONES);
+        } else {
+            promise.resolve(OUTPUT_PHONE_SPEAKER);
         }
-
-        promise.resolve(outputsArray);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
