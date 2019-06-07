@@ -66,7 +66,7 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
     options: SpeechOptions
   ) => void;
 
-  getOutputs: () => Promise<{}>;
+  getOutputs: () => Promise<string[]>;
 
   /**
    * Use the native synth to communicate

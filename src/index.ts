@@ -19,6 +19,11 @@ interface SpeechModule {
   /**
    * Returns a list of voices from the Google API
    */
+  getOutputs: (key: string) => Promise<string[]>;
+
+  /**
+   * Returns a list of voices from the Google API
+   */
   getVoices: (key: string) => Promise<Voice[]>;
 
   /**
@@ -52,6 +57,10 @@ class Speech implements SpeechModule {
       this.constants.events.SPEECH_END,
       this.playbackEndedListener
     );
+  }
+
+  public getOutputs() {
+    return RNSpeech.getOutputs();
   }
 
   public setCurrentProvider(name: string) {
