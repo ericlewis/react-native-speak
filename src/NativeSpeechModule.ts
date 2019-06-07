@@ -57,7 +57,7 @@ export interface Constants {
 /**
  * The interface for interacting with the native side of things
  */
-export interface NativeSpeechModule extends EventSubscriptionVendor {
+export interface NativeSpeechModuleInterface extends EventSubscriptionVendor {
   getConstants: () => Constants;
 
   /**
@@ -92,4 +92,4 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
   isSpeaking: () => boolean;
 }
 
-export const RNSpeech: NativeSpeechModule = NativeModules.RNSpeech;
+export const RNSpeech: NativeSpeechModuleInterface = NativeModules.RNSpeech;

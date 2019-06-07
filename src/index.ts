@@ -11,9 +11,9 @@ import ProviderManager, { Provider } from './providers';
 import Queue, { EventName } from './Queue';
 
 /**
- * The interface for the JS class, typically will be used by frontend
+ * The interface for the JS Module
  */
-export interface SpeechModule {
+export interface SpeechModuleInterface {
   events: NativeEventEmitter;
 
   /**
@@ -52,15 +52,21 @@ export interface SpeechModule {
   getProviders: () => string[];
 }
 
-// TODO: improve this name
-interface SpeechUtterance {
+export interface SpeechUtterance {
   currentProvider: Provider;
   utterance: string;
   options: SpeechOptions;
 }
 
-class Speech implements SpeechModule {
+class Speech implements SpeechModuleInterface {
+  /**
+   * Native event emitter
+   */
   public events = new NativeEventEmitter(RNSpeech);
+
+  /**
+   * Exported constants from native
+   */
   public constants =
     Platform.OS === 'ios'
       ? RNSpeech.getConstants()
@@ -69,6 +75,10 @@ class Speech implements SpeechModule {
   private providerManager: ProviderManager;
   private queue = new Queue<SpeechUtterance>();
 
+  /**
+   * Creates a new instance of Speech
+   * Note: You should not try to use multiple instances of this
+   */
   constructor(providers?: Provider[]) {
     this.providerManager = new ProviderManager(providers);
     this.queue.addListener(this.queueListener);
@@ -79,26 +89,44 @@ class Speech implements SpeechModule {
     );
   }
 
+  /**
+   * Returns a list of available outputs in human readable format
+   */
   public getOutputs() {
     return RNSpeech.getOutputs();
   }
 
+  /**
+   * Sets the active provider (persisted across launches)
+   */
   public setCurrentProvider(name: string) {
     this.providerManager.setCurrentProvider(name);
   }
 
+  /**
+   * Returns the active providers name
+   */
   public getCurrentProvider(): string {
     return this.providerManager.currentProvider.getClassName();
   }
 
+  /**
+   * Returns a list of available provider names
+   */
   public getProviders(): string[] {
     return this.providerManager.getProviderNames();
   }
 
+  /**
+   * Returns a list of available voices for the current provider
+   */
   public async getVoices() {
     return this.providerManager.currentProvider.getVoices();
   }
 
+  /**
+   * Returns a list of available voices for a given providers name
+   */
   public async getVoicesForProvider(name: string) {
     return this.providerManager.getProviderForName(name).getVoices();
   }
