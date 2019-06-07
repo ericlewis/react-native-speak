@@ -8,10 +8,10 @@ import {
   Alert,
   AppRegistry,
   Button,
-  KeyboardAvoidingView,
   Picker,
   Platform,
   SafeAreaView,
+  SegmentedControlIOS,
   StyleSheet,
   Text,
   TextInput,
@@ -33,9 +33,10 @@ const App: React.FunctionComponent<Props> = () => {
   const pitchSlider = useSlider(0.0, 1.0, -1.0);
   const volumeSlider = useSlider(1.0);
 
-  const voices = fetchVoices(providerPicker, voicePicker);
+  const voices = useVoices(providerPicker, voicePicker);
+  const outputs = useOutputs();
 
-  const { active, error } = registerSpeechListeners();
+  const { active, error } = useSpeechListeners();
 
   if (error) {
     Alert.alert(error.message);
@@ -56,50 +57,65 @@ const App: React.FunctionComponent<Props> = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <View style={styles.input}>
-          <TextInput
-            {...textInput}
-            placeholder="Type something to say..."
-            onSubmitEditing={speak}
-            returnKeyType="done"
-            enablesReturnKeyAutomatically
-          />
-        </View>
-        <Button
-          title={active ? 'Speaking...' : 'Speak'}
-          disabled={!textInput.value || textInput.value.length <= 0 || active}
-          onPress={speak}
+      <View style={{ paddingHorizontal: 10, marginVertical: 10 }}>
+        <SegmentedControlIOS values={outputs} />
+      </View>
+      <View style={styles.input}>
+        <TextInput
+          {...textInput}
+          placeholder="Type something to say..."
+          onSubmitEditing={speak}
+          returnKeyType="done"
+          enablesReturnKeyAutomatically
         />
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          <Picker {...providerPicker} style={{ flex: 1 }}>
-            {speech.getProviders().map(provider => {
-              return (
-                <Picker.Item key={provider} label={provider} value={provider} />
-              );
-            })}
-          </Picker>
-          <Picker {...voicePicker} style={{ flex: 1.25 }}>
-            {voices.map(voice => {
-              const { id, name } = voice;
-              return <Picker.Item key={id} label={name} value={id} />;
-            })}
-          </Picker>
-        </View>
-        <View style={{ flex: 1, paddingHorizontal: 10 }}>
-          <Slider {...speakingRateSlider} />
-          <Text>Speaking Rate: {speakingRateSlider.value}</Text>
-          <Slider {...pitchSlider} />
-          <Text>Pitch: {pitchSlider.value}</Text>
-          <Slider {...volumeSlider} />
-          <Text>Volume: {volumeSlider.value}</Text>
-        </View>
-      </KeyboardAvoidingView>
+      </View>
+      <Button
+        title={active ? 'Speaking...' : 'Speak'}
+        disabled={!textInput.value || textInput.value.length <= 0 || active}
+        onPress={speak}
+      />
+      <View style={{ flexDirection: 'row', flex: 1 }}>
+        <Picker {...providerPicker} style={{ flex: 1 }}>
+          {speech.getProviders().map(provider => {
+            return (
+              <Picker.Item key={provider} label={provider} value={provider} />
+            );
+          })}
+        </Picker>
+        <Picker {...voicePicker} style={{ flex: 1.25 }}>
+          {voices.map(voice => {
+            const { id, name } = voice;
+            return <Picker.Item key={id} label={name} value={id} />;
+          })}
+        </Picker>
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <Slider {...speakingRateSlider} />
+        <Text>Speaking Rate: {speakingRateSlider.value}</Text>
+        <Slider {...pitchSlider} />
+        <Text>Pitch: {pitchSlider.value}</Text>
+        <Slider {...volumeSlider} />
+        <Text>Volume: {volumeSlider.value}</Text>
+      </View>
     </SafeAreaView>
   );
 };
 
-function fetchVoices(providerPicker: any, voicePicker: any) {
+function useOutputs() {
+  const [outputs, setOutputs] = useState<string[]>([]);
+  useEffect(() => {
+    async function setup() {
+      const res = await speech.getOutputs();
+      setOutputs(res);
+    }
+
+    setup();
+  }, []);
+
+  return outputs;
+}
+
+function useVoices(providerPicker: any, voicePicker: any) {
   const provider = providerPicker.selectedValue;
   const [voices, setVoices] = useState<Voice[]>([]);
   useEffect(() => {
@@ -119,7 +135,7 @@ function fetchVoices(providerPicker: any, voicePicker: any) {
   return voices;
 }
 
-function registerSpeechListeners() {
+function useSpeechListeners() {
   const [state, setState] = useState<{ active: boolean; error?: Error }>({
     active: false
   });
