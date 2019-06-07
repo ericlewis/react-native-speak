@@ -17,9 +17,9 @@ interface SpeechModule {
   events: NativeEventEmitter;
 
   /**
-   * Returns a list of voices from the Google API
+   * Returns the current active output
    */
-  getOutputs: (key: string) => Promise<string[]>;
+  getCurrentOutput: (key: string) => Promise<string>;
 
   /**
    * Returns a list of voices from the Google API
@@ -59,8 +59,8 @@ class Speech implements SpeechModule {
     );
   }
 
-  public getOutputs() {
-    return RNSpeech.getOutputs();
+  public getCurrentOutput() {
+    return RNSpeech.getCurrentOutput();
   }
 
   public setCurrentProvider(name: string) {

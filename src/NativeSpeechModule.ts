@@ -33,6 +33,9 @@ export interface SpeechOptions {
 
   // Should we skip the queue, and speak right away?
   instant?: boolean;
+
+  // Output over the speaker
+  prefersSpeaker?: boolean;
 }
 
 export interface Constants {
@@ -65,7 +68,7 @@ export interface NativeSpeechModule extends EventSubscriptionVendor {
     options: SpeechOptions
   ) => void;
 
-  getOutputs: () => Promise<string[]>;
+  getCurrentOutput: () => Promise<string>;
 
   /**
    * Use the native synth to communicate

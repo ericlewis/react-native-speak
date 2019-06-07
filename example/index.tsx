@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   SegmentedControlIOS,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
   View
@@ -34,7 +35,8 @@ const App: React.FunctionComponent<Props> = () => {
   const volumeSlider = useSlider(1.0);
 
   const voices = useVoices(providerPicker, voicePicker);
-  const outputs = useOutputs();
+  const output = useCurrentOutput();
+  const [prefersSpeaker, setPrefersSpeaker] = useState(false);
 
   const { active, error } = useSpeechListeners();
 
@@ -50,15 +52,26 @@ const App: React.FunctionComponent<Props> = () => {
         speakingRate: speakingRateSlider.value,
         volume: volumeSlider.value,
         pitch: pitchSlider.value,
-        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm'
+        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm',
+        prefersSpeaker
       });
     }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ paddingHorizontal: 10, marginVertical: 10 }}>
-        <SegmentedControlIOS values={outputs} />
+      <View
+        style={{
+          paddingHorizontal: 10,
+          marginVertical: 10,
+          flexDirection: 'row'
+        }}
+      >
+        <SegmentedControlIOS
+          values={[output]}
+          style={{ flex: 1, marginRight: 10 }}
+        />
+        <Switch value={prefersSpeaker} onValueChange={setPrefersSpeaker} />
       </View>
       <View style={styles.input}>
         <TextInput
@@ -101,11 +114,11 @@ const App: React.FunctionComponent<Props> = () => {
   );
 };
 
-function useOutputs() {
-  const [outputs, setOutputs] = useState<string[]>([]);
+function useCurrentOutput() {
+  const [outputs, setOutputs] = useState<string>('');
   useEffect(() => {
     async function setup() {
-      const res = await speech.getOutputs();
+      const res = await speech.getCurrentOutput();
       setOutputs(res);
     }
 
