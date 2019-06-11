@@ -57,6 +57,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private TextToSpeech tts;
     private Voice previousVoice;
 
+    private AudioTrack at;
     private AudioManager audioManager;
     private AudioFocusRequest mAudioFocusRequest;
     private AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
@@ -84,7 +85,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
             }
         });
 
-        // TODO: we should pass along the options for the given utteranceId
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
@@ -165,7 +165,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
         int intSize = AudioTrack.getMinBufferSize(16000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        AudioTrack at = new AudioTrack(audioManager.STREAM_MUSIC, 16000, AudioFormat.CHANNEL_OUT_MONO,
+        at = new AudioTrack(audioManager.STREAM_MUSIC, 16000, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
         at.setVolume(volume);
         if (at != null) {
@@ -283,6 +283,21 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     @ReactMethod(isBlockingSynchronousMethod = true)
     public boolean isSpeaking() {
         return tts.isSpeaking() || isPlaying;
+    }
+
+    @ReactMethod
+    public boolean stop() {
+        if (tts.isSpeaking()) {
+            tts.stop();
+        } else if (isPlaying) {
+            at.stop();
+            isPlaying = false;
+            at.release();
+        }
+
+        // TODO: send events, we can just use the last utterance in the map.
+        // sendEvent(SPEECH_END_EVENT, utterance, options);
+        // mUtteranceMap.remove(utteranceId);
     }
 
     private Boolean duckAudio() {

@@ -90,6 +90,11 @@ export interface NativeSpeechModuleInterface extends EventSubscriptionVendor {
    * Wether or not we are currently playing audio or speaking from the native synth
    */
   isSpeaking: () => boolean;
+
+  /**
+   * Stops speaking/audio playback
+   */
+  stop: () => void;
 }
 
 export const RNSpeech: NativeSpeechModuleInterface = NativeModules.RNSpeech;

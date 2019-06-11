@@ -132,6 +132,13 @@ class Speech implements SpeechModuleInterface {
   }
 
   /**
+   * Stops speaking/audio playback
+   */
+  public stop() {
+    RNSpeech.stop();
+  }
+
+  /**
    * Note: speakInstantly option is ignored if you add a batch of utterances
    * @param utterance
    * @param options

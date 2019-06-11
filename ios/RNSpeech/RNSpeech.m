@@ -125,6 +125,15 @@ RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
   return @(player_.isPlaying == TRUE || synth_.isSpeaking == TRUE);
 }
 
+RCT_EXPORT_METHOD(stop)
+{
+  // TODO: send events, cleanup session
+  if (synth_.isSpeaking) {
+    [synth_ stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+  } else if (player_.isPlaying) {
+    [player_ stop];
+  }
+}
 
 #pragma mark - Audio Player
 

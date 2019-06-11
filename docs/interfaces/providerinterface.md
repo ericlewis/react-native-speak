@@ -32,7 +32,7 @@
 
 **● getAudioContent**: *`undefined` \| `function`*
 
-*Defined in [providers/BaseProvider.ts:6](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L6)*
+*Defined in [providers/BaseProvider.ts:6](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L6)*
 
 ___
 <a id="getvoices"></a>
@@ -41,7 +41,7 @@ ___
 
 **● getVoices**: *`function`*
 
-*Defined in [providers/BaseProvider.ts:5](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L5)*
+*Defined in [providers/BaseProvider.ts:5](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L5)*
 
 #### Type declaration
 ▸(): `Promise`<[Voice](voice.md)[]>
@@ -55,7 +55,7 @@ ___
 
 **● playAudioContent**: *`function`*
 
-*Defined in [providers/BaseProvider.ts:7](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L7)*
+*Defined in [providers/BaseProvider.ts:7](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L7)*
 
 #### Type declaration
 ▸(content: *`string`*, utterance: *`string`*, options: *[SpeechOptions](speechoptions.md)*): `void`
@@ -77,7 +77,7 @@ ___
 
 **● speak**: *`undefined` \| `function`*
 
-*Defined in [providers/BaseProvider.ts:12](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L12)*
+*Defined in [providers/BaseProvider.ts:12](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L12)*
 
 ___
 

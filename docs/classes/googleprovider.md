@@ -52,7 +52,7 @@
 
 *Inherited from [Provider](provider.md).[constructor](provider.md#constructor)*
 
-*Defined in [providers/BaseProvider.ts:18](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L18)*
+*Defined in [providers/BaseProvider.ts:18](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L18)*
 
 **Parameters:**
 
@@ -74,7 +74,7 @@ ___
 
 *Inherited from [Provider](provider.md).[accessToken](provider.md#accesstoken)*
 
-*Defined in [providers/BaseProvider.ts:17](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L17)*
+*Defined in [providers/BaseProvider.ts:17](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L17)*
 
 ___
 <a id="native"></a>
@@ -85,7 +85,7 @@ ___
 
 *Inherited from [Provider](provider.md).[native](provider.md#native)*
 
-*Defined in [providers/BaseProvider.ts:18](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L18)*
+*Defined in [providers/BaseProvider.ts:18](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L18)*
 
 ___
 <a id="baseurl"></a>
@@ -96,7 +96,7 @@ ___
 
 *Overrides [Provider](provider.md).[baseURL](provider.md#baseurl)*
 
-*Defined in [providers/GoogleProvider.ts:6](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/GoogleProvider.ts#L6)*
+*Defined in [providers/GoogleProvider.ts:6](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/GoogleProvider.ts#L6)*
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 *Overrides [Provider](provider.md).[getAudioContent](provider.md#getaudiocontent)*
 
-*Defined in [providers/GoogleProvider.ts:24](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/GoogleProvider.ts#L24)*
+*Defined in [providers/GoogleProvider.ts:24](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/GoogleProvider.ts#L24)*
 
 **Parameters:**
 
@@ -130,7 +130,7 @@ ___
 
 *Inherited from [Provider](provider.md).[getBaseURL](provider.md#getbaseurl)*
 
-*Defined in [providers/BaseProvider.ts:119](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L119)*
+*Defined in [providers/BaseProvider.ts:119](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L119)*
 
 Convenience method for request URL
 
@@ -151,7 +151,7 @@ ___
 
 *Inherited from [Provider](provider.md).[getClassName](provider.md#getclassname)*
 
-*Defined in [providers/BaseProvider.ts:50](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L50)*
+*Defined in [providers/BaseProvider.ts:50](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L50)*
 
 Convenience method for getting the class name we use this as a UUID essentially
 
@@ -166,7 +166,7 @@ ___
 
 *Inherited from [Provider](provider.md).[getSSML](provider.md#getssml)*
 
-*Defined in [providers/BaseProvider.ts:130](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L130)*
+*Defined in [providers/BaseProvider.ts:130](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L130)*
 
 Generate's an SSML wrapped utterance string based on the options provided SSML is fairly standardized (w3c) so we shouldn't have too much trouble with basic wrapping for adjustments.
 
@@ -188,7 +188,7 @@ ___
 
 *Inherited from [Provider](provider.md).[getVoiceIdSlug](provider.md#getvoiceidslug)*
 
-*Defined in [providers/BaseProvider.ts:86](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L86)*
+*Defined in [providers/BaseProvider.ts:86](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L86)*
 
 VoiceId prefix, used to ensure we aren't accidentally setting voiceId's that can't work with a provider
 
@@ -203,7 +203,7 @@ ___
 
 *Overrides [Provider](provider.md).[getVoices](provider.md#getvoices)*
 
-*Defined in [providers/GoogleProvider.ts:8](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/GoogleProvider.ts#L8)*
+*Defined in [providers/GoogleProvider.ts:8](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/GoogleProvider.ts#L8)*
 
 **Returns:** `Promise`<[Voice](../interfaces/voice.md)[]>
 
@@ -216,7 +216,7 @@ ___
 
 *Inherited from [Provider](provider.md).[isEqualToProvider](provider.md#isequaltoprovider)*
 
-*Defined in [providers/BaseProvider.ts:58](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L58)*
+*Defined in [providers/BaseProvider.ts:58](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L58)*
 
 Check if this provider is the same as the one passed
 
@@ -237,7 +237,7 @@ ___
 
 *Inherited from [Provider](provider.md).[isValidVoiceId](provider.md#isvalidvoiceid)*
 
-*Defined in [providers/BaseProvider.ts:102](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L102)*
+*Defined in [providers/BaseProvider.ts:102](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L102)*
 
 Verify the voiceId
 
@@ -258,7 +258,7 @@ ___
 
 *Inherited from [Provider](provider.md).[optionsCompatible](provider.md#optionscompatible)*
 
-*Defined in [providers/BaseProvider.ts:66](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L66)*
+*Defined in [providers/BaseProvider.ts:66](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L66)*
 
 Check if the options are compatible with the provider Mostly a precheck to ensure that we have no problems with voiceId
 
@@ -279,7 +279,7 @@ ___
 
 *Inherited from [Provider](provider.md).[playAudioContent](provider.md#playaudiocontent)*
 
-*Defined in [providers/BaseProvider.ts:38](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L38)*
+*Defined in [providers/BaseProvider.ts:38](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L38)*
 
 Plays a base64 encoded string on the native platform
 
@@ -302,7 +302,7 @@ ___
 
 *Inherited from [Provider](provider.md).[sluggifyVoiceId](provider.md#sluggifyvoiceid)*
 
-*Defined in [providers/BaseProvider.ts:93](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L93)*
+*Defined in [providers/BaseProvider.ts:93](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L93)*
 
 Adds slug to voiceId, ignores if the slug has already been added
 
@@ -323,7 +323,7 @@ ___
 
 *Inherited from [Provider](provider.md).[speak](provider.md#speak)*
 
-*Defined in [providers/BaseProvider.ts:31](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L31)*
+*Defined in [providers/BaseProvider.ts:31](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L31)*
 
 **Parameters:**
 
@@ -343,7 +343,7 @@ ___
 
 *Inherited from [Provider](provider.md).[stripVoiceIdSlug](provider.md#stripvoiceidslug)*
 
-*Defined in [providers/BaseProvider.ts:110](https://github.com/ericlewis/react-native-speech/blob/e5a34e4/src/providers/BaseProvider.ts#L110)*
+*Defined in [providers/BaseProvider.ts:110](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/providers/BaseProvider.ts#L110)*
 
 String the voiceId slug, also enforces correctness
 
