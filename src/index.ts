@@ -153,8 +153,8 @@ class Speech implements SpeechModuleInterface {
         utterance.map(u => ({ currentProvider, utterance: u, options }))
       );
     } else if (options.instant) {
-      // TODO: also stop any inflight speech
       this.queue.flush();
+      this.stop();
       this.speakWithProvider(currentProvider, utterance, options);
     } else {
       this.queue.add({ currentProvider, utterance, options });
