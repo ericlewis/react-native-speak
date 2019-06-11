@@ -20,6 +20,7 @@
     "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
     "doc": "run-s doc:html && open build/docs/index.html",
     "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
+    "doc:markdown": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out docs --theme markdown",
     "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
     "version": "standard-version",
@@ -68,6 +69,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^5.5.2",
     "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.2.1",
     "typescript": "^3.4.5"
   },
   "prettier": {
