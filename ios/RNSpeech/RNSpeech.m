@@ -127,12 +127,17 @@ RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
 
 RCT_EXPORT_METHOD(stop)
 {
-  // TODO: send events, cleanup session
   if (synth_.isSpeaking) {
     [synth_ stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
   } else if (player_.isPlaying) {
+    NSString *utteranceId = [self hashStringForObject:player_.data];
+    NSDictionary *body = [utterances_ valueForKey:utteranceId];
+    [self sendEventWithName:SPEECH_END_EVENT body:body];
+    [utterances_ removeObjectForKey:utteranceId];
     [player_ stop];
+    [self stopAudioSession];
   }
+  
 }
 
 #pragma mark - Audio Player
@@ -236,6 +241,13 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
+  NSString *utteranceId = [self hashStringForObject:utterance];
+  [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
+  [self stopAudioSession];
+  [utterances_ removeObjectForKey:utteranceId];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance {
   NSString *utteranceId = [self hashStringForObject:utterance];
   [self sendEventWithName:SPEECH_END_EVENT body:[utterances_ valueForKey:utteranceId]];
   [self stopAudioSession];
