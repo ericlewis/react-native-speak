@@ -59,6 +59,10 @@ const App: React.FunctionComponent<Props> = () => {
     }
   }
 
+  function stop() {
+    speech.stop();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -104,11 +108,14 @@ const App: React.FunctionComponent<Props> = () => {
           enablesReturnKeyAutomatically
         />
       </View>
-      <Button
-        title={active ? 'Speaking...' : 'Speak'}
-        disabled={!textInput.value || textInput.value.length <= 0 || active}
-        onPress={speak}
-      />
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <Button
+          title={active ? 'Speaking...' : 'Speak'}
+          disabled={!textInput.value || textInput.value.length <= 0 || active}
+          onPress={speak}
+        />
+        <Button title="Stop" onPress={stop} disabled={!active} />
+      </View>
       <View style={{ flexDirection: 'row', flex: 1 }}>
         <Picker {...providerPicker} style={{ flex: 1 }}>
           {speech.getProviders().map(provider => {
