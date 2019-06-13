@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "outDir": "build/main",
-    "rootDir": "src",
+    "rootDir": "",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,

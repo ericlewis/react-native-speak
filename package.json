@@ -1,11 +1,10 @@
 {
-  "name": "react-native-speech",
-  "private": true,
-  "version": "1.0.0",
+  "name": "react-native-speech-eel-test",
+  "version": "1.0.10",
   "description": "A wonderful react-native library for TTS",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "main": "build/main/src/index.js",
+  "typings": "build/main/src/index.d.ts",
+  "module": "build/module/src/index.js",
   "repository": "https://github.com/ericlewis/react-native-speech",
   "keywords": [],
   "scripts": {
