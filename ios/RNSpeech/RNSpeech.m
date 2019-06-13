@@ -115,11 +115,7 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(isSpeaking:(RCTPromiseResolveBlock)resolve
                   reject:(__unused RCTPromiseRejectBlock)reject)
 {
-  if (player_.isPlaying == YES || synth_.isSpeaking == YES) {
-    resolve(@(YES));
-  } else {
-    resolve(@(NO));
-  }
+  resolve(@(player_.isPlaying == YES || synth_.isSpeaking == YES));
 }
 
 RCT_EXPORT_METHOD(stop)
