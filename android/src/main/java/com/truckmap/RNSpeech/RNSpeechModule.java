@@ -9,7 +9,6 @@
 package com.truckmap.RNSpeech;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioFormat;
@@ -46,13 +45,10 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
     private static final String SPEECH_START_EVENT = "SPEECH_START_EVENT";
     private static final String SPEECH_END_EVENT = "SPEECH_END_EVENT";
     private static final String SPEECH_ERROR_EVENT = "SPEECH_ERROR_EVENT";
-    private static final String DEFAULT_PROVIDER_KEY = "DEFAULT_PROVIDER_KEY";
 
     private static final String OUTPUT_PHONE_SPEAKER = "Speaker";
     private static final String OUTPUT_BLUETOOTH = "Bluetooth";
     private static final String OUTPUT_HEADPHONES = "Headphones";
-
-    private SharedPreferences preferences;
 
     private TextToSpeech tts;
     private Voice previousVoice;
@@ -76,7 +72,6 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
         Context appContext = reactContext.getApplicationContext();
         audioManager = (AudioManager) appContext.getSystemService(reactContext.AUDIO_SERVICE);
-        preferences = getReactApplicationContext().getSharedPreferences("RNSpeech", Context.MODE_PRIVATE);
 
         tts = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
             @Override
@@ -141,17 +136,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         outputs.put("HEADPHONES", OUTPUT_HEADPHONES);
         constants.put("outputs", outputs);
 
-        // Settings
-        constants.put("provider", preferences.getString(DEFAULT_PROVIDER_KEY, null));
-
         return constants;
-    }
-
-    @ReactMethod
-    public void saveProviderAsDefault(String provider) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(DEFAULT_PROVIDER_KEY, provider);
-        editor.apply();
     }
 
     @ReactMethod

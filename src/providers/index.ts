@@ -7,8 +7,6 @@ export * from './PollyProvider';
 import invariant from 'invariant';
 import keyBy from 'lodash.keyby';
 
-import { Platform } from 'react-native';
-import { Constants, RNSpeech } from '../NativeSpeechModule';
 import { Provider } from './BaseProvider';
 import { NativeProvider } from './NativeProvider';
 
@@ -21,45 +19,25 @@ export default class ProviderManager {
 
   private providers: { [key: string]: Provider };
 
-  constructor(providers?: Provider[], providerToUse?: string) {
+  constructor(providers?: Provider[], defaultProvider?: string) {
     // this automatically dedupes.
     this.providers = keyBy(
       providers ? [...providers, this.nativeProvider] : [this.nativeProvider],
       provider => provider.getClassName()
     );
 
-    if (providerToUse) {
-      // TODO: we probably don't want to error out, we should fallback to avail
-      invariant(
-        this.hasProvider(providerToUse),
-        'Default provider not found in providers'
-      );
-      this.currentProvider = this.getProviderForName(providerToUse);
+    if (defaultProvider && this.hasProvider(defaultProvider)) {
+      this.currentProvider = this.getProviderForName(defaultProvider);
     } else {
-      const defaultProvider =
-        Platform.OS === 'ios'
-          ? RNSpeech.getConstants().provider
-          : ((RNSpeech as unknown) as Constants).provider;
-      this.currentProvider = defaultProvider
-        ? this.getProviderForName(defaultProvider)
-        : Object.values(this.providers)[0];
-
-      if (!defaultProvider) {
-        RNSpeech.saveProviderAsDefault(this.currentProvider.getClassName());
-      }
+      this.currentProvider = Object.values(this.providers)[0];
     }
   }
 
   /**
    * Change the active provider, optionally set to default too.
    */
-  public setCurrentProvider(providerName: string, setDefault = true) {
+  public setCurrentProvider(providerName: string) {
     const provider = this.getProviderForName(providerName);
-
-    // TODO: this may not be very efficient, we should check if this has to happen first
-    if (setDefault) {
-      RNSpeech.saveProviderAsDefault(providerName);
-    }
 
     // only update the current provider if they aren't matching
     if (!this.currentProvider.isEqualToProvider(provider)) {

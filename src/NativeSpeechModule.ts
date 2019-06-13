@@ -51,7 +51,6 @@ export interface Constants {
     BLUETOOTH: string;
     HEADPHONES: string;
   };
-  provider?: string;
 }
 
 /**
@@ -80,11 +79,6 @@ export interface NativeSpeechModuleInterface extends EventSubscriptionVendor {
    * Get the native voices.
    */
   getVoices: () => Promise<Voice[]>;
-
-  /**
-   * Persists the provider, will be used at next launch
-   */
-  saveProviderAsDefault: (name: string) => void;
 
   /**
    * Wether or not we are currently playing audio or speaking from the native synth

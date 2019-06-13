@@ -77,10 +77,11 @@ class Speech implements SpeechModuleInterface {
 
   /**
    * Creates a new instance of Speech
+   * Can optionally the name for default provider
    * Note: You should not try to use multiple instances of this
    */
-  constructor(providers?: Provider[]) {
-    this.providerManager = new ProviderManager(providers);
+  constructor(providers?: Provider[], defaultProviderName?: string) {
+    this.providerManager = new ProviderManager(providers, defaultProviderName);
     this.queue.addListener(this.queueListener);
 
     this.events.addListener(
