@@ -1,4 +1,4 @@
-[react-native-speech](../README.md) > [NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)
+[react-native-speech-eel-test](../README.md) > [NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)
 
 # Interface: NativeSpeechModuleInterface
 
@@ -41,7 +41,7 @@ The interface for interacting with the native side of things
 
 **● getConstants**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:61](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L61)*
+*Defined in [NativeSpeechModule.ts:61](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L61)*
 
 #### Type declaration
 ▸(): [Constants](constants.md)
@@ -55,7 +55,7 @@ ___
 
 **● getOutputs**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:72](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L72)*
+*Defined in [NativeSpeechModule.ts:72](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L72)*
 
 #### Type declaration
 ▸(): `Promise`<`string`[]>
@@ -69,7 +69,7 @@ ___
 
 **● getVoices**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:82](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L82)*
+*Defined in [NativeSpeechModule.ts:82](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L82)*
 
 Get the native voices.
 
@@ -85,14 +85,14 @@ ___
 
 **● isSpeaking**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:92](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L92)*
+*Defined in [NativeSpeechModule.ts:92](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L92)*
 
 Wether or not we are currently playing audio or speaking from the native synth
 
 #### Type declaration
-▸(): `boolean`
+▸(): `Promise`<`boolean`>
 
-**Returns:** `boolean`
+**Returns:** `Promise`<`boolean`>
 
 ___
 <a id="playaudiocontent"></a>
@@ -101,7 +101,7 @@ ___
 
 **● playAudioContent**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:66](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L66)*
+*Defined in [NativeSpeechModule.ts:66](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L66)*
 
 Play LINEAR16 audio encoded in base64
 
@@ -125,7 +125,7 @@ ___
 
 **● saveProviderAsDefault**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:87](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L87)*
+*Defined in [NativeSpeechModule.ts:87](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L87)*
 
 Persists the provider, will be used at next launch
 
@@ -147,7 +147,7 @@ ___
 
 **● speak**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:77](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L77)*
+*Defined in [NativeSpeechModule.ts:77](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L77)*
 
 Use the native synth to communicate
 
@@ -170,7 +170,7 @@ ___
 
 **● stop**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:97](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L97)*
+*Defined in [NativeSpeechModule.ts:97](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L97)*
 
 Stops speaking/audio playback
 

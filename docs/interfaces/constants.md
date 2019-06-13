@@ -1,4 +1,4 @@
-[react-native-speech](../README.md) > [Constants](../interfaces/constants.md)
+[react-native-speech-eel-test](../README.md) > [Constants](../interfaces/constants.md)
 
 # Interface: Constants
 
@@ -24,7 +24,7 @@
 
 **● events**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L43)*
+*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L43)*
 
 #### Type declaration
 
@@ -43,7 +43,7 @@ ___
 
 **● outputs**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L49)*
+*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L49)*
 
 #### Type declaration
 
@@ -60,7 +60,7 @@ ___
 
 **● provider**: *`undefined` \| `string`*
 
-*Defined in [NativeSpeechModule.ts:54](https://github.com/ericlewis/react-native-speech/blob/ec9646f/src/NativeSpeechModule.ts#L54)*
+*Defined in [NativeSpeechModule.ts:54](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L54)*
 
 ___
 
