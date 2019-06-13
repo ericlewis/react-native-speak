@@ -23,7 +23,7 @@
 		6807A655229DDE0D0079771D /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A595229DDCA00079771D /* libRCTAnimation.a */; };
 		6807A656229DDE140079771D /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A5CE229DDCBF0079771D /* libRCTActionSheet.a */; };
 		6807A657229DDE1D0079771D /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A5D4229DDCC90079771D /* libRCTBlob.a */; };
-		6807A690229DE88D0079771D /* libRNSpeech.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A68F229DE8840079771D /* libRNSpeech.a */; };
+		6807A690229DE88D0079771D /* libRNSpeak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A68F229DE8840079771D /* libRNSpeak.a */; };
 		6807A691229DEE5F0079771D /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6807A5AB229DDCB00079771D /* libReact.a */; };
 		686924FF229F191400B4B621 /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686924FD229F190D00B4B621 /* libRNCSlider.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
@@ -298,10 +298,10 @@
 		};
 		6807A68E229DE8840079771D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6807A68A229DE8840079771D /* RNSpeech.xcodeproj */;
+			containerPortal = 6807A68A229DE8840079771D /* RNSpeak.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 6807A4EC2298E3B20079771D;
-			remoteInfo = RNSpeech;
+			remoteInfo = RNSpeak;
 		};
 		686924FC229F190D00B4B621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -334,7 +334,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		6807A68A229DE8840079771D /* RNSpeech.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpeech.xcodeproj; path = ../../ios/RNSpeech.xcodeproj; sourceTree = "<group>"; };
+		6807A68A229DE8840079771D /* RNSpeak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpeak.xcodeproj; path = ../../ios/RNSpeak.xcodeproj; sourceTree = "<group>"; };
 		686924D3229F190D00B4B621 /* RNCSlider.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCSlider.xcodeproj; path = "../../node_modules/@react-native-community/slider/ios/RNCSlider.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -357,7 +357,7 @@
 			files = (
 				6807A691229DEE5F0079771D /* libReact.a in Frameworks */,
 				686924FF229F191400B4B621 /* libRNCSlider.a in Frameworks */,
-				6807A690229DE88D0079771D /* libRNSpeech.a in Frameworks */,
+				6807A690229DE88D0079771D /* libRNSpeak.a in Frameworks */,
 				6807A656229DDE140079771D /* libRCTActionSheet.a in Frameworks */,
 				6807A655229DDE0D0079771D /* libRCTAnimation.a in Frameworks */,
 				6807A654229DDE030079771D /* libRCTWebSocket.a in Frameworks */,
@@ -541,7 +541,7 @@
 		6807A68B229DE8840079771D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6807A68F229DE8840079771D /* libRNSpeech.a */,
+				6807A68F229DE8840079771D /* libRNSpeak.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -558,7 +558,7 @@
 			isa = PBXGroup;
 			children = (
 				686924D3229F190D00B4B621 /* RNCSlider.xcodeproj */,
-				6807A68A229DE8840079771D /* RNSpeech.xcodeproj */,
+				6807A68A229DE8840079771D /* RNSpeak.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -719,7 +719,7 @@
 				},
 				{
 					ProductGroup = 6807A68B229DE8840079771D /* Products */;
-					ProjectRef = 6807A68A229DE8840079771D /* RNSpeech.xcodeproj */;
+					ProjectRef = 6807A68A229DE8840079771D /* RNSpeak.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -990,10 +990,10 @@
 			remoteRef = 6807A615229DDD4F0079771D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6807A68F229DE8840079771D /* libRNSpeech.a */ = {
+		6807A68F229DE8840079771D /* libRNSpeak.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libRNSpeech.a;
+			path = libRNSpeak.a;
 			remoteRef = 6807A68E229DE8840079771D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1135,7 +1135,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.truckmap.rnspeech.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.truckmap.RNSpeak.example;
 				PRODUCT_NAME = example;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1153,7 +1153,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.truckmap.rnspeech.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.truckmap.RNSpeak.example;
 				PRODUCT_NAME = example;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

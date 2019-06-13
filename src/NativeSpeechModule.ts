@@ -91,4 +91,4 @@ export interface NativeSpeechModuleInterface extends EventSubscriptionVendor {
   stop: () => void;
 }
 
-export const RNSpeech: NativeSpeechModuleInterface = NativeModules.RNSpeech;
+export const RNSpeak: NativeSpeechModuleInterface = NativeModules.RNSpeak;

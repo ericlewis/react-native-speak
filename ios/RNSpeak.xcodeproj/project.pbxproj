@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6807A4F12298E3B20079771D /* RNSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 6807A4F02298E3B20079771D /* RNSpeech.m */; };
-		6807A4F22298E3B20079771D /* RNSpeech.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 6807A4EF2298E3B20079771D /* RNSpeech.h */; };
+		6807A4F12298E3B20079771D /* RNSpeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 6807A4F02298E3B20079771D /* RNSpeak.m */; };
+		6807A4F22298E3B20079771D /* RNSpeak.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 6807A4EF2298E3B20079771D /* RNSpeak.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +18,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				6807A4F22298E3B20079771D /* RNSpeech.h in Copy Files */,
+				6807A4F22298E3B20079771D /* RNSpeak.h in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -26,9 +26,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6807A4EC2298E3B20079771D /* libRNSpeech.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSpeech.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6807A4EF2298E3B20079771D /* RNSpeech.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSpeech.h; sourceTree = "<group>"; };
-		6807A4F02298E3B20079771D /* RNSpeech.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSpeech.m; sourceTree = "<group>"; };
+		6807A4EC2298E3B20079771D /* libRNSpeak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSpeak.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6807A4EF2298E3B20079771D /* RNSpeak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSpeak.h; sourceTree = "<group>"; };
+		6807A4F02298E3B20079771D /* RNSpeak.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSpeak.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +45,7 @@
 		6807A4E32298E3B20079771D = {
 			isa = PBXGroup;
 			children = (
-				6807A4EE2298E3B20079771D /* RNSpeech */,
+				6807A4EE2298E3B20079771D /* RNSpeak */,
 				6807A4ED2298E3B20079771D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,26 +53,26 @@
 		6807A4ED2298E3B20079771D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6807A4EC2298E3B20079771D /* libRNSpeech.a */,
+				6807A4EC2298E3B20079771D /* libRNSpeak.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6807A4EE2298E3B20079771D /* RNSpeech */ = {
+		6807A4EE2298E3B20079771D /* RNSpeak */ = {
 			isa = PBXGroup;
 			children = (
-				6807A4EF2298E3B20079771D /* RNSpeech.h */,
-				6807A4F02298E3B20079771D /* RNSpeech.m */,
+				6807A4EF2298E3B20079771D /* RNSpeak.h */,
+				6807A4F02298E3B20079771D /* RNSpeak.m */,
 			);
-			path = RNSpeech;
+			path = RNSpeak;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6807A4EB2298E3B20079771D /* RNSpeech */ = {
+		6807A4EB2298E3B20079771D /* RNSpeak */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6807A4F52298E3B20079771D /* Build configuration list for PBXNativeTarget "RNSpeech" */;
+			buildConfigurationList = 6807A4F52298E3B20079771D /* Build configuration list for PBXNativeTarget "RNSpeak" */;
 			buildPhases = (
 				6807A4E82298E3B20079771D /* Sources */,
 				6807A4E92298E3B20079771D /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = RNSpeech;
-			productName = RNSpeech;
-			productReference = 6807A4EC2298E3B20079771D /* libRNSpeech.a */;
+			name = RNSpeak;
+			productName = RNSpeak;
+			productReference = 6807A4EC2298E3B20079771D /* libRNSpeak.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -101,7 +101,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6807A4E72298E3B20079771D /* Build configuration list for PBXProject "RNSpeech" */;
+			buildConfigurationList = 6807A4E72298E3B20079771D /* Build configuration list for PBXProject "RNSpeak" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -113,7 +113,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6807A4EB2298E3B20079771D /* RNSpeech */,
+				6807A4EB2298E3B20079771D /* RNSpeak */,
 			);
 		};
 /* End PBXProject section */
@@ -123,7 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6807A4F12298E3B20079771D /* RNSpeech.m in Sources */,
+				6807A4F12298E3B20079771D /* RNSpeak.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +279,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6807A4E72298E3B20079771D /* Build configuration list for PBXProject "RNSpeech" */ = {
+		6807A4E72298E3B20079771D /* Build configuration list for PBXProject "RNSpeak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6807A4F32298E3B20079771D /* Debug */,
@@ -288,7 +288,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6807A4F52298E3B20079771D /* Build configuration list for PBXNativeTarget "RNSpeech" */ = {
+		6807A4F52298E3B20079771D /* Build configuration list for PBXNativeTarget "RNSpeak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6807A4F62298E3B20079771D /* Debug */,

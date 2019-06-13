@@ -41,7 +41,7 @@ You need to run `pod install` after running the above link command inside your `
 
 Add the following line to your build targets in your `Podfile`
 
-`pod 'RNSpeech', :path => '../node_modules/react-native-speech'`
+`pod 'RNSpeak', :path => '../node_modules/react-native-speech'`
 
 Then run `pod install`
 
@@ -59,7 +59,7 @@ In XCode, in the project navigator:
 
 In XCode, in the project navigator, select your project.
 
-* Add the `libRNSpeech.a` from the _RNSpeech_ project to your project's _Build Phases ➜ Link Binary With Libraries_
+* Add the `libRNSpeak.a` from the _RNSpeak_ project to your project's _Build Phases ➜ Link Binary With Libraries_
 * Click `.xcodeproj` file you added before in the project navigator and go the _Build Settings_ tab. Make sure _All_ is toggled on (instead of _Basic_).
 * Look for _Header Search Paths_ and make sure it contains both `$(SRCROOT)/../react-native/React` and `$(SRCROOT)/../../React`
 * Mark both as recursive (should be OK by default).
@@ -107,7 +107,7 @@ include ':app'
 * in `MainApplication.java`:
 
 ```diff
-+ import com.truckmap.RNSpeech.RNSpeech;
++ import com.truckmap.RNSpeak.RNSpeak;
 
   public class MainApplication extends Application implements ReactApplication {
     //......
@@ -115,7 +115,7 @@ include ':app'
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-+         new RNSpeech(),
++         new RNSpeak(),
           new MainReactPackage()
       );
     }
@@ -177,7 +177,7 @@ Fired when speech has started.
 
 ```js
 import { NativeEventEmitter, NativeModules } from 'react-native'
-const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeech)
+const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeak)
 
 speechEventEmitter.addListener('onSpeechStart', () => {
   // callback when finished
@@ -194,7 +194,7 @@ Fired when speech has ended.
 
 ```js
 import { NativeEventEmitter, NativeModules } from 'react-native'
-const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeech)
+const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeak)
 
 speechEventEmitter.addListener('onSpeechEnd', () => {
   // callback when finished
@@ -211,7 +211,7 @@ Fired when an error is found in the speech pipeline. (TBD)
 
 ```js
 import { NativeEventEmitter, NativeModules } from 'react-native'
-const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeech)
+const speechEventEmitter = new NativeEventEmitter(NativeModules.RNSpeak)
 
 speechEventEmitter.addListener('onSpeechError', error => {
   console.error(error);

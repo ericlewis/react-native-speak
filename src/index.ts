@@ -3,7 +3,7 @@ import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
 import {
   Constants,
-  RNSpeech,
+  RNSpeak,
   SpeechOptions,
   Voice
 } from './NativeSpeechModule';
@@ -62,15 +62,15 @@ class Speech implements SpeechModuleInterface {
   /**
    * Native event emitter
    */
-  public events = new NativeEventEmitter(RNSpeech);
+  public events = new NativeEventEmitter(RNSpeak);
 
   /**
    * Exported constants from native
    */
   public constants =
     Platform.OS === 'ios'
-      ? RNSpeech.getConstants()
-      : ((RNSpeech as unknown) as Constants);
+      ? RNSpeak.getConstants()
+      : ((RNSpeak as unknown) as Constants);
 
   private providerManager: ProviderManager;
   private queue = new Queue<SpeechUtterance>();
@@ -94,7 +94,7 @@ class Speech implements SpeechModuleInterface {
    * Returns a list of available outputs in human readable format
    */
   public getOutputs() {
-    return RNSpeech.getOutputs();
+    return RNSpeak.getOutputs();
   }
 
   /**
@@ -136,7 +136,7 @@ class Speech implements SpeechModuleInterface {
    * Stops speaking/audio playback
    */
   public stop() {
-    RNSpeech.stop();
+    RNSpeak.stop();
   }
 
   /**
@@ -218,7 +218,7 @@ class Speech implements SpeechModuleInterface {
   };
 
   private queueListener = (eventName: EventName, _: any[], item?: any) => {
-    RNSpeech.isSpeaking().then(speaking => {
+    RNSpeak.isSpeaking().then(speaking => {
       if (!speaking && eventName === 'ADDED_ITEM') {
         const { currentProvider, utterance, options } = item;
         this.speakWithProvider(currentProvider, utterance, options);

@@ -71,8 +71,8 @@ ___
 
 **● constants**: *[Constants](../interfaces/constants.md)* = 
     Platform.OS === 'ios'
-      ? RNSpeech.getConstants()
-      : ((RNSpeech as unknown) as Constants)
+      ? RNSpeak.getConstants()
+      : ((RNSpeak as unknown) as Constants)
 
 *Defined in [index.ts:70](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L70)*
 
@@ -83,7 +83,7 @@ ___
 
 ###  events
 
-**● events**: *`EventEmitter`* =  new NativeEventEmitter(RNSpeech)
+**● events**: *`EventEmitter`* =  new NativeEventEmitter(RNSpeak)
 
 *Implementation of [SpeechModuleInterface](../interfaces/speechmoduleinterface.md).[events](../interfaces/speechmoduleinterface.md#events)*
 

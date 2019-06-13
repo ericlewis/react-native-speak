@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:RNSpeech.xcodeproj">
+      location = "self:RNSpeak.xcodeproj">
    </FileRef>
 </Workspace>

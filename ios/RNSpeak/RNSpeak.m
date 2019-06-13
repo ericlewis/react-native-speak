@@ -1,20 +1,20 @@
 //
-//  RNSpeech.m
-//  RNSpeech
+//  RNSpeak.m
+//  RNSpeak
 //
 //  Created by Eric Lewis on 5/24/19.
 //  Copyright © 2019 TruckMap. All rights reserved.
 //
 
-#import "RNSpeech.h"
+#import "RNSpeak.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTLog.h>
 
-@interface RNSpeech () <AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate>
+@interface RNSpeak () <AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate>
 @end
 
-@implementation RNSpeech {
+@implementation RNSpeak {
   AVAudioPlayer *player_;
   AVSpeechSynthesizer *synth_;
   NSMutableDictionary *utterances_;

@@ -81,7 +81,7 @@ ___
 
 ### `<Protected>` native
 
-**● native**: *[NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)* =  RNSpeech
+**● native**: *[NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)* =  RNSpeak
 
 *Defined in [providers/BaseProvider.ts:18](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/BaseProvider.ts#L18)*
 

@@ -1,12 +1,12 @@
 //
-//  RNSpeechModule.java
-//  RNSpeech
+//  RNSpeakModule.java
+//  RNSpeak
 //
 //  Created by Eric Lewis on 5/24/19.
 //  Copyright © 2019 TruckMap. All rights reserved.
 //
 
-package com.truckmap.RNSpeech;
+package com.truckmap.RNSpeak;
 
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -37,8 +37,8 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.HashMap;
 
-public class RNSpeechModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "RNSpeech";
+public class RNSpeakModule extends ReactContextBaseJavaModule {
+    public static final String NAME = "RNSpeak";
 
     // Event names, keep in sync with iOS / types
     private static final String SPEECH_LOADING_EVENT = "SPEECH_LOADING_EVENT";
@@ -67,7 +67,7 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
 
     private HashMap<String, HashMap<String, Object>> mUtteranceMap = new HashMap();
 
-    public RNSpeechModule(ReactApplicationContext reactContext) {
+    public RNSpeakModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
         Context appContext = reactContext.getApplicationContext();

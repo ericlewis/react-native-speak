@@ -82,7 +82,7 @@ ___
 
 ### `<Protected>` native
 
-**● native**: *[NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)* =  RNSpeech
+**● native**: *[NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)* =  RNSpeak
 
 *Inherited from [Provider](provider.md).[native](provider.md#native)*
 

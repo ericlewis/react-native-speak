@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.reactnativecommunity.slider.ReactSliderPackage;
-import com.truckmap.RNSpeech.RNSpeechPackage;
+import com.truckmap.RNSpeak.RNSpeakPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -27,7 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new ReactSliderPackage(),
-          new RNSpeechPackage()
+          new RNSpeakPackage()
       );
     }
 

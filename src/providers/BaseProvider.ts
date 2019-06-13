@@ -1,5 +1,5 @@
 import invariant from 'invariant';
-import { RNSpeech, SpeechOptions, Voice } from '../NativeSpeechModule';
+import { RNSpeak, SpeechOptions, Voice } from '../NativeSpeechModule';
 
 export interface ProviderInterface {
   getVoices: () => Promise<Voice[]>;
@@ -15,7 +15,7 @@ export interface ProviderInterface {
 export abstract class Provider implements ProviderInterface {
   protected static baseURL: string;
   protected accessToken: string | null;
-  protected native = RNSpeech;
+  protected native = RNSpeak;
 
   constructor(accessToken: string | null) {
     this.accessToken = accessToken;
