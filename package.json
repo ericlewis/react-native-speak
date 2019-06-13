@@ -1,6 +1,6 @@
 {
   "name": "react-native-speech-eel-test",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "A wonderful react-native library for TTS",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
