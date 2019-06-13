@@ -120,9 +120,14 @@ RCT_EXPORT_METHOD(getVoices:(RCTPromiseResolveBlock)resolve
   resolve(convertedVoices);
 }
 
-RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(id, isSpeaking)
+RCT_EXPORT_METHOD(isSpeaking:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject)
 {
-  return @(player_.isPlaying == TRUE || synth_.isSpeaking == TRUE);
+  if (player_.isPlaying == YES || synth_.isSpeaking == YES) {
+    resolve(@(YES));
+  } else {
+    resolve(@(NO));
+  }
 }
 
 RCT_EXPORT_METHOD(stop)

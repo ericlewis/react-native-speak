@@ -217,14 +217,12 @@ class Speech implements SpeechModuleInterface {
   };
 
   private queueListener = (eventName: EventName, _: any[], item?: any) => {
-    // the queue is FIFO, so it's pretty safe to react this way probably. but not clearly how it should be used.
-    if (eventName === 'ADDED_ITEM' && !RNSpeech.isSpeaking()) {
-      // we obviously should check if we should be speaking first.
-      const { currentProvider, utterance, options } = item;
-      this.speakWithProvider(currentProvider, utterance, options);
-    } else {
-      // an item was removed, we can log it here if we want
-    }
+    RNSpeech.isSpeaking().then(speaking => {
+      if (!speaking && eventName === 'ADDED_ITEM') {
+        const { currentProvider, utterance, options } = item;
+        this.speakWithProvider(currentProvider, utterance, options);
+      }
+    });
   };
 
   private fallback(

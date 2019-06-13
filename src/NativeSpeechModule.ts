@@ -89,7 +89,7 @@ export interface NativeSpeechModuleInterface extends EventSubscriptionVendor {
   /**
    * Wether or not we are currently playing audio or speaking from the native synth
    */
-  isSpeaking: () => boolean;
+  isSpeaking: () => Promise<boolean>;
 
   /**
    * Stops speaking/audio playback

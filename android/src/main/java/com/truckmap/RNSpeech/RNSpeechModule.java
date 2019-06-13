@@ -280,9 +280,13 @@ public class RNSpeechModule extends ReactContextBaseJavaModule {
         promise.resolve(outputsArray);
     }
 
-    @ReactMethod(isBlockingSynchronousMethod = true)
-    public boolean isSpeaking() {
-        return tts.isSpeaking() || isPlaying;
+    @ReactMethod
+    public boolean isSpeaking(Promise promise) {
+        if (tts.isSpeaking() || isPlaying) {
+            promise.resolve(true);
+        } else {
+            promise.resolve(false);
+        }
     }
 
     @ReactMethod
