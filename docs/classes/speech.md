@@ -46,17 +46,18 @@
 
 ###  constructor
 
-⊕ **new Speech**(providers?: *[Provider](provider.md)[]*): [Speech](speech.md)
+⊕ **new Speech**(providers?: *[Provider](provider.md)[]*, defaultProviderName?: *`undefined` \| `string`*): [Speech](speech.md)
 
-*Defined in [index.ts:76](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L76)*
+*Defined in [index.ts:76](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L76)*
 
-Creates a new instance of Speech Note: You should not try to use multiple instances of this
+Creates a new instance of Speech Can optionally the name for default provider Note: You should not try to use multiple instances of this
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
 | `Optional` providers | [Provider](provider.md)[] |
+| `Optional` defaultProviderName | `undefined` \| `string` |
 
 **Returns:** [Speech](speech.md)
 
@@ -73,7 +74,7 @@ ___
       ? RNSpeech.getConstants()
       : ((RNSpeech as unknown) as Constants)
 
-*Defined in [index.ts:70](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L70)*
+*Defined in [index.ts:70](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L70)*
 
 Exported constants from native
 
@@ -86,7 +87,7 @@ ___
 
 *Implementation of [SpeechModuleInterface](../interfaces/speechmoduleinterface.md).[events](../interfaces/speechmoduleinterface.md#events)*
 
-*Defined in [index.ts:65](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L65)*
+*Defined in [index.ts:65](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L65)*
 
 Native event emitter
 
@@ -97,7 +98,7 @@ ___
 
 **● providerManager**: *[ProviderManager](providermanager.md)*
 
-*Defined in [index.ts:75](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L75)*
+*Defined in [index.ts:75](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L75)*
 
 ___
 <a id="queue"></a>
@@ -106,7 +107,7 @@ ___
 
 **● queue**: *[Queue](queue.md)<[SpeechUtterance](../interfaces/speechutterance.md)>* =  new Queue<SpeechUtterance>()
 
-*Defined in [index.ts:76](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L76)*
+*Defined in [index.ts:76](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L76)*
 
 ___
 
@@ -118,7 +119,7 @@ ___
 
 ▸ **fallback**(originalError: *`Error`*, utterance: *`string`*, options: *[SpeechOptions](../interfaces/speechoptions.md)*): `void`
 
-*Defined in [index.ts:228](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L228)*
+*Defined in [index.ts:229](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L229)*
 
 **Parameters:**
 
@@ -137,7 +138,7 @@ ___
 
 ▸ **getCurrentProvider**(): `string`
 
-*Defined in [index.ts:109](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L109)*
+*Defined in [index.ts:110](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L110)*
 
 Returns the active providers name
 
@@ -150,7 +151,7 @@ ___
 
 ▸ **getOutputs**(): `Promise`<`string`[]>
 
-*Defined in [index.ts:95](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L95)*
+*Defined in [index.ts:96](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L96)*
 
 Returns a list of available outputs in human readable format
 
@@ -163,7 +164,7 @@ ___
 
 ▸ **getProviders**(): `string`[]
 
-*Defined in [index.ts:116](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L116)*
+*Defined in [index.ts:117](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L117)*
 
 Returns a list of available provider names
 
@@ -176,7 +177,7 @@ ___
 
 ▸ **getVoices**(): `Promise`<`any`>
 
-*Defined in [index.ts:123](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L123)*
+*Defined in [index.ts:124](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L124)*
 
 Returns a list of available voices for the current provider
 
@@ -189,7 +190,7 @@ ___
 
 ▸ **getVoicesForProvider**(name: *`string`*): `Promise`<`any`>
 
-*Defined in [index.ts:130](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L130)*
+*Defined in [index.ts:131](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L131)*
 
 Returns a list of available voices for a given providers name
 
@@ -208,7 +209,7 @@ ___
 
 ▸ **playbackEndedListener**(): `void`
 
-*Defined in [index.ts:208](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L208)*
+*Defined in [index.ts:209](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L209)*
 
 **Returns:** `void`
 
@@ -219,7 +220,7 @@ ___
 
 ▸ **queueListener**(eventName: *[EventName](../#eventname)*, _: *`any`[]*, item?: *`any`*): `void`
 
-*Defined in [index.ts:219](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L219)*
+*Defined in [index.ts:220](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L220)*
 
 **Parameters:**
 
@@ -238,7 +239,7 @@ ___
 
 ▸ **setCurrentProvider**(name: *`string`*): `void`
 
-*Defined in [index.ts:102](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L102)*
+*Defined in [index.ts:103](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L103)*
 
 Sets the active provider (persisted across launches)
 
@@ -257,7 +258,7 @@ ___
 
 ▸ **speak**(utterance: *`string` \| `string`[]*, options?: *[SpeechOptions](../interfaces/speechoptions.md)*): `Promise`<`void`>
 
-*Defined in [index.ts:146](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L146)*
+*Defined in [index.ts:147](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L147)*
 
 Note: speakInstantly option is ignored if you add a batch of utterances
 
@@ -277,7 +278,7 @@ ___
 
 ▸ **speakWithProvider**(provider: *[Provider](provider.md)*, utterance: *`string`*, options: *[SpeechOptions](../interfaces/speechoptions.md)*): `Promise`<`void`>
 
-*Defined in [index.ts:168](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L168)*
+*Defined in [index.ts:169](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L169)*
 
 Use an arbitrary provider to speak protected so you can extend this class and use it however you like
 
@@ -298,7 +299,7 @@ ___
 
 ▸ **stop**(): `void`
 
-*Defined in [index.ts:137](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/index.ts#L137)*
+*Defined in [index.ts:138](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L138)*
 
 Stops speaking/audio playback
 

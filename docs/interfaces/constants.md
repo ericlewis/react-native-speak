@@ -12,7 +12,6 @@
 
 * [events](constants.md#events)
 * [outputs](constants.md#outputs)
-* [provider](constants.md#provider)
 
 ---
 
@@ -24,7 +23,7 @@
 
 **● events**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L43)*
+*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/NativeSpeechModule.ts#L43)*
 
 #### Type declaration
 
@@ -43,7 +42,7 @@ ___
 
 **● outputs**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L49)*
+*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/NativeSpeechModule.ts#L49)*
 
 #### Type declaration
 
@@ -52,15 +51,6 @@ ___
  HEADPHONES: `string`
 
  PHONE_SPEAKER: `string`
-
-___
-<a id="provider"></a>
-
-### `<Optional>` provider
-
-**● provider**: *`undefined` \| `string`*
-
-*Defined in [NativeSpeechModule.ts:54](https://github.com/ericlewis/react-native-speech/blob/2b63c1d/src/NativeSpeechModule.ts#L54)*
 
 ___
 
