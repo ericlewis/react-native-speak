@@ -1,6 +1,6 @@
 {
   "name": "react-native-speak",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A wonderful react-native library for TTS",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
