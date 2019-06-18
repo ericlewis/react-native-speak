@@ -21,6 +21,10 @@ export abstract class Provider implements ProviderInterface {
     this.accessToken = accessToken;
   }
 
+  public get bufferSize() {
+    return 16000;
+  }
+
   public abstract getVoices(): Promise<any>;
 
   public getAudioContent?(

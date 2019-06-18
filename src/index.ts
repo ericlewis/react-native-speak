@@ -1,12 +1,7 @@
 import get from 'lodash.get';
 import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
-import {
-  Constants,
-  RNSpeak,
-  SpeechOptions,
-  Voice
-} from './NativeSpeechModule';
+import { Constants, RNSpeak, SpeechOptions, Voice } from './NativeSpeechModule';
 import ProviderManager, { Provider } from './providers';
 import Queue, { EventName } from './Queue';
 
@@ -187,7 +182,10 @@ class Speech implements SpeechModuleInterface {
           cleanedUtterance,
           options
         );
-        return provider.playAudioContent(content, utterance, options);
+        return provider.playAudioContent(content, utterance, {
+          bufferSize: provider.bufferSize,
+          ...options
+        });
       } else if (provider.speak) {
         return provider.speak(cleanedUtterance, options);
       } else {

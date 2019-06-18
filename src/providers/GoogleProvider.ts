@@ -5,6 +5,10 @@ import { Provider } from './BaseProvider';
 export class GoogleProvider extends Provider {
   protected static baseURL = 'https://texttospeech.googleapis.com/v1beta1/';
 
+  public get bufferSize() {
+    return 24000;
+  }
+
   public async getVoices(): Promise<Voice[]> {
     invariant(this.accessToken, 'No access token provided');
 

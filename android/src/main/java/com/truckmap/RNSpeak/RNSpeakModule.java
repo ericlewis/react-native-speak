@@ -148,9 +148,11 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
         mUtteranceMap.put(utteranceId, utteranceMap);
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
+        int bufferSize = options.hasKey("bufferSize") ? (int) options.getInt("bufferSize") : 16000;
         byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
-        int intSize = AudioTrack.getMinBufferSize(16000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        at = new AudioTrack(audioManager.STREAM_MUSIC, 16000, AudioFormat.CHANNEL_OUT_MONO,
+        int intSize = AudioTrack.getMinBufferSize(bufferSize, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        at = new AudioTrack(audioManager.STREAM_MUSIC, bufferSize, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
         at.setVolume(volume);
         if (at != null) {

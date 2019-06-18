@@ -37,6 +37,9 @@ export interface SpeechOptions {
   // Which output to use for playback
   // TODO: improve type with all options
   preferredOutput?: string;
+
+  // The playback buffer size in byte units
+  bufferSize?: number;
 }
 
 export interface Constants {
