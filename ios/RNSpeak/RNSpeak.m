@@ -139,9 +139,12 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
                   forUtterance:(NSString *)utterance
                   withOptions:(NSDictionary *)options)
 {
+  NSError *error;
   NSNumber *shouldDuck = options[@"ducking"];
+  AVAudioSession *session = [AVAudioSession sharedInstance];
   [self resetAudioSession:shouldDuck == nil || [shouldDuck isEqual:@(1)]];
-  
+  [session setActive:YES error:&error];
+
   NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:kNilOptions];
   
@@ -150,15 +153,9 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   [utterances_ setValue:body forKey:utteranceId];
   [self sendEventWithName:SPEECH_START_EVENT body:body];
 
-  NSError *error;
-
-  AVAudioSession *session = [AVAudioSession sharedInstance];
-  
   NSString *preferredOutput = options[@"preferredOutput"];
   [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
   
-  [session setActive:YES error:&error];
-
   player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
   NSNumber *volume = options[@"volume"];
@@ -284,7 +281,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 - (void)resetAudioSession:(BOOL)shouldDuck
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryPlayAndRecord
+  [session setCategory:AVAudioSessionCategoryPlayback
            withOptions:shouldDuck ? AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers : AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers
                  error:nil];
 }
