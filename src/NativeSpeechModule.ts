@@ -40,6 +40,10 @@ export interface SpeechOptions {
 
   // The playback buffer size in byte units
   bufferSize?: number;
+
+  // The number of decibles to adjust the gain by
+  // default is 0. Recommended min/max is -10 or 10
+  gain?: number;
 }
 
 export interface Constants {

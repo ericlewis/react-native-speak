@@ -42,6 +42,7 @@ export class GoogleProvider extends Provider {
           languageCode: 'en-US'
         },
         audioConfig: {
+          volumeGainDb: options.gain || 0,
           audioEncoding:
             options.codec && options.codec === 'pcm' ? 'LINEAR16' : 'mp3'
         }
