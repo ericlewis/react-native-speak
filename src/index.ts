@@ -151,7 +151,7 @@ class Speech implements SpeechModuleInterface {
     } else if (options.instant) {
       this.queue.flush();
       this.stop();
-      this.speakWithProvider(currentProvider, utterance, options);
+      await this.speakWithProvider(currentProvider, utterance, options);
     } else {
       this.queue.add({ currentProvider, utterance, options });
     }
