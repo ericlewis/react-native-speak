@@ -166,28 +166,25 @@ class Speech implements SpeechModuleInterface {
     utterance: string,
     options: SpeechOptions
   ) {
+    // check option compatibility, will throw if there is any problem
+    const opts = provider.optionsCompatible(options);
+
     try {
       // TODO: maybe don't strip the tags here. we should allow SSML through if a user is doing it on purpose
       // TODO: this would result in us ignoring the options passed, this should be *documented*
       const cleanedUtterance = striptags(utterance);
 
-      // check option compatibility, will throw if there is any problem
-      provider.optionsCompatible(options);
-
       // see if we need to get some audio content first
       // if we don't that means we should just try to play the utterance
       if (provider.getAudioContent) {
         this.events.emit(this.constants.events.SPEECH_LOADING);
-        const content = await provider.getAudioContent(
-          cleanedUtterance,
-          options
-        );
+        const content = await provider.getAudioContent(cleanedUtterance, opts);
         return provider.playAudioContent(content, utterance, {
           bufferSize: provider.bufferSize,
-          ...options
+          ...opts
         });
       } else if (provider.speak) {
-        return provider.speak(cleanedUtterance, options);
+        return provider.speak(cleanedUtterance, opts);
       } else {
         // this provider seems incomplete or broken
         // we could move to the next one
@@ -195,8 +192,8 @@ class Speech implements SpeechModuleInterface {
     } catch (error) {
       // fallback to the native provider if anything goes wrong
       // default is true
-      if (get(options, 'fallbackToNativeSynth', true)) {
-        this.fallback(error, utterance, options);
+      if (get(opts, 'fallbackToNativeSynth', true)) {
+        this.fallback(error, utterance, opts);
       } else {
         // bubble the error up instead
         throw error;

@@ -1,4 +1,5 @@
 import invariant from 'invariant';
+import { Platform } from 'react-native';
 import { RNSpeak, SpeechOptions, Voice } from '../NativeSpeechModule';
 
 export interface ProviderInterface {
@@ -68,7 +69,7 @@ export abstract class Provider implements ProviderInterface {
    * Mostly a precheck to ensure that we have no problems with voiceId
    */
   public optionsCompatible(options: SpeechOptions) {
-    const { voiceId, speakingRate } = options;
+    const { voiceId, speakingRate, codec } = options;
     if (voiceId) {
       invariant(
         this.isValidVoiceId(voiceId),
@@ -82,6 +83,12 @@ export abstract class Provider implements ProviderInterface {
         'Speaking rate must be between 0.1 & 2.0'
       );
     }
+
+    if (!codec) {
+      options.codec = Platform.OS === 'android' ? 'pcm' : 'mp3';
+    }
+
+    return options;
   }
 
   /**
