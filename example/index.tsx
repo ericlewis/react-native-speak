@@ -53,7 +53,6 @@ const App: React.FunctionComponent<Props> = () => {
         speakingRate: speakingRateSlider.value,
         volume: volumeSlider.value,
         pitch: pitchSlider.value,
-        codec: Platform.OS === 'ios' ? 'mp3' : 'pcm',
         preferredOutput: outputs[preferredOutputIndex || 0]
       });
     }
