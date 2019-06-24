@@ -154,7 +154,9 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
   [self sendEventWithName:SPEECH_START_EVENT body:body];
 
   NSString *preferredOutput = options[@"preferredOutput"];
-  [session overrideOutputAudioPort: [[preferredOutput lowercaseString] isEqualToString:@"speaker"] ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
+  if ([[preferredOutput lowercaseString] isEqualToString:@"speaker"]) {
+      [session overrideOutputAudioPort: AVAudioSessionPortOverrideSpeaker error:nil];
+  }
   
   player_ = [[AVAudioPlayer alloc] initWithData:audio error:&error];
   
