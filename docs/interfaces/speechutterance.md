@@ -1,4 +1,4 @@
-[react-native-speech-eel-test](../README.md) > [SpeechUtterance](../interfaces/speechutterance.md)
+[react-native-speak-eel-test](../README.md) > [SpeechUtterance](../interfaces/speechutterance.md)
 
 # Interface: SpeechUtterance
 
@@ -24,7 +24,7 @@
 
 **● currentProvider**: *[Provider](../classes/provider.md)*
 
-*Defined in [index.ts:56](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L56)*
+*Defined in [index.ts:56](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L56)*
 
 ___
 <a id="options"></a>
@@ -33,7 +33,7 @@ ___
 
 **● options**: *[SpeechOptions](speechoptions.md)*
 
-*Defined in [index.ts:58](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L58)*
+*Defined in [index.ts:58](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L58)*
 
 ___
 <a id="utterance"></a>
@@ -42,7 +42,7 @@ ___
 
 **● utterance**: *`string`*
 
-*Defined in [index.ts:57](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/index.ts#L57)*
+*Defined in [index.ts:57](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L57)*
 
 ___
 

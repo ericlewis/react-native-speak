@@ -1,4 +1,4 @@
-[react-native-speech-eel-test](../README.md) > [Constants](../interfaces/constants.md)
+[react-native-speak-eel-test](../README.md) > [Constants](../interfaces/constants.md)
 
 # Interface: Constants
 
@@ -23,7 +23,7 @@
 
 **● events**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/NativeSpeechModule.ts#L43)*
+*Defined in [NativeSpeechModule.ts:43](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L43)*
 
 #### Type declaration
 
@@ -42,7 +42,7 @@ ___
 
 **● outputs**: *`object`*
 
-*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/NativeSpeechModule.ts#L49)*
+*Defined in [NativeSpeechModule.ts:49](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L49)*
 
 #### Type declaration
 

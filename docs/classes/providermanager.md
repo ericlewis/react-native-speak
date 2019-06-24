@@ -1,4 +1,4 @@
-[react-native-speech-eel-test](../README.md) > [ProviderManager](../classes/providermanager.md)
+[react-native-speak-eel-test](../README.md) > [ProviderManager](../classes/providermanager.md)
 
 # Class: ProviderManager
 
@@ -37,7 +37,7 @@
 
 ⊕ **new ProviderManager**(providers?: *[Provider](provider.md)[]*, defaultProvider?: *`undefined` \| `string`*): [ProviderManager](providermanager.md)
 
-*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L20)*
+*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L20)*
 
 **Parameters:**
 
@@ -58,7 +58,7 @@ ___
 
 **● currentProvider**: *[Provider](provider.md)*
 
-*Defined in [providers/index.ts:15](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L15)*
+*Defined in [providers/index.ts:15](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L15)*
 
 ___
 <a id="nativeprovider"></a>
@@ -67,7 +67,7 @@ ___
 
 **● nativeProvider**: *[NativeProvider](nativeprovider.md)* =  new NativeProvider(null)
 
-*Defined in [providers/index.ts:18](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L18)*
+*Defined in [providers/index.ts:18](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L18)*
 
 ___
 <a id="providers"></a>
@@ -76,7 +76,7 @@ ___
 
 **● providers**: *`object`*
 
-*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L20)*
+*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L20)*
 
 #### Type declaration
 
@@ -92,7 +92,7 @@ ___
 
 ▸ **addProvider**(provider: *[Provider](provider.md)*): `void`
 
-*Defined in [providers/index.ts:59](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L59)*
+*Defined in [providers/index.ts:59](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L59)*
 
 Register a new provider
 
@@ -111,7 +111,7 @@ ___
 
 ▸ **getProviderForName**(name: *`string`*): [Provider](provider.md)
 
-*Defined in [providers/index.ts:95](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L95)*
+*Defined in [providers/index.ts:95](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L95)*
 
 Returns a provider for a given (class) name
 
@@ -130,7 +130,7 @@ ___
 
 ▸ **getProviderNames**(): `string`[]
 
-*Defined in [providers/index.ts:51](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L51)*
+*Defined in [providers/index.ts:51](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L51)*
 
 Returns a list of all the provider class names
 
@@ -143,7 +143,7 @@ ___
 
 ▸ **hasProvider**(provider?: *[Provider](provider.md) \| `string`*): `boolean`
 
-*Defined in [providers/index.ts:81](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L81)*
+*Defined in [providers/index.ts:81](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L81)*
 
 Check if we are managing a particular provider
 
@@ -162,7 +162,7 @@ ___
 
 ▸ **removeProvider**(provider: *[Provider](provider.md)*): `void`
 
-*Defined in [providers/index.ts:68](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L68)*
+*Defined in [providers/index.ts:68](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L68)*
 
 Remove an old provider
 
@@ -181,7 +181,7 @@ ___
 
 ▸ **setCurrentProvider**(providerName: *`string`*): `void`
 
-*Defined in [providers/index.ts:39](https://github.com/ericlewis/react-native-speech/blob/f509ee8/src/providers/index.ts#L39)*
+*Defined in [providers/index.ts:39](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L39)*
 
 Change the active provider, optionally set to default too.
 

@@ -5,7 +5,7 @@
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
   "module": "build/module/src/index.js",
-  "repository": "https://github.com/ericlewis/react-native-speech",
+  "repository": "https://github.com/ericlewis/react-native-speak",
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",

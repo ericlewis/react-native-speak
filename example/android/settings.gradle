@@ -1,7 +1,7 @@
 rootProject.name = 'example'
 
-include ':react-native-speech'
-project(':react-native-speech').projectDir = new File(rootProject.projectDir, '../../android')
+include ':react-native-speak'
+project(':react-native-speak').projectDir = new File(rootProject.projectDir, '../../android')
 
 include ':react-native-community-slider'
 project(':react-native-community-slider').projectDir = new File(rootProject.projectDir, '../../node_modules/@react-native-community/slider/android')

@@ -1,8 +1,8 @@
-// in your own application this would be: `import Speech from 'react-native-speech';`
+// in your own application this would be: `import Speech from 'react-native-speak';`
 import Speech, { GoogleProvider, PollyProvider } from '../src';
 
 export const speech = new Speech([
-  new GoogleProvider('AIzaSyC5f8uwyf1frmbIeLz0s5UfaHwDwGBBmgw'),
+  new GoogleProvider('AIzaSyDpa_MrHpW1kR31Q2fly90rJ8lRzJ5Tcw8'),
   new PollyProvider({
     signatureVersion: 'v4',
     region: 'us-east-1',

@@ -1,4 +1,4 @@
-# react-native-speech
+# react-native-speak
 
 A wonderful TTS (text-to-speech) library for [React Native](https://github.com/facebook/react-native).
 
@@ -14,13 +14,13 @@ A wonderful TTS (text-to-speech) library for [React Native](https://github.com/f
 Using npm:
 
 ```shell
-npm install --save react-native-speech
+npm install --save react-native-speak
 ```
 
 or using yarn:
 
 ```shell
-yarn add react-native-speech
+yarn add react-native-speak
 ```
 
 ## Linking
@@ -28,7 +28,7 @@ yarn add react-native-speech
 ### Automatic
 
 ```shell
-react-native link react-native-speech
+react-native link react-native-speak
 ```
 
 *For iOS users using Pods:*
@@ -41,7 +41,7 @@ You need to run `pod install` after running the above link command inside your `
 
 Add the following line to your build targets in your `Podfile`
 
-`pod 'RNSpeak', :path => '../node_modules/react-native-speech'`
+`pod 'RNSpeak', :path => '../node_modules/react-native-speak'`
 
 Then run `pod install`
 
@@ -54,7 +54,7 @@ In XCode, in the project navigator:
 
 * Right click _Libraries_
 * Add Files to _[your project's name]_
-* Go to `node_modules/react-native-speech`
+* Go to `node_modules/react-native-speak`
 * Add the `.xcodeproj` file
 
 In XCode, in the project navigator, select your project.
@@ -91,7 +91,7 @@ Run your project (Cmd+R)
 dependencies {
     ...
     implementation "com.facebook.react:react-native:+"  // From node_modules
-+   implementation project(':react-native-speech')
++   implementation project(':react-native-speak')
 }
 ```
 
@@ -100,8 +100,8 @@ dependencies {
 ```diff
 ...
 include ':app'
-+ include ':react-native-speech'
-+ project(':react-native-speech').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-speech/android')
++ include ':react-native-speak'
++ project(':react-native-speak').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-speak/android')
 ```
 
 * in `MainApplication.java`:
@@ -124,7 +124,7 @@ include ':app'
   }
 ```
 
-NOTE: If you faced with this error: `Could not resolve all files for configuration ':react-native-speech:debugCompileClasspath'.`, in `build.gradle` put `google()` in the first line (according to https://stackoverflow.com/a/50748249)
+NOTE: If you faced with this error: `Could not resolve all files for configuration ':react-native-speak:debugCompileClasspath'.`, in `build.gradle` put `google()` in the first line (according to https://stackoverflow.com/a/50748249)
 
 * in `android/build.gradle`:
 
@@ -141,7 +141,7 @@ allprojects {
 ## Usage
 
 ```js
-import Speech from 'react-native-speech';
+import Speech from 'react-native-speak';
 ```
 
 ## API
