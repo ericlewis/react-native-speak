@@ -283,7 +283,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)utterance
 - (void)resetAudioSession:(BOOL)shouldDuck
 {
   AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryPlayback
+  [session setCategory:AVAudioSessionCategoryPlayAndRecord
            withOptions:shouldDuck ? AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers | AVAudioSessionCategoryOptionDuckOthers : AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers
                  error:nil];
 }
