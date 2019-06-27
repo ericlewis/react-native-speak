@@ -328,8 +328,9 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
         case SPEECH_START_EVENT:
             if (shouldDuck) {
                 duckAudio();
-                setAudioOutput(options);
             }
+
+            setAudioOutput(options);
         default:
             // do nothing
         }
