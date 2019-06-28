@@ -87,14 +87,14 @@ RCT_EXPORT_METHOD(getOutputs:(RCTPromiseResolveBlock)resolve
   AVAudioSessionPortDescription *source = [[[session currentRoute] outputs] firstObject];
   NSMutableArray *outputs = [[NSMutableArray alloc] initWithCapacity:2];
   
-  [outputs addObject:OUTPUT_PHONE_SPEAKER];
-  
   if ([[source portType] isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
       [[source portType] isEqualToString:AVAudioSessionPortBluetoothLE] ||
       [[source portType] isEqualToString:AVAudioSessionPortBluetoothHFP]) {
     [outputs addObject:OUTPUT_BLUETOOTH];
   } else if ([[source portType] isEqualToString:AVAudioSessionPortHeadphones]) {
     [outputs addObject:OUTPUT_HEADPHONES];
+  } else {
+    [outputs addObject:OUTPUT_PHONE_SPEAKER];
   }
   
   resolve(outputs);
