@@ -254,14 +254,12 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
     public void getOutputs(Promise promise) {
         WritableArray outputsArray = Arguments.createArray();
 
-        outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
-
         if (audioManager.isBluetoothA2dpOn() || audioManager.isBluetoothScoOn()) {
             outputsArray.pushString(OUTPUT_BLUETOOTH);
-        }
-
-        if (audioManager.isWiredHeadsetOn()) {
+        } else if (audioManager.isWiredHeadsetOn()) {
             outputsArray.pushString(OUTPUT_HEADPHONES);
+        } else {
+            outputsArray.pushString(OUTPUT_PHONE_SPEAKER);
         }
 
         promise.resolve(outputsArray);
