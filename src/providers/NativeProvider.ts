@@ -1,4 +1,4 @@
-import { SpeechOptions, Voice } from '../NativeSpeechModule';
+import { SpeechOptions, Voice } from '../types/NativeSpeechModule';
 import { Provider } from './BaseProvider';
 
 /**

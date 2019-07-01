@@ -1,6 +1,7 @@
 import invariant from 'invariant';
 import { Platform } from 'react-native';
-import { RNSpeak, SpeechOptions, Voice } from '../NativeSpeechModule';
+import { RNSpeak } from '../NativeSpeechModule';
+import { SpeechOptions, Voice } from '../types/NativeSpeechModule';
 
 export interface ProviderInterface {
   getVoices: () => Promise<Voice[]>;

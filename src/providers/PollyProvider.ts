@@ -1,5 +1,5 @@
 import Polly from 'aws-sdk/clients/polly';
-import { SpeechOptions, Voice } from '../NativeSpeechModule';
+import { SpeechOptions, Voice } from '../types/NativeSpeechModule';
 import { Provider } from './BaseProvider';
 
 export class PollyProvider extends Provider {

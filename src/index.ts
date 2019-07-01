@@ -1,9 +1,10 @@
 import get from 'lodash.get';
 import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
-import { Constants, RNSpeak, SpeechOptions, Voice } from './NativeSpeechModule';
+import { RNSpeak } from './NativeSpeechModule';
 import ProviderManager, { Provider } from './providers';
 import Queue, { EventName } from './Queue';
+import { Constants, SpeechOptions, Voice } from './types/NativeSpeechModule';
 
 /**
  * The interface for the JS Module

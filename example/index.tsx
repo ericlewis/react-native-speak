@@ -18,7 +18,7 @@ import {
   View
 } from 'react-native';
 
-import { Voice } from '../src';
+import { Voice } from '../src/types/NativeSpeechModule';
 import { speech } from './module';
 import { useInput, usePicker, useSlider } from './utils';
 
