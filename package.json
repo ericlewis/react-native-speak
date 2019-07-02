@@ -75,7 +75,6 @@
     "singleQuote": true
   },
   "dependencies": {
-    "aws-sdk": "^2.464.0",
     "invariant": "^2.2.4",
     "lodash.get": "^4.4.2",
     "lodash.keyby": "^4.6.0",
