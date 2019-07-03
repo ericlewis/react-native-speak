@@ -48,7 +48,7 @@
     "@babel/core": "^7.4.5",
     "@babel/runtime": "^7.4.5",
     "@react-native-community/slider": "^1.1.3",
-    "@react-native-speak/google": "0.2.0-alpha.0",
+    "@react-native-speak/google": "1.0.0",
     "@types/invariant": "^2.2.29",
     "@types/lodash.get": "^4.4.6",
     "@types/lodash.keyby": "^4.6.6",
@@ -77,8 +77,8 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@react-native-speak/base": "0.2.1-alpha.0",
-    "@react-native-speak/native": "0.2.1-alpha.0",
+    "@react-native-speak/base": "1.0.0",
+    "@react-native-speak/native": "1.0.0",
     "invariant": "^2.2.4",
     "lodash.get": "^4.4.2",
     "lodash.keyby": "^4.6.0",
