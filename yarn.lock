@@ -692,6 +692,21 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-1.1.3.tgz#5f5e574ddf108880fc32d9cf98c7b51363353668"
   integrity sha512-l5GRS+u+yeoiTcjME5laQfAMWdsKG2lPozUzwh0vBLl1rXDwZlMTvsGJPEWWYvCT1npu+isyHx10BFUEcIkCmg==
 
+"@react-native-speak/base@0.2.1-alpha.0":
+  version "0.2.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/base/-/base-0.2.1-alpha.0.tgz#f01cdf415b102202219a9deb7f4583656145c03b"
+  integrity sha512-OVNdEAT0cvLFY6UI7tLt0uihIMjgXU6FA6UlvAji6/7iUJzb+AyNZYchFxpzogf5hIfnFfrHdNrJiM+RTzURhw==
+
+"@react-native-speak/google@0.2.0-alpha.0":
+  version "0.2.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/google/-/google-0.2.0-alpha.0.tgz#c8f556e92c0d46e7fa85516cafd933d06a5dfe50"
+  integrity sha512-1ZRvJH3QCcbxXPT6YPRMH4slUhRz8+dNfRqGU1PyO/PQ8sWpTb8nP96BCWDJHgNnKC2ySWsJlad3Vb+UClsxCA==
+
+"@react-native-speak/native@0.2.1-alpha.0":
+  version "0.2.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/native/-/native-0.2.1-alpha.0.tgz#afd01c2f4eb90b777646f48dbcad3a0bc01eadd5"
+  integrity sha512-1wTVqi/SZwF+HbdPUp8b5ApL4JJ2o9vwtg9oDvK9wXt9BRD2d0vMvrIA26US1duauehKDtysTPQShRGnBxCEEw==
+
 "@sindresorhus/df@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@sindresorhus/df/-/df-1.0.1.tgz#c69b66f52f6fcdd287c807df210305dbaf78500d"
@@ -1138,9 +1153,9 @@ atob@^2.1.1:
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
 aws-sdk@^2.464.0:
-  version "2.464.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.464.0.tgz#1415ba026f5ca76ad32fce79d99131246d37cd6f"
-  integrity sha512-DsJ/V/Eaazio5klO49IXIgnDpBcObgOunFs0KsUbdPz5yxvznZQiez9LqTcaj0SaCS7zsrT9K5p+Jtbt60z1SA==
+  version "2.487.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.487.0.tgz#ac22c071db17b236498e5765e32f74528135808a"
+  integrity sha512-bdImYaIzvRL4nn8DEvI39VCrQYPDeC/PTYg++EBobhaFh8ksbsTzBnIFAn5IxtlRsXWUzaZVyOgRTGqiiS6YHA==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -5357,6 +5372,17 @@ react-is@^16.8.1:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
+
+react-native-speak@0.2.1:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-speak/-/react-native-speak-0.2.0.tgz#a7effec91146da109533171cc30afad631c6f242"
+  integrity sha512-GNCV3baWbzWbZPkIGtmybKo7UwJ/UGqQhxWTa1ShDAEG3gk3uEe1/wmqrjzcWaD0SObm6O+8OUT0guTHyJFDqg==
+  dependencies:
+    aws-sdk "^2.464.0"
+    invariant "^2.2.4"
+    lodash.get "^4.4.2"
+    lodash.keyby "^4.6.0"
+    striptags "^3.1.1"
 
 react-native@0.59.9:
   version "0.59.9"

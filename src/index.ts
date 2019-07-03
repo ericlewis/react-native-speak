@@ -1,8 +1,9 @@
+import { Provider } from '@react-native-speak/base';
 import get from 'lodash.get';
 import { NativeEventEmitter, Platform } from 'react-native';
 import striptags from 'striptags';
 import { RNSpeak } from './NativeSpeechModule';
-import ProviderManager, { Provider } from './providers';
+import ProviderManager from './providers';
 import Queue, { EventName } from './Queue';
 import { Constants, SpeechOptions, Voice } from './types/NativeSpeechModule';
 

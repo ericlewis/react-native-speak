@@ -1,14 +1,9 @@
 // All available Providers
-export * from './BaseProvider';
-export * from './GoogleProvider';
-export * from './NativeProvider';
-export * from './PollyProvider';
-
 import invariant from 'invariant';
 import keyBy from 'lodash.keyby';
 
-import { Provider } from './BaseProvider';
-import { NativeProvider } from './NativeProvider';
+import { Provider } from '@react-native-speak/base';
+import { NativeProvider } from '@react-native-speak/native';
 
 export default class ProviderManager {
   // the currently selected provider
