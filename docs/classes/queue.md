@@ -1,4 +1,4 @@
-[react-native-speak-eel-test](../README.md) > [Queue](../classes/queue.md)
+[react-native-speak](../README.md) > [Queue](../classes/queue.md)
 
 # Class: Queue
 
@@ -46,7 +46,7 @@
 
 ⊕ **new Queue**(data?: *`T`[]*): [Queue](queue.md)
 
-*Defined in [Queue.ts:13](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L13)*
+*Defined in [Queue.ts:13](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L13)*
 
 Creates a new queue
 
@@ -68,7 +68,7 @@ ___
 
 **● callback**: *[QueueCallback](../#queuecallback)*
 
-*Defined in [Queue.ts:13](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L13)*
+*Defined in [Queue.ts:13](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L13)*
 
 ___
 <a id="data"></a>
@@ -77,7 +77,7 @@ ___
 
 **● data**: *`T`[]*
 
-*Defined in [Queue.ts:12](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L12)*
+*Defined in [Queue.ts:12](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L12)*
 
 ___
 <a id="added_item"></a>
@@ -86,7 +86,7 @@ ___
 
 **● ADDED_ITEM**: *[EventName](../#eventname)* = "ADDED_ITEM"
 
-*Defined in [Queue.ts:9](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L9)*
+*Defined in [Queue.ts:9](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L9)*
 
 ___
 <a id="removed_item"></a>
@@ -95,7 +95,7 @@ ___
 
 **● REMOVED_ITEM**: *[EventName](../#eventname)* = "REMOVED_ITEM"
 
-*Defined in [Queue.ts:10](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L10)*
+*Defined in [Queue.ts:10](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L10)*
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 ▸ **add**(item: *`T`*, beginning?: *`boolean`*): `T`
 
-*Defined in [Queue.ts:45](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L45)*
+*Defined in [Queue.ts:45](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L45)*
 
 Adds item to the queue Defaults to adding items to the beginning of the queue
 
@@ -128,7 +128,7 @@ ___
 
 ▸ **addListener**(callback: *[QueueCallback](../#queuecallback)*): `void`
 
-*Defined in [Queue.ts:113](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L113)*
+*Defined in [Queue.ts:113](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L113)*
 
 Listen for add / remove events Note: you can only have 1 listener at a time
 
@@ -147,7 +147,7 @@ ___
 
 ▸ **batchAdd**(items: *`T`[]*, beginning?: *`boolean`*): `T`
 
-*Defined in [Queue.ts:30](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L30)*
+*Defined in [Queue.ts:30](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L30)*
 
 Add a batch of items to the queue Defaults to adding items to the beginning of the queue
 
@@ -168,7 +168,7 @@ ___
 
 ▸ **fireCallbackAndReturn**(name: *[EventName](../#eventname)*, item?: *[T]()*): `T` \| `undefined`
 
-*Defined in [Queue.ts:127](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L127)*
+*Defined in [Queue.ts:127](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L127)*
 
 Simplifies the callback, returns the changed item too.
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **first**(): `T`
 
-*Defined in [Queue.ts:72](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L72)*
+*Defined in [Queue.ts:72](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L72)*
 
 **Returns:** `T`
 first item in queue
@@ -200,7 +200,7 @@ ___
 
 ▸ **flush**(): `void`
 
-*Defined in [Queue.ts:65](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L65)*
+*Defined in [Queue.ts:65](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L65)*
 
 Resets the queue TODO: should this fire an event
 
@@ -213,7 +213,7 @@ ___
 
 ▸ **isEmpty**(): `boolean`
 
-*Defined in [Queue.ts:104](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L104)*
+*Defined in [Queue.ts:104](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L104)*
 
 **Returns:** `boolean`
 if the queue is still needed
@@ -225,7 +225,7 @@ ___
 
 ▸ **itemAtIndex**(index: *`number`*): `T`
 
-*Defined in [Queue.ts:86](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L86)*
+*Defined in [Queue.ts:86](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L86)*
 
 **Parameters:**
 
@@ -242,7 +242,7 @@ ___
 
 ▸ **last**(): `T`
 
-*Defined in [Queue.ts:79](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L79)*
+*Defined in [Queue.ts:79](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L79)*
 
 **Returns:** `T`
 last item in queue
@@ -254,7 +254,7 @@ ___
 
 ▸ **remove**(lastItem?: *`boolean`*): `T` \| `undefined`
 
-*Defined in [Queue.ts:56](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L56)*
+*Defined in [Queue.ts:56](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L56)*
 
 Removes an item from the queue Default is to remove the last item
 
@@ -274,7 +274,7 @@ ___
 
 ▸ **removeListener**(): `void`
 
-*Defined in [Queue.ts:120](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L120)*
+*Defined in [Queue.ts:120](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L120)*
 
 Stop listening / release ref
 
@@ -287,7 +287,7 @@ ___
 
 ▸ **size**(): `number`
 
-*Defined in [Queue.ts:97](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L97)*
+*Defined in [Queue.ts:97](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L97)*
 
 **Returns:** `number`
 number of items in queue

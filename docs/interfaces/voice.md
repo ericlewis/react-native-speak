@@ -1,4 +1,4 @@
-[react-native-speak-eel-test](../README.md) > [Voice](../interfaces/voice.md)
+[react-native-speak](../README.md) > [Voice](../interfaces/voice.md)
 
 # Interface: Voice
 
@@ -23,7 +23,7 @@
 
 **● id**: *`string`*
 
-*Defined in [NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L4)*
+*Defined in [types/NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L4)*
 
 ___
 <a id="name"></a>
@@ -32,7 +32,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [NativeSpeechModule.ts:5](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L5)*
+*Defined in [types/NativeSpeechModule.ts:5](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L5)*
 
 ___
 

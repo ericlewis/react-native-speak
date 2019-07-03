@@ -1,6 +1,6 @@
 
 react-native-speak
-===================
+==================
 
 A wonderful TTS (text-to-speech) library for [React Native](https://github.com/facebook/react-native).
 
@@ -246,10 +246,6 @@ Please see the [`contributing guide`](/CONTRIBUTING.md).
 
 ### Classes
 
-* [GoogleProvider](classes/googleprovider.md)
-* [NativeProvider](classes/nativeprovider.md)
-* [PollyProvider](classes/pollyprovider.md)
-* [Provider](classes/provider.md)
 * [ProviderManager](classes/providermanager.md)
 * [Queue](classes/queue.md)
 * [Speech](classes/speech.md)
@@ -258,7 +254,6 @@ Please see the [`contributing guide`](/CONTRIBUTING.md).
 
 * [Constants](interfaces/constants.md)
 * [NativeSpeechModuleInterface](interfaces/nativespeechmoduleinterface.md)
-* [ProviderInterface](interfaces/providerinterface.md)
 * [SpeechModuleInterface](interfaces/speechmoduleinterface.md)
 * [SpeechOptions](interfaces/speechoptions.md)
 * [SpeechUtterance](interfaces/speechutterance.md)
@@ -271,7 +266,7 @@ Please see the [`contributing guide`](/CONTRIBUTING.md).
 
 ### Variables
 
-* [RNSpeak](#RNSpeak)
+* [RNSpeak](#rnspeak)
 
 ---
 
@@ -283,7 +278,7 @@ Please see the [`contributing guide`](/CONTRIBUTING.md).
 
 **Ƭ EventName**: *"ADDED_ITEM" \| "REMOVED_ITEM"*
 
-*Defined in [Queue.ts:1](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L1)*
+*Defined in [Queue.ts:1](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L1)*
 
 ___
 <a id="queuecallback"></a>
@@ -292,7 +287,7 @@ ___
 
 **Ƭ QueueCallback**: *`function`*
 
-*Defined in [Queue.ts:2](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/Queue.ts#L2)*
+*Defined in [Queue.ts:2](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L2)*
 
 #### Type declaration
 ▸<`T`>(eventName: *[EventName](#eventname)*, data: *`T`[]*, item?: *[T]()*): `void`
@@ -314,13 +309,13 @@ ___
 
 ## Variables
 
-<a id="RNSpeak"></a>
+<a id="rnspeak"></a>
 
 ### `<Const>` RNSpeak
 
 **● RNSpeak**: *[NativeSpeechModuleInterface](interfaces/nativespeechmoduleinterface.md)* =  NativeModules.RNSpeak
 
-*Defined in [NativeSpeechModule.ts:94](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L94)*
+*Defined in [NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/NativeSpeechModule.ts#L4)*
 
 ___
 

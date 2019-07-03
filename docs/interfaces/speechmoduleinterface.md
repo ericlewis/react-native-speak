@@ -1,4 +1,4 @@
-[react-native-speak-eel-test](../README.md) > [SpeechModuleInterface](../interfaces/speechmoduleinterface.md)
+[react-native-speak](../README.md) > [SpeechModuleInterface](../interfaces/speechmoduleinterface.md)
 
 # Interface: SpeechModuleInterface
 
@@ -35,7 +35,7 @@ The interface for the JS Module
 
 **● events**: *`NativeEventEmitter`*
 
-*Defined in [index.ts:17](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L17)*
+*Defined in [index.ts:14](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L14)*
 
 ___
 <a id="getcurrentprovider"></a>
@@ -44,7 +44,7 @@ ___
 
 **● getCurrentProvider**: *`function`*
 
-*Defined in [index.ts:47](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L47)*
+*Defined in [index.ts:44](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L44)*
 
 Returns the active providers name
 
@@ -60,7 +60,7 @@ ___
 
 **● getOutputs**: *`function`*
 
-*Defined in [index.ts:22](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L22)*
+*Defined in [index.ts:19](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L19)*
 
 Returns a list of available outputs in human readable format
 
@@ -82,7 +82,7 @@ ___
 
 **● getProviders**: *`function`*
 
-*Defined in [index.ts:52](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L52)*
+*Defined in [index.ts:49](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L49)*
 
 Returns a list of available provider names
 
@@ -98,7 +98,7 @@ ___
 
 **● getVoices**: *`function`*
 
-*Defined in [index.ts:27](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L27)*
+*Defined in [index.ts:24](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L24)*
 
 Returns a list of available voices for the current provider
 
@@ -120,7 +120,7 @@ ___
 
 **● getVoicesForProvider**: *`function`*
 
-*Defined in [index.ts:32](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L32)*
+*Defined in [index.ts:29](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L29)*
 
 Returns a list of available voices for a given providers name
 
@@ -142,7 +142,7 @@ ___
 
 **● setCurrentProvider**: *`function`*
 
-*Defined in [index.ts:42](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L42)*
+*Defined in [index.ts:39](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L39)*
 
 Sets the active provider (persisted across launches)
 
@@ -164,7 +164,7 @@ ___
 
 **● speak**: *`function`*
 
-*Defined in [index.ts:37](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/index.ts#L37)*
+*Defined in [index.ts:34](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L34)*
 
 Convenience method for fetching & playing a given utterance
 

@@ -1,4 +1,4 @@
-[react-native-speak-eel-test](../README.md) > [ProviderManager](../classes/providermanager.md)
+[react-native-speak](../README.md) > [ProviderManager](../classes/providermanager.md)
 
 # Class: ProviderManager
 
@@ -35,15 +35,15 @@
 
 ###  constructor
 
-⊕ **new ProviderManager**(providers?: *[Provider](provider.md)[]*, defaultProvider?: *`undefined` \| `string`*): [ProviderManager](providermanager.md)
+⊕ **new ProviderManager**(providers?: *`Provider`[]*, defaultProvider?: *`undefined` \| `string`*): [ProviderManager](providermanager.md)
 
-*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L20)*
+*Defined in [providers/index.ts:15](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L15)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| `Optional` providers | [Provider](provider.md)[] |
+| `Optional` providers | `Provider`[] |
 | `Optional` defaultProvider | `undefined` \| `string` |
 
 **Returns:** [ProviderManager](providermanager.md)
@@ -56,18 +56,18 @@ ___
 
 ###  currentProvider
 
-**● currentProvider**: *[Provider](provider.md)*
+**● currentProvider**: *`Provider`*
 
-*Defined in [providers/index.ts:15](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L15)*
+*Defined in [providers/index.ts:10](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L10)*
 
 ___
 <a id="nativeprovider"></a>
 
 ###  nativeProvider
 
-**● nativeProvider**: *[NativeProvider](nativeprovider.md)* =  new NativeProvider(null)
+**● nativeProvider**: *`any`* =  new NativeProvider(null)
 
-*Defined in [providers/index.ts:18](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L18)*
+*Defined in [providers/index.ts:13](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L13)*
 
 ___
 <a id="providers"></a>
@@ -76,11 +76,11 @@ ___
 
 **● providers**: *`object`*
 
-*Defined in [providers/index.ts:20](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L20)*
+*Defined in [providers/index.ts:15](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L15)*
 
 #### Type declaration
 
-[key: `string`]: [Provider](provider.md)
+[key: `string`]: `Provider`
 
 ___
 
@@ -90,9 +90,9 @@ ___
 
 ###  addProvider
 
-▸ **addProvider**(provider: *[Provider](provider.md)*): `void`
+▸ **addProvider**(provider: *`Provider`*): `void`
 
-*Defined in [providers/index.ts:59](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L59)*
+*Defined in [providers/index.ts:54](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L54)*
 
 Register a new provider
 
@@ -100,7 +100,7 @@ Register a new provider
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| provider | [Provider](provider.md) |   |
+| provider | `Provider` |   |
 
 **Returns:** `void`
 
@@ -109,9 +109,9 @@ ___
 
 ###  getProviderForName
 
-▸ **getProviderForName**(name: *`string`*): [Provider](provider.md)
+▸ **getProviderForName**(name: *`string`*): `Provider`
 
-*Defined in [providers/index.ts:95](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L95)*
+*Defined in [providers/index.ts:90](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L90)*
 
 Returns a provider for a given (class) name
 
@@ -121,7 +121,7 @@ Returns a provider for a given (class) name
 | ------ | ------ | ------ |
 | name | `string` |   |
 
-**Returns:** [Provider](provider.md)
+**Returns:** `Provider`
 
 ___
 <a id="getprovidernames"></a>
@@ -130,7 +130,7 @@ ___
 
 ▸ **getProviderNames**(): `string`[]
 
-*Defined in [providers/index.ts:51](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L51)*
+*Defined in [providers/index.ts:46](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L46)*
 
 Returns a list of all the provider class names
 
@@ -141,9 +141,9 @@ ___
 
 ###  hasProvider
 
-▸ **hasProvider**(provider?: *[Provider](provider.md) \| `string`*): `boolean`
+▸ **hasProvider**(provider?: *`Provider` \| `string`*): `boolean`
 
-*Defined in [providers/index.ts:81](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L81)*
+*Defined in [providers/index.ts:76](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L76)*
 
 Check if we are managing a particular provider
 
@@ -151,7 +151,7 @@ Check if we are managing a particular provider
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| `Optional` provider | [Provider](provider.md) \| `string` |   |
+| `Optional` provider | `Provider` \| `string` |   |
 
 **Returns:** `boolean`
 
@@ -160,9 +160,9 @@ ___
 
 ###  removeProvider
 
-▸ **removeProvider**(provider: *[Provider](provider.md)*): `void`
+▸ **removeProvider**(provider: *`Provider`*): `void`
 
-*Defined in [providers/index.ts:68](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L68)*
+*Defined in [providers/index.ts:63](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L63)*
 
 Remove an old provider
 
@@ -170,7 +170,7 @@ Remove an old provider
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| provider | [Provider](provider.md) |   |
+| provider | `Provider` |   |
 
 **Returns:** `void`
 
@@ -181,7 +181,7 @@ ___
 
 ▸ **setCurrentProvider**(providerName: *`string`*): `void`
 
-*Defined in [providers/index.ts:39](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/providers/index.ts#L39)*
+*Defined in [providers/index.ts:34](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/providers/index.ts#L34)*
 
 Change the active provider, optionally set to default too.
 

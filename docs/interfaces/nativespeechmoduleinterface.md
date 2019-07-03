@@ -1,4 +1,4 @@
-[react-native-speak-eel-test](../README.md) > [NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)
+[react-native-speak](../README.md) > [NativeSpeechModuleInterface](../interfaces/nativespeechmoduleinterface.md)
 
 # Interface: NativeSpeechModuleInterface
 
@@ -40,7 +40,7 @@ The interface for interacting with the native side of things
 
 **● getConstants**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:60](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L60)*
+*Defined in [types/NativeSpeechModule.ts:67](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L67)*
 
 #### Type declaration
 ▸(): [Constants](constants.md)
@@ -54,7 +54,7 @@ ___
 
 **● getOutputs**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:71](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L71)*
+*Defined in [types/NativeSpeechModule.ts:78](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L78)*
 
 #### Type declaration
 ▸(): `Promise`<`string`[]>
@@ -68,7 +68,7 @@ ___
 
 **● getVoices**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:81](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L81)*
+*Defined in [types/NativeSpeechModule.ts:88](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L88)*
 
 Get the native voices.
 
@@ -84,7 +84,7 @@ ___
 
 **● isSpeaking**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:86](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L86)*
+*Defined in [types/NativeSpeechModule.ts:93](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L93)*
 
 Wether or not we are currently playing audio or speaking from the native synth
 
@@ -100,7 +100,7 @@ ___
 
 **● playAudioContent**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:65](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L65)*
+*Defined in [types/NativeSpeechModule.ts:72](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L72)*
 
 Play LINEAR16 audio encoded in base64
 
@@ -124,7 +124,7 @@ ___
 
 **● speak**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:76](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L76)*
+*Defined in [types/NativeSpeechModule.ts:83](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L83)*
 
 Use the native synth to communicate
 
@@ -147,7 +147,7 @@ ___
 
 **● stop**: *`function`*
 
-*Defined in [NativeSpeechModule.ts:91](https://github.com/ericlewis/react-native-speak/blob/f509ee8/src/NativeSpeechModule.ts#L91)*
+*Defined in [types/NativeSpeechModule.ts:98](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L98)*
 
 Stops speaking/audio playback
 
@@ -168,7 +168,7 @@ ___
 
 *Inherited from EventSubscriptionVendor.addSubscription*
 
-*Defined in /Users/ericlewis/Work/react-native-speak/node_modules/@types/react-native/index.d.ts:94*
+*Defined in /Users/ericlewis/Work/react-native-speech/node_modules/@types/react-native/index.d.ts:94*
 
 Adds a subscription keyed by an event type.
 
@@ -190,7 +190,7 @@ ___
 
 *Inherited from EventSubscriptionVendor.constructor*
 
-*Defined in /Users/ericlewis/Work/react-native-speak/node_modules/@types/react-native/index.d.ts:88*
+*Defined in /Users/ericlewis/Work/react-native-speech/node_modules/@types/react-native/index.d.ts:88*
 
 **Returns:** `EventSubscriptionVendor`
 
@@ -203,7 +203,7 @@ ___
 
 *Inherited from EventSubscriptionVendor.getSubscriptionsForType*
 
-*Defined in /Users/ericlewis/Work/react-native-speak/node_modules/@types/react-native/index.d.ts:119*
+*Defined in /Users/ericlewis/Work/react-native-speech/node_modules/@types/react-native/index.d.ts:119*
 
 Returns the array of subscriptions that are currently registered for the given event type.
 
@@ -226,7 +226,7 @@ ___
 
 *Inherited from EventSubscriptionVendor.removeAllSubscriptions*
 
-*Defined in /Users/ericlewis/Work/react-native-speak/node_modules/@types/react-native/index.d.ts:102*
+*Defined in /Users/ericlewis/Work/react-native-speech/node_modules/@types/react-native/index.d.ts:102*
 
 Removes a bulk set of the subscriptions.
 
@@ -247,7 +247,7 @@ ___
 
 *Inherited from EventSubscriptionVendor.removeSubscription*
 
-*Defined in /Users/ericlewis/Work/react-native-speak/node_modules/@types/react-native/index.d.ts:109*
+*Defined in /Users/ericlewis/Work/react-native-speech/node_modules/@types/react-native/index.d.ts:109*
 
 Removes a specific subscription. Instead of calling this function, call `subscription.remove()` directly.
 
