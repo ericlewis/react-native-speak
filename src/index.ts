@@ -181,10 +181,14 @@ class Speech implements SpeechModuleInterface {
       if (provider.getAudioContent) {
         this.events.emit(this.constants.events.SPEECH_LOADING);
         const content = await provider.getAudioContent(cleanedUtterance, opts);
-        return provider.playAudioContent(content, utterance, {
-          bufferSize: provider.bufferSize,
-          ...opts
-        });
+        if (content != null) {
+          return provider.playAudioContent(content, utterance, {
+            bufferSize: provider.bufferSize,
+            ...opts
+          });
+        } else {
+          return this.fallback(new Error("Missing audio content"), utterance, opts);
+        }
       } else if (provider.speak) {
         return provider.speak(cleanedUtterance, opts);
       } else {
