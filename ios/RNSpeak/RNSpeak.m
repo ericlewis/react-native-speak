@@ -145,8 +145,8 @@ RCT_EXPORT_METHOD(playAudioContent:(NSString*)base64AudioContent
     [self resetAudioSession:shouldDuck == nil || [shouldDuck isEqual:@(1)]];
     [session setActive:YES error:&error];
     
-    if (base64AudioContent) {
-        return;
+    if (!base64AudioContent) {
+        [self speak:utterance options:options];
     }
     
     NSData *audio = [[NSData alloc] initWithBase64EncodedData:[base64AudioContent dataUsingEncoding:NSUTF8StringEncoding]
