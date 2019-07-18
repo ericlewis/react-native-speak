@@ -697,15 +697,27 @@
   resolved "https://registry.yarnpkg.com/@react-native-speak/base/-/base-1.0.0.tgz#caeccdb5c3a07a6927032d3929f726c69cd64b4e"
   integrity sha512-j/Qz6uchH+J9Orqaxz1FK10FERHlDEjnl87IiABO9/cEW8KS8WVDVkt9LBf0R1Jd4yDsxo7rWh4+sftxbXz3kg==
 
-"@react-native-speak/google@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@react-native-speak/google/-/google-1.0.0.tgz#e3dc35758b6c39216bd50e294486df43a56507d3"
-  integrity sha512-KWywm/k2fxUy5Ng+RSXjC2s9/FPzETrR+sz+3L7tHQOivdPdCWyR2/GOtc1goZ9QegyfvciAeR1MiqBKKgVFMw==
+"@react-native-speak/base@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/base/-/base-1.0.2.tgz#80e0f93b8f554375c598c301e5106733bff2a08e"
+  integrity sha512-YtUzxtW+UPonkzQPcmy7xlybFEenF+2gye+B93pGEzPp8npk/huLglt1+xvPXnhHKdPFse9r2qHgCS1AyOlthA==
+  dependencies:
+    react-native-fetch-polyfill "1.1.2"
+
+"@react-native-speak/google@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/google/-/google-1.0.3.tgz#ed524ae1aa3d714ff7e1c7034444d0cb1bf7ce66"
+  integrity sha512-atZAeJCBHhLYBPNdS8k849RBWS4wrPWTfsF5CNPCeugAWwtiTUXOu8/pYdGPPzt05p34MkheDjFpFmjZr9oemw==
 
 "@react-native-speak/native@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-speak/native/-/native-1.0.0.tgz#276e3adb9e535447c55b10300d888c66a493ea06"
   integrity sha512-Hk6/4rvqZh1xQ6FmdM4SpfZi16v4H/4xdQ64UPEmP+PNfoKFZn9fF9PyE38iW67TFGhiuPw1wnyh+XkXWuuDpA==
+
+"@react-native-speak/native@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-speak/native/-/native-1.0.2.tgz#9a06c66a04c2c10f9c44f5e0fd902739206a0cd3"
+  integrity sha512-gQYaOw+l5mrwUU/cn+5XueRd4/FCBipEfz76IELSt6HM5ajxt6sJIXUkp5kyzuxmuDNZaMiWixi2fiC2W7chSw==
 
 "@sindresorhus/df@^1.0.1":
   version "1.0.1"
@@ -5319,10 +5331,15 @@ react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-native-speak@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-speak/-/react-native-speak-1.0.1.tgz#3f025b4aaaeb9a893fef0784be80e1031d413e9f"
-  integrity sha512-a5lnertVDdKqraz2YNc9FGENxK0gBZMRVCQWf+wnVFAeDIrlEMDTiz+DP2Qw7poHYMQ30yAx1eeFFbjYPTRtLw==
+react-native-fetch-polyfill@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-fetch-polyfill/-/react-native-fetch-polyfill-1.1.2.tgz#256b5a0abd78cc4992f7a7cf82543da2f2124a73"
+  integrity sha1-JWtaCr14zEmS96fPglQ9ovISSnM=
+
+react-native-speak@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-speak/-/react-native-speak-1.0.5.tgz#21f8eefc93bf547d8d7dd92e7b423a4c6d007881"
+  integrity sha512-WWA4Q3WfhMaGTArKZjp/h5bUqRNl+BznGJuVIk+yx3Yj5a7zNtuFdkfwi/Nl8EcGKmnsH2RfT9xvitJAJ+A0nQ==
   dependencies:
     "@react-native-speak/base" "1.0.0"
     "@react-native-speak/native" "1.0.0"

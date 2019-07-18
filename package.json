@@ -25,7 +25,7 @@
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
-    "all": "run-s reset test cov:check doc:html",
+    "all": "run-s reset test doc:html",
     "start": "react-native start",
     "prepare-release": "run-s all version doc:publish"
   },
@@ -48,7 +48,7 @@
     "@babel/core": "^7.4.5",
     "@babel/runtime": "^7.4.5",
     "@react-native-community/slider": "^1.1.3",
-    "@react-native-speak/google": "1.0.0",
+    "@react-native-speak/google": "1.0.3",
     "@types/invariant": "^2.2.29",
     "@types/lodash.get": "^4.4.6",
     "@types/lodash.keyby": "^4.6.6",
@@ -63,7 +63,7 @@
     "prettier": "^1.17.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
-    "react-native-speak": "1.0.1",
+    "react-native-speak": "1.0.5",
     "standard-version": "^6.0.1",
     "trash-cli": "^2.0.0",
     "tslint": "^5.16.0",
@@ -77,8 +77,8 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@react-native-speak/base": "1.0.0",
-    "@react-native-speak/native": "1.0.0",
+    "@react-native-speak/base": "1.0.2",
+    "@react-native-speak/native": "1.0.2",
     "invariant": "^2.2.4",
     "lodash.get": "^4.4.2",
     "lodash.keyby": "^4.6.0",

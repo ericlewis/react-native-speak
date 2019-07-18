@@ -187,7 +187,11 @@ class Speech implements SpeechModuleInterface {
             ...opts
           });
         } else {
-          return this.fallback(new Error("Missing audio content"), utterance, opts);
+          return this.fallback(
+            new Error('Missing audio content'),
+            utterance,
+            opts
+          );
         }
       } else if (provider.speak) {
         return provider.speak(cleanedUtterance, opts);
@@ -199,7 +203,7 @@ class Speech implements SpeechModuleInterface {
       // fallback to the native provider if anything goes wrong
       // default is true
       if (get(opts, 'fallbackToNativeSynth', true)) {
-        this.fallback(error, utterance, opts);
+        return this.fallback(error, utterance, opts);
       } else {
         // bubble the error up instead
         throw error;
@@ -238,11 +242,8 @@ class Speech implements SpeechModuleInterface {
     }
 
     // attempt to speak natively
-    try {
-      return this.providerManager.nativeProvider.speak(utterance, options);
-    } catch (error) {
-      // we are in serious trouble if we got here.
-    }
+    options.voiceId = undefined;
+    return this.providerManager.nativeProvider.speak(utterance, options);
   }
 }
 
