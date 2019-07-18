@@ -278,7 +278,7 @@ Please see the [`contributing guide`](/CONTRIBUTING.md).
 
 **Ƭ EventName**: *"ADDED_ITEM" \| "REMOVED_ITEM"*
 
-*Defined in [Queue.ts:1](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L1)*
+*Defined in [Queue.ts:1](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/Queue.ts#L1)*
 
 ___
 <a id="queuecallback"></a>
@@ -287,7 +287,7 @@ ___
 
 **Ƭ QueueCallback**: *`function`*
 
-*Defined in [Queue.ts:2](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/Queue.ts#L2)*
+*Defined in [Queue.ts:2](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/Queue.ts#L2)*
 
 #### Type declaration
 ▸<`T`>(eventName: *[EventName](#eventname)*, data: *`T`[]*, item?: *[T]()*): `void`
@@ -315,7 +315,7 @@ ___
 
 **● RNSpeak**: *[NativeSpeechModuleInterface](interfaces/nativespeechmoduleinterface.md)* =  NativeModules.RNSpeak
 
-*Defined in [NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/NativeSpeechModule.ts#L4)*
+*Defined in [NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/NativeSpeechModule.ts#L4)*
 
 ___
 

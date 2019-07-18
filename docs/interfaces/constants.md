@@ -23,7 +23,7 @@
 
 **● events**: *`object`*
 
-*Defined in [types/NativeSpeechModule.ts:50](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L50)*
+*Defined in [types/NativeSpeechModule.ts:50](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L50)*
 
 #### Type declaration
 
@@ -42,7 +42,7 @@ ___
 
 **● outputs**: *`object`*
 
-*Defined in [types/NativeSpeechModule.ts:56](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L56)*
+*Defined in [types/NativeSpeechModule.ts:56](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L56)*
 
 #### Type declaration
 

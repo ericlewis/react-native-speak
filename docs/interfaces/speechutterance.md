@@ -24,7 +24,7 @@
 
 **● currentProvider**: *`Provider`*
 
-*Defined in [index.ts:53](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L53)*
+*Defined in [index.ts:53](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/index.ts#L53)*
 
 ___
 <a id="options"></a>
@@ -33,7 +33,7 @@ ___
 
 **● options**: *[SpeechOptions](speechoptions.md)*
 
-*Defined in [index.ts:55](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L55)*
+*Defined in [index.ts:55](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/index.ts#L55)*
 
 ___
 <a id="utterance"></a>
@@ -42,7 +42,7 @@ ___
 
 **● utterance**: *`string`*
 
-*Defined in [index.ts:54](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/index.ts#L54)*
+*Defined in [index.ts:54](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/index.ts#L54)*
 
 ___
 

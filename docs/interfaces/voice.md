@@ -23,7 +23,7 @@
 
 **● id**: *`string`*
 
-*Defined in [types/NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L4)*
+*Defined in [types/NativeSpeechModule.ts:4](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L4)*
 
 ___
 <a id="name"></a>
@@ -32,7 +32,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types/NativeSpeechModule.ts:5](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L5)*
+*Defined in [types/NativeSpeechModule.ts:5](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L5)*
 
 ___
 

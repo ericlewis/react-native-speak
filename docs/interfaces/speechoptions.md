@@ -32,7 +32,7 @@
 
 **● bufferSize**: *`undefined` \| `number`*
 
-*Defined in [types/NativeSpeechModule.ts:42](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L42)*
+*Defined in [types/NativeSpeechModule.ts:42](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L42)*
 
 ___
 <a id="codec"></a>
@@ -41,7 +41,7 @@ ___
 
 **● codec**: *"mp3" \| "pcm"*
 
-*Defined in [types/NativeSpeechModule.ts:32](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L32)*
+*Defined in [types/NativeSpeechModule.ts:32](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L32)*
 
 ___
 <a id="ducking"></a>
@@ -50,7 +50,7 @@ ___
 
 **● ducking**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types/NativeSpeechModule.ts:27](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L27)*
+*Defined in [types/NativeSpeechModule.ts:27](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L27)*
 
 ___
 <a id="fallbacktonativesynth"></a>
@@ -59,7 +59,7 @@ ___
 
 **● fallbackToNativeSynth**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types/NativeSpeechModule.ts:23](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L23)*
+*Defined in [types/NativeSpeechModule.ts:23](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L23)*
 
 ___
 <a id="gain"></a>
@@ -68,7 +68,7 @@ ___
 
 **● gain**: *`undefined` \| `number`*
 
-*Defined in [types/NativeSpeechModule.ts:46](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L46)*
+*Defined in [types/NativeSpeechModule.ts:46](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L46)*
 
 ___
 <a id="instant"></a>
@@ -77,7 +77,7 @@ ___
 
 **● instant**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types/NativeSpeechModule.ts:35](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L35)*
+*Defined in [types/NativeSpeechModule.ts:35](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L35)*
 
 ___
 <a id="pitch"></a>
@@ -86,7 +86,7 @@ ___
 
 **● pitch**: *`undefined` \| `number`*
 
-*Defined in [types/NativeSpeechModule.ts:16](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L16)*
+*Defined in [types/NativeSpeechModule.ts:16](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L16)*
 
 ___
 <a id="preferredoutput"></a>
@@ -95,7 +95,7 @@ ___
 
 **● preferredOutput**: *`undefined` \| `string`*
 
-*Defined in [types/NativeSpeechModule.ts:39](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L39)*
+*Defined in [types/NativeSpeechModule.ts:39](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L39)*
 
 ___
 <a id="speakingrate"></a>
@@ -104,7 +104,7 @@ ___
 
 **● speakingRate**: *`undefined` \| `number`*
 
-*Defined in [types/NativeSpeechModule.ts:13](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L13)*
+*Defined in [types/NativeSpeechModule.ts:13](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L13)*
 
 ___
 <a id="voiceid"></a>
@@ -113,7 +113,7 @@ ___
 
 **● voiceId**: *`undefined` \| `string`*
 
-*Defined in [types/NativeSpeechModule.ts:10](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L10)*
+*Defined in [types/NativeSpeechModule.ts:10](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L10)*
 
 ___
 <a id="volume"></a>
@@ -122,7 +122,7 @@ ___
 
 **● volume**: *`undefined` \| `number`*
 
-*Defined in [types/NativeSpeechModule.ts:19](https://github.com/ericlewis/react-native-speech/blob/6acb1ef/src/types/NativeSpeechModule.ts#L19)*
+*Defined in [types/NativeSpeechModule.ts:19](https://github.com/ericlewis/react-native-speech/blob/30f561b/src/types/NativeSpeechModule.ts#L19)*
 
 ___
 
