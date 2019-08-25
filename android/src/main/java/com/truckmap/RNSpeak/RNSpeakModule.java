@@ -14,6 +14,7 @@ import android.media.AudioFocusRequest;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -149,26 +150,34 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
 
         float volume = options.hasKey("volume") ? (float) options.getDouble("volume") : 1.0f;
         int bufferSize = options.hasKey("bufferSize") ? (int) options.getInt("bufferSize") : 16000;
-        byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
+        final byte[] data = Base64.decode(base64AudioContent, Base64.DEFAULT);
         int intSize = AudioTrack.getMinBufferSize(bufferSize, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         at = new AudioTrack(audioManager.STREAM_MUSIC, bufferSize, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
         at.setVolume(volume);
+
+        final AudioTrack att = at;
+        final ReadableMap opts = options;
+        final String utt = utterance;
+
         if (at != null) {
             sendEvent(SPEECH_START_EVENT, utterance, options);
             at.play();
             isPlaying = true;
-            at.write(data, 0, data.length);
-            at.stop();
-            isPlaying = false;
-            at.release();
-            sendEvent(SPEECH_END_EVENT, utterance, options);
-            mUtteranceMap.remove(utteranceId);
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    att.write(data, 0, data.length);
+                    att.stop();
+                    att.release();
+                    sendEvent(SPEECH_END_EVENT, utt, opts);
+                }
+            });
         } else {
             isPlaying = false;
             sendEvent(SPEECH_ERROR_EVENT, utterance, options);
-            mUtteranceMap.remove(utteranceId);
         }
     }
 
@@ -312,13 +321,16 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
     }
 
     private void sendEvent(String eventName, String utterance, @Nullable ReadableMap options) {
-
+        String utteranceId = Integer.toString(utterance.hashCode());
         boolean shouldDuck = options != null && options.hasKey("ducking") ? (boolean) options.getBoolean("ducking")
                 : true;
 
         switch (eventName) {
         case SPEECH_END_EVENT:
         case SPEECH_ERROR_EVENT:
+            mUtteranceMap.remove(utteranceId);
+            isPlaying = false;
+
             if (shouldDuck) {
                 releaseDucking();
             }
