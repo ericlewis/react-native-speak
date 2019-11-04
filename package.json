@@ -6,6 +6,10 @@
   "typings": "build/main/src/index.d.ts",
   "module": "build/module/src/index.js",
   "repository": "https://github.com/ericlewis/react-native-speak",
+  "author": {
+    "name": "Eric Lewis"
+  },
+  "license": "MIT",
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",
