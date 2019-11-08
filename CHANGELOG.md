@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.12](https://github.com/ericlewis/react-native-speak/compare/v1.1.1...v1.0.12) (2019-11-08)
+
+
+
 ### [1.0.10](https://github.com/ericlewis/react-native-speak/compare/v1.0.8...v1.0.10) (2019-08-25)
 
 
