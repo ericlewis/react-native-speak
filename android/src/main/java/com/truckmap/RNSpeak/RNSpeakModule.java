@@ -281,12 +281,16 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void stop() {
-        if (tts.isSpeaking()) {
-            tts.stop();
-        } else if (isPlaying) {
-            at.stop();
-            isPlaying = false;
-            at.release();
+        try {
+            if (tts.isSpeaking()) {
+                tts.stop();
+            } else if (isPlaying) {
+                at.stop();
+                isPlaying = false;
+                at.release();
+            }
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
         }
 
         // TODO: send events, we can just use the last utterance in the map.
