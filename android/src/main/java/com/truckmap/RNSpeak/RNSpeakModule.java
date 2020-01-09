@@ -169,9 +169,13 @@ public class RNSpeakModule extends ReactContextBaseJavaModule {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    att.write(data, 0, data.length);
-                    att.stop();
-                    att.release();
+                    try {
+                        att.write(data, 0, data.length);
+                        att.stop();
+                        att.release();
+                    } catch(IllegalStateException e) {
+                        e.printStackTrace();
+                    }
                     sendEvent(SPEECH_END_EVENT, utt, opts);
                 }
             });
