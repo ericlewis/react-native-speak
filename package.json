@@ -3,9 +3,10 @@
   "version": "1.0.14",
   "description": "A wonderful react-native library for TTS",
   "main": "build/main/src/index.js",
-  "typings": "build/main/src/index.d.ts",
+  "types": "build/main/src/index.d.ts",
   "module": "build/module/src/index.js",
-  "repository": "https://github.com/ericlewis/react-native-speak",
+  "repository": "git@github.com:ericlewis/react-native-speak.git",
+  "homepage": "git@github.com:ericlewis/react-native-speak.git",
   "author": {
     "name": "Eric Lewis"
   },
