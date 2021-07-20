@@ -67,7 +67,7 @@
     "open-cli": "^5.0.0",
     "prettier": "^1.17.1",
     "react": "16.8.3",
-    "react-native": "0.59.9",
+    "react-native": "0.62.3",
     "react-native-speak": "1.0.5",
     "standard-version": "^6.0.1",
     "trash-cli": "^2.0.0",
